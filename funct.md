@@ -1,6 +1,6 @@
-# Documentation Function **ft_irc**
+# Documentation Fonctions ***ft_irc***
 
-## SOCKET
+## **```socket()```**
 
 ```c
 int socket(int domain, int type, int protocol);
@@ -12,7 +12,7 @@ int socket(int domain, int type, int protocol);
 ```
 
 ### Description :
-La fonction **```socket()```** crée un **endpoint** de communication et retourne un **descripteur** de fichier représentant une **socket**.
+**```socket()```** crée un **endpoint** de communication et retourne un **descripteur** de fichier représentant une **socket**.
 
 > **```domain```** : **famille d’adresses** (ex: AF_INET, AF_INET6, AF_UNIX)
 
@@ -44,7 +44,8 @@ La **socket** créée n’est pas **connectée** et n’a pas **d’adresse loca
 
 >>> **```EPROTONOSUPPORT```** **(93)** : **protocole non supporté**
 
-## CLOSE
+---
+## **```close()```**
 
 ```c
 int close(int fd);
@@ -55,7 +56,7 @@ int close(int fd);
 ```
 
 ### Description :
-La fonction **```close()```** **ferme** un **descripteur de fichier**.
+**```close()```** **ferme** un **descripteur de fichier**.
 
 Si **```fd```** est une **socket**, la **connexion** est **libérée**
 
@@ -77,7 +78,8 @@ Après **```close()```**, le **descripteur** devient **réutilisable**
 
 >>> **```EIO```** (5) : **erreur d’entrée/sortie bas niveau**
 
-## SETSOCKOPT
+---
+## **```setsockopt()```**
 
 ```c
 int setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen);
@@ -89,7 +91,7 @@ int setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t
 ```
 
 ### Description :
-La fonction **```setsockopt()```** permet de **configurer** le **comportement d’une socket.**
+**```setsockopt()```** permet de **configurer** le **comportement d’une socket.**
 
 > **```level```** : niveau de l’option (SOL_SOCKET, IPPROTO_TCP, etc.)
 
@@ -119,7 +121,8 @@ Les **options** doivent être **définies** avant certaines **opérations**.
 
 >>> **```ENOMEM``` (12)** : **mémoire insuffisante**
 
-## GETSOCKNAME
+---
+## **```getsockname()```**
 
 ```c
 int getsockname(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
@@ -131,7 +134,7 @@ int getsockname(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
 ```
 
 ### Description :
-La fonction **```getsockname()```** permet d’obtenir **l’adresse locale** **associée** à une **socket**.
+**```getsockname()```** permet d’obtenir **l’adresse locale** **associée** à une **socket**.
 
 > **Cas typiques** :
 
@@ -155,9 +158,10 @@ La fonction **```getsockname()```** permet d’obtenir **l’adresse locale** **
 
 >>> **```EFAULT```** (14) : **pointeur invalide** (addr ou addrlen)
 
->>> **```EINVAL```** (22) : **socket non liée** ou **état invalide**
+>>> **```EINVAL```** (22) : **addrlen invalide** ou **état de socket incohérent**
 
-## GETPROTOBYNAME
+---
+## **```protoent()```**
 
 ```c
 struct protoent *getprotobyname(const char *name);
@@ -169,7 +173,7 @@ struct protoent *getprotobyname(const char *name);
 
 
 ### Description :
-La fonction **```getprotobyname()```** **recherche un protocole réseau** par son **nom** (ex: "tcp", "udp"), généralement **via /etc/protocols** ou un **service de nommage réseau**.
+**```getprotobyname()```** **recherche un protocole réseau** par son **nom** (ex: "tcp", "udp"), généralement **via /etc/protocols** ou un **service de nommage réseau**.
 
 Elle retourne une structure **```protoent```** contenant :
 
@@ -187,7 +191,8 @@ Elle retourne une structure **```protoent```** contenant :
 
 ⚠️ Fonction obsolète (non thread-safe), remplacée par **```getaddrinfo()```**.
 
-## GETHOSTBYNAME
+---
+## **```gethostbyname()```**
 
 ```c
 struct hostent *gethostbyname(const char *name);
@@ -198,7 +203,7 @@ struct hostent *gethostbyname(const char *name);
 ```
 
 ### Description :
-La fonction **```gethostbyname()```** résout un **nom d’hôte** (ex: "localhost", "example.com") en **adresses IP**.
+**```gethostbyname()```** résout un **nom d’hôte** (ex: "localhost", "example.com") en **adresses IP**.
 
 La structure retournée **```hostent```** contient :
 
@@ -215,7 +220,8 @@ Remplacée par **```getaddrinfo()```**.
 
 > **```Échec```** : **NULL**
 
-## GETADDRINFO
+---
+## **```getaddrinfo()```**
 
 ```c
 int getaddrinfo(const char *node, const char *service,
@@ -231,7 +237,7 @@ int getaddrinfo(const char *node, const char *service,
 
 
 ### Description :
-La fonction **```getaddrinfo()```** **résout** un **nom d’hôte** et/ou un **service** en une **liste** de **structures addrinfo**, **compatibles IPv4/IPv6**.
+**```getaddrinfo()```** **résout** un **nom d’hôte** et/ou un **service** en une **liste** de **structures addrinfo**, **compatibles IPv4/IPv6**.
 
 > **```node```** : **hostname** ou **IP**
 
@@ -259,7 +265,8 @@ Remplace **```gethostbyname()```** et **```getprotobyname()```**.
 
 >> **```EAI_FAMILY```**
 
-## FREEADDRINFO
+---
+## **```freeaddrinfo()```**
 
 ```c
 void freeaddrinfo(struct addrinfo *res);
@@ -277,7 +284,8 @@ Libère la mémoire allouée par **```getaddrinfo()```**.
 
 ### Valeur de retour :
 
-## BIND
+---
+## **```bind()```**
 
 ```c
 int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
@@ -310,7 +318,8 @@ int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 
 >>> **```ENOTSOCK``` (88)** : **fd non-socket**
 
-## CONNECT
+---
+## **```connect()```**
 
 ```c
 int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
@@ -347,9 +356,10 @@ Peut être **bloquante** ou **non bloquante**.
 
 >>> **```ENETUNREACH``` (101)**: **serveur injoignable**
 
->>> **```EISCONN``` (106)**: **connexion abandonnee**
+>>> **```EISCONN``` (106)**: **la socket est déjà connectée**
 
-## LISTEN
+---
+## **```listen()```**
 
 ```c
 int listen(int sockfd, int backlog);
@@ -382,7 +392,8 @@ int listen(int sockfd, int backlog);
 
 >>> **```EOPNOTSUPP``` (95)**
 
-## ACCEPT
+---
+## **```accept()```**
 
 ```c
 int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
@@ -419,7 +430,8 @@ Le **nouveau fd** est **dédié** à la **communication** avec le **client**.
 
 >>> **```ECONNABORTED``` (103)**
 
-## HTONS
+---
+## **```htons()```**
 
 ```c
 uint16_t htons(uint16_t hostshort);
@@ -439,7 +451,8 @@ uint16_t htons(uint16_t hostshort);
 
 > **Valeur convertie en ordre réseau**
 
-## HTONL
+---
+## **```htonl()```**
 
 ```c
 uint32_t htonl(uint32_t hostlong);
@@ -458,7 +471,8 @@ uint32_t htonl(uint32_t hostlong);
 
 > **Valeur convertie en ordre réseau**
 
-## NTOHS
+---
+## **```ntohs()```**
 
 ```c
 uint16_t ntohs(uint16_t netshort);
@@ -475,7 +489,8 @@ uint16_t ntohs(uint16_t netshort);
 
 > **Valeur convertie en ordre réseau**
 
-## NTOHL
+---
+## **```ntohl()```**
 
 ```c
 uint32_t ntohl(uint32_t netlong);
@@ -492,7 +507,8 @@ uint32_t ntohl(uint32_t netlong);
 
 > **Valeur convertie en ordre réseau**
 
-## INET_ADDR
+---
+## **```inet_addr()```**
 
 ```c
 in_addr_t inet_addr(const char *cp);
@@ -515,7 +531,8 @@ in_addr_t inet_addr(const char *cp);
 
 ⚠️ **```INADDR_NONE```** peut aussi correspondre à **"255.255.255.255"**.
 
-## INET_NTOA
+---
+## **```inet_ntoa()```**
 
 ```c
 char *inet_ntoa(struct in_addr in);
@@ -538,7 +555,8 @@ char *inet_ntoa(struct in_addr in);
 
 > **Pointeur vers une chaîne statique**
 
-## INET_NTOP
+---
+## **```inet_ntop()```**
 
 ```c
 const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
@@ -571,7 +589,8 @@ Remplace **```inet_ntoa()```**.
 
 >>> **```ENOSPC``` (28)** : **buffer trop petit**
 
-## SEND
+---
+## **```send()```**
 
 ```c
 ssize_t send(int sockfd, const void *buf, size_t len, int flags);
@@ -598,6 +617,7 @@ ssize_t send(int sockfd, const void *buf, size_t len, int flags);
 >> **```errno```** :
 
 >>> **```EPIPE``` (32)** : **socket fermée** côté distant
+>>>> ⚠️ **```send()```** peut **déclencher** **```SIGPIPE```** si la **socket** est **fermée**
 
 >>> **```ECONNRESET``` (104)**
 
@@ -607,7 +627,8 @@ ssize_t send(int sockfd, const void *buf, size_t len, int flags);
 
 >>> **```ENOTSOCK``` (88)**
 
-## RECV
+---
+## **```recv()```**
 
 ```c
 ssize_t recv(int sockfd, void *buf, size_t len, int flags);
@@ -628,7 +649,7 @@ Retourne 0 si la connexion TCP est fermée proprement
 
 ### Valeur de retour :
 
-> **```Succès```** : **nombre d’octets envoyés**
+> **```Succès```** : **nombre d’octets reçus**
 
 >> **```Fermeture distante```** : **0**
 
@@ -644,7 +665,8 @@ Retourne 0 si la connexion TCP est fermée proprement
 
 >>> **```ENOTCONN``` (107)**
 
-## SIGNAL
+---
+## **```signal()```**
 
 ```c
 void (*signal(int signum, void (*handler)(int)))(int);
@@ -671,7 +693,8 @@ void (*signal(int signum, void (*handler)(int)))(int);
 
 >>> **```EINVAL``` (22)** : **signal invalide**
 
-## SIGACTION
+---
+## **```sigaction()```**
 
 ```c
 int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);
@@ -702,7 +725,8 @@ int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)
 
 >>> **```EFAULT``` (14)** : **pointeur invalide**
 
-## SIGEMPTYSET
+---
+## **```sigemptyset()```**
 
 ```c
 int sigemptyset(sigset_t *set);
@@ -727,7 +751,8 @@ int sigemptyset(sigset_t *set);
 
 > **```EINVAL``` (22)** : pointeur invalide (dépend de l’implémentation)
 
-## SIGFILLSET 
+---
+## **```sigfillset()```**
 
 ```c
 int sigfillset(sigset_t *set);
@@ -752,7 +777,8 @@ int sigfillset(sigset_t *set);
 
 >>> **```EINVAL``` (22)** : **pointeur invalide** (implémentation dépendante)
 
-## SIGADDSET
+---
+## **```sigaddset()```**
 
 ```c
 int sigaddset(sigset_t *set, int signum);
@@ -775,7 +801,8 @@ int sigaddset(sigset_t *set, int signum);
 
 >>> **```EINVAL``` (22)** : **signum invalide**
 
-## SIGDELSET
+---
+## **```sigdelset()```**
 
 ```c
 int sigdelset(sigset_t *set, int signum);
@@ -798,7 +825,8 @@ int sigdelset(sigset_t *set, int signum);
 
 >>> **```EINVAL``` (22)** : **signum invalide**
 
-## SIGISMEMBER
+---
+## **```sigismember()```**
 
 ```c
 int sigismember(const sigset_t *set, int signum);
@@ -823,7 +851,8 @@ int sigismember(const sigset_t *set, int signum);
 
 >>> **```EINVAL``` (22)** : **```signum``` invalide**
 
-## LSEEK
+---
+## **```lseek()```**
 
 ```c
 off_t lseek(int fd, off_t offset, int whence);
@@ -865,7 +894,8 @@ off_t lseek(int fd, off_t offset, int whence);
 
 >>> **```EINVAL``` (22)**
 
-## FSTAT
+---
+## **```fstat()```**
 
 ```c
 int fstat(int fd, struct stat *statbuf);
@@ -903,7 +933,8 @@ int fstat(int fd, struct stat *statbuf);
 
 > **```EIO``` (5)**
 
-FCNTL
+---
+## **```fcntl()```**
 
 ```c
 int fcntl(int fd, int cmd, ... /* arg */ );
@@ -956,7 +987,8 @@ int fcntl(int fd, int cmd, ... /* arg */ );
 
 >>> **```EFAULT``` (14)**
 
-## POLL
+---
+## **```poll()```**
 
 ```c
 int poll(struct pollfd *fds, nfds_t nfds, int timeout);
@@ -992,8 +1024,8 @@ int poll(struct pollfd *fds, nfds_t nfds, int timeout);
 
 >> **```errno```** :
 
->>> **```EINTR``` (4)** : )**interrompu par un signal)**
+>>> **```EINTR``` (4)** : **interrompu par un signal**
 
->>> **```EINVAL``` (22))** : )**paramètres invalides)**
+>>> **```EINVAL``` (22)** : **paramètres invalides**
 
->>> **```ENOMEM``` (12))**
+>>> **```ENOMEM``` (12)**
