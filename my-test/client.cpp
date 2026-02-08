@@ -33,7 +33,7 @@ namespace test
 	const int	BUFFER_SIZE = 1024;
 	const char	SERVER[] = "Server: ";
 	const char	CLIENT[] = "Client: ";
-	const char	HELLO[] = "\e[1;32mHello from the client\e[0m";
+	const char	HELLO[] = "\e[1;32mHello from the client\e[0m\r\n";
 }
 using test::PORT;
 using test::SERVER;
