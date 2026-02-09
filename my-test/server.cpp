@@ -183,6 +183,8 @@ int	main(void)
 
 						if (message == "STOP")
 						{
+							if (send(fd, "Good bye !\n", ft_strlen("Good bye !\n"), 0) == -1)
+								exit_safe(serv_socket, fd, epoll_fd, events, "send");
 							client_buffers.~map();
 							exit_safe(serv_socket, client_socket, epoll_fd, events, NULL);
 						}
@@ -202,9 +204,6 @@ int	main(void)
 			}
 		}
 	}
-	close(serv_socket);
-	close(client_socket);
-	free(events);
 	return 0;
 }
 
