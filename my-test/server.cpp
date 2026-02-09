@@ -32,7 +32,7 @@ using Color::STOP_COLOR;
 
 namespace test
 {
-	const int	PORT = 6697;
+	const int	PORT = 6667;
 	const int	MAX_EVENTS = 10;
 	const int	BUFFER_SIZE = 10;
 	const char	SERVER[] = "Server: ";
