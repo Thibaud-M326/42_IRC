@@ -10,6 +10,7 @@
 #include <cstring>
 #include <sys/epoll.h>
 #include <fcntl.h>
+#include <arpa/inet.h>
 
 namespace Color
 {
@@ -154,6 +155,7 @@ int	main(void)
 					else
 						exit_safe(serv_socket, -1, epoll_fd, events, "accept");
 				}
+				std::cout << inet_ntoa(addr.sin_addr);
 				set_nonblocking(client_socket);
 				ev.events = EPOLLIN;
 				ev.data.fd = client_socket;
