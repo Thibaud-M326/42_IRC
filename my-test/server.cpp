@@ -32,13 +32,14 @@ using Color::STOP_COLOR;
 
 namespace test
 {
-	const int	PORT = 6697;
+	const int	PORT = 6667;
 	const int	MAX_EVENTS = 10;
 	const int	BUFFER_SIZE = 10;
 	const char	SERVER[] = "Server: ";
 	const char	CLIENT[] = "Client: ";
 	const char	HELLO[] = "\e[1;33mHello from the server\e[0m\n";
 }
+
 using test::PORT;
 using test::MAX_EVENTS;
 using test::SERVER;
@@ -206,4 +207,3 @@ int	main(void)
 	}
 	return 0;
 }
-
