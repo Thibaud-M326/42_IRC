@@ -121,7 +121,7 @@ void Server::read_client_paquet(int event_index)
 
 	_client_socket_fd = _events[event_index].data.fd;
 
-	while(0 > (read_size = read(_client_socket_fd, _buffer, sizeof(_buffer))))
+	while(0 < (read_size = read(_client_socket_fd, _buffer, sizeof(_buffer))))
 	{
 		//process commands
 		write(STDOUT_FILENO, _buffer, read_size);
