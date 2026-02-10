@@ -1,14 +1,14 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
+#include <string>
 #include <sys/epoll.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 
-namespace server 
-{
-	extern const int MAX_EVENT;
-}
+#define MAX_EVENT 10
+#define PORT 6667
+#define READ_BUFFER_SIZE 1024
 
 //je veut qu'en instanciant un server, mon serveur se mette a ecouter sur le port et le
 //mdp qu'on m'a donnee
@@ -22,18 +22,34 @@ class Server {
 		std::string _port;
 		std::string _password;
 
-		int _serv_socket;
-		int _client_socket;
+		int _serv_socket_fd;
+		sockaddr_in _serv_sock_addr;
+		socklen_t	_serv_sock_addr_len;
+		
 		int _epoll_fd;
-		int _nfds;
 		epoll_event _events[MAX_EVENT];
 		epoll_event _ev;
-		sockaddr_in _addr;
+
+		int _client_socket_fd;
+		sockaddr_in _client_sock_addr;
+		socklen_t	_client_sock_addr_len;
+
+		int _nfds;
+		char _buffer[READ_BUFFER_SIZE];
+		
+		int		set_nonblocking(int fd);
+		void	accept_new_connection();
+		void	read_client_paquet(int event_index);
 
 	public :
 		Server(std::string port, std::string password);
 		~Server();
 
+		void	init_server_socket();
+		void	init_epoll();
+		void	run();
+
+		//container client socket, Client()
 };
 
 #endif

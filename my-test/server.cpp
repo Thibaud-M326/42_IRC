@@ -88,6 +88,7 @@ int	main(void)
 	std::cout << BOLD_BLUE << "The Server messages are in " << BOLD_YELLOW<<
 		"Yellow" << BOLD_BLUE << " and the Client messages are in "
 		<< BOLD_GREEN << "Green" << STOP_COLOR << '\n';
+
 	int	serv_socket;
 	int	client_socket;
 	int	epoll_fd;
@@ -99,7 +100,9 @@ int	main(void)
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(PORT);
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
 	addr_len = sizeof(addr);
+
 	events = (epoll_event *)malloc(sizeof(epoll_event) * MAX_EVENTS);
 	if (!events)
 		exit(EXIT_FAILURE);
