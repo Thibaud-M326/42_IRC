@@ -11,22 +11,22 @@ namespace error_code
 {
 	inline std::string	ERR_NOSUCHNICK(Client& target)
 	{
-		return (target.getPrefix() + " 401 " + target.getNickname() " :No such nick/chan" + CRLF);
+		return (target.getPrefix() + " 401 " + target.getNickname() + " :No such nick/chan" + CRLF);
 	}
 
 	inline std::string	ERR_NOSUCHCHANNEL(Client& target, Channel& chan)
 	{
-		return (target.getPrefix() + " 403 " + chan.getName() " :No such channel" + CRLF);
+		return (target.getPrefix() + " 403 " + chan.getName() + " :No such channel" + CRLF);
 	}
 
 	inline std::string	ERR_TOOMANYCHANNELS(Client& target, Channel& chan)
 	{
-		return (target.getPrefix() + " 405 " + chan.getName() " :You have joined too many channels" + CRLF);
+		return (target.getPrefix() + " 405 " + chan.getName() + " :You have joined too many channels" + CRLF);
 	}
 
 	inline std::string	ERR_NORECIPIENT(Client& target, std::string command)
 	{
-		return (target.getPrefix() + " 411 :No recipient given (" + command + ")" CRLF);
+		return (target.getPrefix() + " 411 :No recipient given (" + command + ")" + CRLF);
 	}
 
 	inline std::string	ERR_NOTEXTTOSEND(Client& target)
@@ -118,6 +118,5 @@ namespace error_code
 	{
 		return (target.getPrefix() + " 501 :Unknown MODE flag" + CRLF);
 	}
-
 }
 

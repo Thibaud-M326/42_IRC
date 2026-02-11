@@ -36,12 +36,12 @@ namespace reply_code
 
 	inline std::string	RPL_UMODEIS(Client& target)
 	{
-		return (target.getPrefix() + " 221 " +  target.get_strMode() + CRLF);
+		return (target.getPrefix() + " 221 " +  target.get_StrMode() + CRLF);
 	}
 
 	inline std::string	RPL_CHANNELMODEIS(Client& target, Channel& chan)
 	{
-		return (target.getPrefix() + " 324 " + chan.getName() + " " + chan.GetMode() + " " + chan.getModeParams() + CRLF);
+		return (target.getPrefix() + " 324 " + chan.getName() + " " + chan.getMode() + " " + chan.getModeParams() + CRLF);
 	}
 
 	inline std::string	RPL_INVITELIST(Client& target, Channel& chan, std::string& invite_list)
@@ -56,7 +56,7 @@ namespace reply_code
 
 	inline std::string	RPL_UNIQOPIS(Client& target, Channel& chan)
 	{
-		return (target.getPrefix() + " 325 " + chan.getName() + " " + chan.getOperatorName() + CRLF);
+		return (target.getPrefix() + " 325 " + chan.getName() + " " + chan.getOperator()->getUsername() + CRLF);
 	}
 
 	inline std::string	RPL_YOUREOPER(Client& target)
@@ -69,10 +69,9 @@ namespace reply_code
 		return (target.getPrefix() + " 322 " + chan.getName() + " # visible :" + chan.getTopic() + CRLF);
 	}
 
-	inline std::string	RPL_LISTEND(Client& target, Channel& chan)
+	inline std::string	RPL_LISTEND(Client& target)
 	{
 		return (target.getPrefix() + " 323 :End of List" + CRLF);
 	}
-
 }
 
