@@ -1,6 +1,8 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
+#include "Exception.hpp"
+
 #include <string>
 #include <sys/epoll.h>
 #include <netinet/in.h>

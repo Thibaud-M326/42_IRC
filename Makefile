@@ -1,22 +1,24 @@
 CPP = c++
-# CPPFLAGS = -g3 -Wall -Wextra -Werror -MMD -MP -std=c++98
-CPPFLAGS = -g3 -Wall -Wextra -MMD -MP -std=c++98
+CPPFLAGS = -g3 -Wall -Wextra -Werror -MMD -MP -std=c++98
+# CPPFLAGS = -g3 -Wall -Wextra -MMD -MP -std=c++98
 NAME = ircserv 
 
 OBJ_DIR = ./.obj
 SRC_DIR = ./sources
 INC_DIR = ./includes
 
-SERVER_DIR = server
-CLIENT_DIR = client 
+CLIENT_DIR = Client
+EXCEPT_DIR = Exception
+SERVER_DIR = Server
+
 SRC =											\
 		$(SRC_DIR)/main.cpp						\
+		$(SRC_DIR)/$(EXCEPT_DIR)/Exception.cpp	\
 		$(SRC_DIR)/$(SERVER_DIR)/Server.cpp		\
-# 		$(SRC_DIR)/$(CLIENT_DIR)/Client.cpp		\
 
 INC_DIRS = 										\
-		-I$(INC_DIR)/server/ 					\
-# 		-I$(INC_DIR)/client/					\
+		-I$(INC_DIR)/$(EXCEPT_DIR)/				\
+		-I$(INC_DIR)/$(SERVER_DIR)/ 			\
 
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 DEP = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.d)

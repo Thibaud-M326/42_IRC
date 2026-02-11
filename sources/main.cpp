@@ -1,10 +1,18 @@
 #include "Server.hpp"
+#include <iostream>
 
 int main()
 {
-	Server serv("6667", "password");
+	try 
+	{
+		Server serv("6667", "password");
 
-	serv.init_server_socket();
-	serv.init_epoll();
-	serv.run();
+		serv.init_server_socket();
+		serv.init_epoll();
+		serv.run();
+	}
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
+	}
 }
