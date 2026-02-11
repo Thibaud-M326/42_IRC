@@ -7,9 +7,9 @@ OBJ_DIR = ./.obj
 SRC_DIR = ./sources
 INC_DIR = ./includes
 
-CLIENT_DIR = Client
-EXCEPT_DIR = Exception
-SERVER_DIR = Server
+CLIENT_DIR = client
+EXCEPT_DIR = exception
+SERVER_DIR = server
 
 SRC =											\
 		$(SRC_DIR)/main.cpp						\
