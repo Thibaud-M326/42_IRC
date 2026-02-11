@@ -13,10 +13,12 @@ SERVER_DIR = server
 
 SRC =											\
 		$(SRC_DIR)/main.cpp						\
+		$(SRC_DIR)/$(CLIENT_DIR)/Client.cpp		\
 		$(SRC_DIR)/$(EXCEPT_DIR)/Exception.cpp	\
 		$(SRC_DIR)/$(SERVER_DIR)/Server.cpp		\
 
 INC_DIRS = 										\
+		-I$(INC_DIR)/$(CLIENT_DIR)/				\
 		-I$(INC_DIR)/$(EXCEPT_DIR)/				\
 		-I$(INC_DIR)/$(SERVER_DIR)/ 			\
 
