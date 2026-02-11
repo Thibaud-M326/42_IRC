@@ -3,3 +3,7 @@
 
 #executable
 ircserv
+
+#asinsard nvim config files
+.cache
+compile_commands.json
