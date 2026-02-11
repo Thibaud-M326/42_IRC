@@ -109,6 +109,8 @@ void	Server::accept_new_connection()
 			close(_client_socket_fd);
 			throw ExceptionPerror(ERR_MSG);
 		}
+
+		std::cout << "client fd : " << _client_socket_fd << " connected" << std::endl;
 	}
 }
 
@@ -118,7 +120,7 @@ void Server::read_client_paquet(int event_index)
 
 	_client_socket_fd = _events[event_index].data.fd;
 
-	std::cout << "_client_socket " << _client_socket_fd << std::endl;
+	std::cout << "client_socket " << _client_socket_fd << " : " << std::endl;
 
 	while(0 < (read_size = read(_client_socket_fd, _buffer, sizeof(_buffer))))
 	{
