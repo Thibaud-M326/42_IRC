@@ -98,7 +98,7 @@ void	Server::accept_new_connection()
 				throw ExceptionPerror(ERR_MSG);
 		}
 
-		if (-1 == set_nonblocking(_serv_socket_fd))
+		if (-1 == set_nonblocking(_client_socket_fd))
 			throw ExceptionPerror(ERR_MSG);
 
 		_ev.events = EPOLLIN | EPOLLET;
@@ -118,11 +118,12 @@ void Server::read_client_paquet(int event_index)
 
 	_client_socket_fd = _events[event_index].data.fd;
 
+	std::cout << "_client_socket " << _client_socket_fd << std::endl;
+
 	while(0 < (read_size = read(_client_socket_fd, _buffer, sizeof(_buffer))))
 	{
 		//process commands
 		write(STDOUT_FILENO, _buffer, read_size);
-		write(_client_socket_fd, "bonjour\n", 8);
 	}
 
 	if (read_size == 0)
@@ -150,11 +151,8 @@ void Server::run()
 		
 		for (int i = 0; i < _nfds; i++)
 		{
-
-			
 			if (_events[i].data.fd == _serv_socket_fd)
 			{
-				std::cout << "new connection" << std::endl;
 				accept_new_connection();
 			}
 			else
