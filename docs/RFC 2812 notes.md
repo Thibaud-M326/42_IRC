@@ -230,6 +230,14 @@ Pour la traduction complète des caractères hexadécimaux, voir : [ASCII table]
 
 ```ruby
 Parameters: <msgtarget> <text to be sent>
+
+   Numeric Replies:
+
+           ERR_NORECIPIENT                 ERR_NOTEXTTOSEND
+           ERR_CANNOTSENDTOCHAN            ERR_NOTOPLEVEL
+           ERR_WILDTOPLEVEL                ERR_TOOMANYTARGETS
+           ERR_NOSUCHNICK
+           RPL_AWAY
 ```
 
 ---
@@ -270,7 +278,7 @@ Numeric Replies:
    source of trouble for users.)
 
 ```ruby
-Parameters: <nickname< <channel>
+Parameters: <nickname> <channel>
 ```
 
 Numeric Replies:
@@ -278,7 +286,7 @@ Numeric Replies:
            ERR_NEEDMOREPARAMS              ERR_NOSUCHNICK
            ERR_NOTONCHANNEL                ERR_USERONCHANNEL
            ERR_CHANOPRIVSNEEDED
-           RPL_INVITING                    RPL_AWAY
+		   RPL_INVITING                    RPL_AWAY
 
 ---
 
@@ -354,7 +362,7 @@ Parameters: <channel> *( ( "-" / "+" ) *<modes> *<modeparams> )
 - NICK - Give user a nickname or change the existing one.
 
 ```ruby
-Parameters: \<nickname>
+Parameters: <nickname>
 ```
 
 - Numeric Replies:
@@ -406,6 +414,117 @@ Paramters: [ <channel> *( "," <channel> ) [ <target> ] ]
 
            ERR_TOOMANYMATCHES              ERR_NOSUCHSERVER
            RPL_LIST                        RPL_LISTEND
+
+
+## Codes de réponses IRC (RFC 2812)
+
+Cette section liste les principaux codes de réponses retournés par un serveur IRC, avec leur signification et leur contexte d’utilisation.
+
+---
+
+### 001 — RPL_WELCOME
+`"Bienvenue sur le relais de causette Internet <pseudonyme>!<utilisateur>@<hôte>"`
+
+---
+
+### 301 — RPL_AWAY
+`"<pseudonyme> :<message away>"`
+
+---
+
+### 341 — RPL_INVITING
+`"<pseudonyme> <canal>"`
+
+- Retourné par le serveur pour indiquer que le message `INVITE` tenté a réussi et est passé vers le client final.
+
+---
+
+### 331 — RPL_NOTOPIC
+`"<canal> :Aucun sujet n’est établi"`
+
+### 332 — RPL_TOPIC
+`"<canal> :<sujet>"`
+
+- Lors de l’envoi d’un message `TOPIC` pour déterminer le sujet d’un canal, une des deux réponses est envoyée.  
+  - Si le sujet est établi → `RPL_TOPIC` est renvoyé.  
+  - Sinon → `RPL_NOTOPIC`.
+
+---
+
+### 221 — RPL_UMODEIS
+`"<chaîne de mode d’utilisateur>"`
+
+- Pour répondre à une interrogation sur le mode du client, `RPL_UMODEIS` est renvoyé.
+
+---
+
+### 324 — RPL_CHANNELMODEIS
+`"<canal> <mode> <mode params>"`
+
+---
+
+### 367 — RPL_BANLIST
+`"<canal> <gabarit d’interdiction>"`
+
+---
+
+### 348 — RPL_EXCEPTLIST
+`"<canal> <gabarit d’exception>"`
+
+### 349 — RPL_ENDOFEXCEPTLIST
+`"<canal> :Fin de liste d’exception de canal"`
+
+- Lorsque le serveur liste les **gabarits d’exception** pour un canal :  
+  - Il DOIT envoyer des messages `RPL_EXCEPTLIST` (un par gabarit actif).  
+  - Puis un message `RPL_ENDOFEXCEPTLIST` DOIT être envoyé pour marquer la fin.
+
+---
+
+### 346 — RPL_INVITELIST
+`"<canal> <gabarit d’invite>"`
+
+### 347 — RPL_ENDOFINVITELIST
+`"<canal> :Fin de liste d’invite de canal"`
+
+- Lorsque le serveur liste les **gabarits d’invitation** pour un canal :  
+  - Il DOIT envoyer des messages `RPL_INVITELIST` (un par gabarit actif).  
+  - Après établissement de la liste (ou s’il n’y en a aucun),  
+    `RPL_ENDOFINVITELIST` DOIT être envoyé.
+
+---
+
+### 325 — RPL_UNIQOPIS
+`"<canal> <pseudonyme>"`
+
+---
+
+### 332 — RPL_TOPIC
+`"<canal> :<sujet>"`
+
+- Lors de l’envoi d’un message `TOPIC` pour déterminer le sujet d’un canal, une des deux réponses est envoyée :  
+  - Si le sujet est établi → `RPL_TOPIC`.  
+  - Sinon → `RPL_NOTOPIC`.
+
+---
+
+### 381 — RPL_YOUREOPER
+`":Vous êtes maintenant un opérateur IRC"`
+
+- Renvoyé à un client ayant réussi une commande `OPER` et obtenu le statut d’opérateur.
+
+---
+
+### 322 — RPL_LIST
+`"<canal> <# visible> :<sujet>"`
+
+### 323 — RPL_LISTEND
+`":Fin de LIST"`
+
+- Les réponses `RPL_LIST` et `RPL_LISTEND` constituent la réponse du serveur à une commande `LIST`.  
+- S’il n’y a aucun canal à retourner, seule la fin de réponse DOIT être envoyée.
+
+
+---
 
 ## Codes d’erreurs IRC (RFC 2812)
 
