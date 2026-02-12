@@ -1,5 +1,8 @@
 #include "Server.hpp"
 #include "Exception.hpp"
+#include <iostream>
+#include <errno.h>
+#include <unistd.h>
 
 //pour l'instant j'ecris sur mon stdout des que je recois un control D, control D agit comme le fait d'envoyer le message mais
 //je veut en fait ecrire le message uniquement quand j'ai recu un clrf,

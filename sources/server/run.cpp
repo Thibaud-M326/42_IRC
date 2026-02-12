@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "Exception.hpp"
+#include <sys/epoll.h>
 
 void Server::run()
 {
