@@ -374,7 +374,7 @@ Parameters: <nickname>
 - JOIN - Used by a user to request to start listening to the specific channel. Note that this message accepts a special argument ("0"), which is a special request to leave all channels the user is currently a member of.
 
 ```ruby
-Parameters: ( \<channel> *( "," \<channel> ) [ \<key> *( "," \<key> ) ] )
+Parameters: ( <channel> *( "," <channel> ) [ <key> *( "," <key> ) ] )
                / "0"
 ```
 
@@ -394,7 +394,7 @@ Parameters: ( \<channel> *( "," \<channel> ) [ \<key> *( "," \<key> ) ] )
    message (see section 3.1.5) indicating the new user modes.
 
 ```ruby
-Parameters: \<name> \<password>
+Parameters: <name> <password>
 ```
 
 - Numeric Replies:
