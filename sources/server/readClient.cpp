@@ -21,28 +21,33 @@
 //5 les message sont stocke dans une map du client_socket; message)
 void Server::readClient(int event_index)
 {
-	int read_size;
+	int readSize;
 
 	_client_socket_fd = _events[event_index].data.fd;
 
 	std::cout << "read from client_socket " << _client_socket_fd << " : " << std::endl;
 
-	while(0 < (read_size = read(_client_socket_fd, _buffer, sizeof(_buffer))))
+	while(0 < (readSize = read(_client_socket_fd, _buffer, sizeof(_buffer))))
 	{
-		//plus tard ne devras write uniquement un message quand il est complet
-		processClient();
+		// processClient(readSize);
 
+		findClient();
 
-		write(STDOUT_FILENO, _buffer, read_size);
+		_client.appendRawData(_buffer, readSize);
+
+		std::cout << _client.getBuffer();
 	}
 
-	if (read_size == 0)
+	//client disconnected
+	if (readSize == 0)
 	{
+		//quand le client se deconnecte, il faut tuer l'instance dans la map
 		std::cout << "Client " << _client_socket_fd << " disconnected" << std::endl;
 		close(_client_socket_fd);
 	}
 
-	if (read_size == -1)
+	//error occured
+	if (readSize == -1)
 	{
 		if (errno != EAGAIN)
 		{

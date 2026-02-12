@@ -13,7 +13,7 @@ class Client
 		int			_Ip_address;
 		int			_Fd;
 
-		std::string _buffer;
+		std::string _Cbuffer;
 
 	public:
 		/* class prerequisites */
@@ -28,6 +28,7 @@ class Client
 		std::string	get_StrMode() const;
 		int			getIpAddress() const;
 		int			getFd() const;
+		std::string getBuffer() const;
 
 		/* setters */
 		void	setPrefix();
@@ -36,8 +37,9 @@ class Client
 		void	set_StrMode(std::string& StrMode);
 		void	setIpAddress(int& Ip_address);
 		void	setFd(int Fd);
+		void	setBuffer(std::string buffer);
 
-		void	appendRawData(const char* buffer);
+		void	appendRawData(const char* readBuffer, int readSize);
 };
 
 #endif

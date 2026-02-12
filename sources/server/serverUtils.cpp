@@ -14,3 +14,8 @@ void	Server::printClients()
 		std::cout << it->first << " : " << it->second.getIpAddress() << std::endl;
 	}
 }
+
+void	Server::findClient()
+{
+	_client = _clients[_client_socket_fd];
+}

@@ -52,7 +52,8 @@ class Server {
 		void	addClient();
 		void	printClients();
 		void	readClient(int event_index);
-		void	processClient();
+		void	processClient(int readSize);
+		void	findClient();
 
 	public :
 		Server(std::string port, std::string password);

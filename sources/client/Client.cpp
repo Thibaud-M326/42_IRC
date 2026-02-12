@@ -7,7 +7,11 @@ Client::Client():
 	_Nickname(""),
 	_StrMode(""),
 	_Ip_address(0),
-	_Fd(0) {}
+	_Fd(0),
+	_Cbuffer("")
+{
+	std::cout << "Client constructor called" << std::endl;
+}
 
 Client::Client(const int fd, int ip_address):
 	_Prefix(""),
@@ -15,9 +19,14 @@ Client::Client(const int fd, int ip_address):
 	_Nickname(""),
 	_StrMode(""),
 	_Ip_address(ip_address),
-	_Fd(fd) {}
+	_Fd(fd),
+	_Cbuffer("") 
+{}
 
-Client::~Client() {}
+Client::~Client() 
+{
+	std::cout << "Client destructor called" << std::endl;
+}
 
 std::string	Client::getPrefix() const
 {
@@ -47,6 +56,11 @@ int	Client::getIpAddress() const
 int	Client::getFd() const
 {
 	return _Fd;
+}
+
+std::string	Client::getBuffer() const
+{
+	return _Cbuffer;
 }
 
 void	Client::setPrefix()
@@ -86,7 +100,14 @@ void	Client::setFd(int Fd)
 	_Fd = Fd;
 }
 
-void	Client::appendRawData(const char* buffer)
+void	Client::setBuffer(std::string buffer)
 {
-	(void)buffer;
+	_Cbuffer = buffer;
+}
+
+void	Client::appendRawData(const char* readBuf, int readSize)
+{
+	(void)readSize;
+
+	_Cbuffer.append(readBuf);
 }
