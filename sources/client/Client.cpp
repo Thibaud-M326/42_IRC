@@ -86,3 +86,7 @@ void	Client::setFd(int Fd)
 	_Fd = Fd;
 }
 
+void	Client::appendRawData(const char* buffer)
+{
+	(void)buffer;
+}

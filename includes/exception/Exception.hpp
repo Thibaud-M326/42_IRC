@@ -4,6 +4,7 @@
 #include <exception>
 #include <string>
 #include <cstring>
+#include <errno.h>
 
 #define ERR_MSG std::strerror(errno), __FILE__, __FUNCTION__, __LINE__
 

@@ -9,6 +9,8 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <map>
+#include <fcntl.h>
+#include <unistd.h>
 
 #define MAX_EVENT 10
 #define PORT 6667
@@ -45,11 +47,11 @@ class Server {
 		std::map<int, Client>	_clients;
 		
 		int		set_nonblocking(int fd);
-		void	accept_new_connection();
+		void	acceptConnection();
 		void	addClientToEpoll();
 		void	addClient();
 		void	printClients();
-		void	read_client_paquet(int event_index);
+		void	readClient(int event_index);
 		void	processClient();
 
 	public :
