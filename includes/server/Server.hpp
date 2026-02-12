@@ -2,11 +2,13 @@
 #define SERVER_HPP
 
 #include "Exception.hpp"
+#include "Client.hpp"
 
 #include <string>
 #include <sys/epoll.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <map>
 
 #define MAX_EVENT 10
 #define PORT 6667
@@ -38,9 +40,14 @@ class Server {
 
 		int _nfds;
 		char _buffer[READ_BUFFER_SIZE];
+
+		std::map<int, Client>	_clients;
 		
 		int		set_nonblocking(int fd);
 		void	accept_new_connection();
+		void	addClientToEpoll();
+		void	addClient();
+		void	printClients();
 		void	read_client_paquet(int event_index);
 
 	public :
@@ -51,7 +58,6 @@ class Server {
 		void	init_epoll();
 		void	run();
 
-		//container client socket, Client()
 };
 
 #endif

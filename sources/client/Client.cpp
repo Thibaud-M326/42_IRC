@@ -1,7 +1,15 @@
 #include "Client.hpp"
 #include <sstream>
 
-Client::Client(const int fd, const char *ip_address):
+Client::Client():
+	_Prefix(""),
+	_Username(""),
+	_Nickname(""),
+	_StrMode(""),
+	_Ip_address(0),
+	_Fd(0) {}
+
+Client::Client(const int fd, int ip_address):
 	_Prefix(""),
 	_Username(""),
 	_Nickname(""),
@@ -31,7 +39,7 @@ std::string	Client::get_StrMode() const
 	return _StrMode;
 }
 
-std::string	Client::getIpAddress() const
+int	Client::getIpAddress() const
 {
 	return _Ip_address;
 }
@@ -68,7 +76,7 @@ void	Client::set_StrMode(std::string& StrMode)
 	_StrMode = StrMode;
 }
 
-void	Client::setIpAddress(std::string& Ip_address)
+void	Client::setIpAddress(int& Ip_address)
 {
 	_Ip_address = Ip_address;
 }

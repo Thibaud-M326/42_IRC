@@ -10,12 +10,15 @@ class Client
 		std::string	_Username;
 		std::string	_Nickname;
 		std::string	_StrMode;
-		std::string	_Ip_address;
+		int			_Ip_address;
 		int			_Fd;
+
+		std::string _buffer;
 
 	public:
 		/* class prerequisites */
-		Client(const int fd, const char *ip_address);
+		Client();
+		Client(const int fd, const int ip_address);
 		~Client();
 
 		/* getters */
@@ -23,7 +26,7 @@ class Client
 		std::string	getUsername() const;
 		std::string	getNickname() const;
 		std::string	get_StrMode() const;
-		std::string	getIpAddress() const;
+		int			getIpAddress() const;
 		int			getFd() const;
 
 		/* setters */
@@ -31,7 +34,7 @@ class Client
 		void	setUsername(std::string& Username);
 		void	setNickname(std::string& Nickname);
 		void	set_StrMode(std::string& StrMode);
-		void	setIpAddress(std::string& Ip_address);
+		void	setIpAddress(int& Ip_address);
 		void	setFd(int Fd);
 };
 
