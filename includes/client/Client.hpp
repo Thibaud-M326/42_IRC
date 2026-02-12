@@ -36,6 +36,8 @@ class Client
 		void	set_StrMode(std::string& StrMode);
 		void	setIpAddress(int& Ip_address);
 		void	setFd(int Fd);
+
+		void	appendRawData(const char* buffer);
 };
 
 #endif

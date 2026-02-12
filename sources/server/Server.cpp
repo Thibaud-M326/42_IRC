@@ -23,6 +23,7 @@ Server::Server(std::string port, std::string password)
 	_client_sock_addr_len(sizeof _client_sock_addr),
 	_nfds(0),
 	_buffer(),
+	_client(),
 	_clients()
 {
 	std::cout << "Server constructor called" << std::endl;	
@@ -143,6 +144,13 @@ void	Server::accept_new_connection()
 	}
 }
 
+//trouver le bon client
+void	Server::processClient()
+{
+	_client = _clients[_client_socket_fd];
+	_client.appendRawData(_buffer);
+}
+
 //pour l'instant j'ecris sur mon stdout des que je recois un control D, control D agit comme le fait d'envoyer le message mais
 //je veut en fait ecrire le message uniquement quand j'ai recu un clrf,
 //donc je recois mes datas par paquets
@@ -169,7 +177,10 @@ void Server::read_client_paquet(int event_index)
 
 	while(0 < (read_size = read(_client_socket_fd, _buffer, sizeof(_buffer))))
 	{
-		//process commands
+		//plus tard ne devras write uniquement un message quand il est complet
+		processClient();
+
+
 		write(STDOUT_FILENO, _buffer, read_size);
 	}
 
@@ -178,6 +189,7 @@ void Server::read_client_paquet(int event_index)
 		std::cout << "Client " << _client_socket_fd << " disconnected" << std::endl;
 		close(_client_socket_fd);
 	}
+
 	if (read_size == -1)
 	{
 		if (errno != EAGAIN)

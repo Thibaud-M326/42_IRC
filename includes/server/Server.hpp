@@ -38,9 +38,10 @@ class Server {
 		sockaddr_in _client_sock_addr;
 		socklen_t	_client_sock_addr_len;
 
-		int _nfds;
+		int	_nfds;
 		char _buffer[READ_BUFFER_SIZE];
 
+		Client _client;
 		std::map<int, Client>	_clients;
 		
 		int		set_nonblocking(int fd);
@@ -49,6 +50,7 @@ class Server {
 		void	addClient();
 		void	printClients();
 		void	read_client_paquet(int event_index);
+		void	processClient();
 
 	public :
 		Server(std::string port, std::string password);
