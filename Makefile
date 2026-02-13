@@ -8,13 +8,14 @@ INC_DIR = ./includes
 
 CLIENT_DIR = client
 EXCEPT_DIR = exception
+PARSE_DIR = parse
 SERVER_DIR = server
 
 SRC =														\
 		$(SRC_DIR)/main.cpp									\
-		$(SRC_DIR)/parse.cpp								\
 		$(SRC_DIR)/$(CLIENT_DIR)/Client.cpp					\
 		$(SRC_DIR)/$(EXCEPT_DIR)/Exception.cpp				\
+		$(SRC_DIR)/$(PARSE_DIR)/Parse.cpp					\
 		$(SRC_DIR)/$(SERVER_DIR)/acceptConnection.cpp		\
 		$(SRC_DIR)/$(SERVER_DIR)/initServer.cpp				\
 		$(SRC_DIR)/$(SERVER_DIR)/processClient.cpp			\
@@ -27,6 +28,7 @@ INC_DIRS = 								\
 		-I$(INC_DIR)/					\
 		-I$(INC_DIR)/$(CLIENT_DIR)/		\
 		-I$(INC_DIR)/$(EXCEPT_DIR)/		\
+		-I$(INC_DIR)/$(PARSE_DIR)/		\
 		-I$(INC_DIR)/$(SERVER_DIR)/ 	\
 
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)

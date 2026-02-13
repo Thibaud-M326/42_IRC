@@ -2,11 +2,22 @@
 #include "Exception.hpp"
 #include "Client.hpp"
 #include "Irc.hpp"
+#include "Parse.hpp"
 #include <map>
 
 void	Server::executeClient(std::string rawCommands)
 {
-	
+	Parse parse(rawCommands);
+	std::vector<std::vector<std::string> > commands;
+
+	commands = parse.parseCommand();
+
+	std::vector<std::vector<std::string> >::iterator it = commands.begin();
+
+	for (it; it != commands.end(); it++)
+	{
+		(void)it;
+	}
 }
 
 void	Server::processClient()
