@@ -1,11 +1,14 @@
 #ifndef IRC_HPP
 # define IRC_HPP
 
-namespace irc_macro
+namespace ircMacro
 {
-	const char CRLF[] = "\r\n";
+	extern char	PASSWORD[];
+	const char	CRLF[] = "\r\n";
+	const bool	SUCCESS = 0;
+	const char	specialCharArray[] =
+		{ '[', '\\', ']', '^', '_',
+			'`', '{', '|', '}', '\0' };
 }
-using	irc_macro::CRLF;
-
 
 #endif

@@ -12,6 +12,7 @@ class Client
 		std::string	_StrMode;
 		int			_Ip_address;
 		int			_Fd;
+		bool		_isRegistred;
 
 		std::string _Cbuffer;
 
@@ -29,6 +30,7 @@ class Client
 		int			getIpAddress() const;
 		int			getFd() const;
 		std::string getBuffer() const;
+		bool		getIsRegistred() const;
 
 		/* setters */
 		void	setPrefix();
@@ -38,6 +40,7 @@ class Client
 		void	setIpAddress(int& Ip_address);
 		void	setFd(int Fd);
 		void	setBuffer(std::string buffer);
+		void	setIsRegistred();
 
 		void	appendRawData(const char* readBuffer, int readSize);
 };
