@@ -16,10 +16,10 @@ Server::Server(std::string port, std::string password)
 	_client_sock_addr_len(sizeof _client_sock_addr),
 	_nfds(0),
 	_buffer(),
-	_client(),
+	_client(NULL),
 	_clients()
 {
-	std::cout << "Server constructor called" << std::endl;	
+	std::cout << "Server constructor called" << std::endl;
 }
 
 Server::~Server()

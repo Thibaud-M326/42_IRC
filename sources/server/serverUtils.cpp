@@ -17,5 +17,5 @@ void	Server::printClients()
 
 void	Server::findClient()
 {
-	_client = _clients[_client_socket_fd];
+	_client = &_clients[_client_socket_fd];
 }

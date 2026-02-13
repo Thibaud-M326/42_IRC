@@ -31,9 +31,9 @@ void Server::readClient(int event_index)
 	{
 		findClient();
 
-		_client.appendRawData(_buffer, readSize);
+		_client->appendRawData(_buffer, readSize);
 
-		std::cout << "_client.getFd()" << _client.getFd() << "_client.getBuffer() : " << _client.getBuffer() << std::endl;
+		std::cout << "_client.getFd()" << _client->getFd() << "_client.getBuffer() : " << _client->getBuffer() << std::endl;
 	}
 
 	//client disconnected
