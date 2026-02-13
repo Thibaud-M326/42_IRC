@@ -1,6 +1,8 @@
 #include "CommandFactory.hpp"
 #include "PrivMsgCommand.hpp"
 #include "NickCommand.hpp"
+#include "PassCommand.hpp"
+#include "UserCommand.hpp"
 #include "InviteCommand.hpp"
 #include "TopicCommand.hpp"
 #include "ModeCommand.hpp"
@@ -10,62 +12,74 @@
 #include "JoinCommand.hpp"
 #include "CommandFactory.hpp"
 
-static ACommand*	createPrivMsg(std::vector<std::string>& commands)
-{
-	return new PrivMsgCommand(commands);
-}
+// static ACommand*	createPrivMsg(std::vector<std::string>& commands)
+// {
+// 	return new PrivMsgCommand(commands);
+// }
 
 static ACommand*	createNick(std::vector<std::string>& commands)
 {
 	return new NickCommand(commands);
 }
 
-static ACommand*	createInvite(std::vector<std::string>& commands)
+static ACommand*	createPass(std::vector<std::string>& commands)
 {
-	return new InviteCommand(commands);
+	return new PassCommand(commands);
 }
 
-static ACommand*	createTopic(std::vector<std::string>& commands)
+static ACommand*	createUser(std::vector<std::string>& commands)
 {
-	return new TopicCommand(commands);
+	return new UserCommand(commands);
 }
 
-static ACommand*	createMode(std::vector<std::string>& commands)
-{
-	return new ModeCommand(commands);
-}
+// static ACommand*	createInvite(std::vector<std::string>& commands)
+// {
+// 	return new InviteCommand(commands);
+// }
 
-static ACommand*	createKick(std::vector<std::string>& commands)
-{
-	return new KickCommand(commands);
-}
+// static ACommand*	createTopic(std::vector<std::string>& commands)
+// {
+// 	return new TopicCommand(commands);
+// }
 
-static ACommand*	createOper(std::vector<std::string>& commands)
-{
-	return new OperCommand(commands);
-}
+// static ACommand*	createMode(std::vector<std::string>& commands)
+// {
+// 	return new ModeCommand(commands);
+// }
 
-static ACommand*	createList(std::vector<std::string>& commands)
-{
-	return new ListCommand(commands);
-}
+// static ACommand*	createKick(std::vector<std::string>& commands)
+// {
+// 	return new KickCommand(commands);
+// }
 
-static ACommand*	createJoin(std::vector<std::string>& commands)
-{
-	return new JoinCommand(commands);
-}
+// static ACommand*	createOper(std::vector<std::string>& commands)
+// {
+// 	return new OperCommand(commands);
+// }
+
+// static ACommand*	createList(std::vector<std::string>& commands)
+// {
+// 	return new ListCommand(commands);
+// }
+
+// static ACommand*	createJoin(std::vector<std::string>& commands)
+// {
+// 	return new JoinCommand(commands);
+// }
 
 CommandFactory::CommandFactory()
 {
-	_registry["PRIVMSG"] = &createPrivMsg;
+	// _registry["PRIVMSG"] = &createPrivMsg;
 	_registry["NICK"] = &createNick;
-	_registry["INVITE"] = &createInvite;
-	_registry["TOPIC"] = &createTopic;
-	_registry["MODE"] = &createMode;
-	_registry["KICK"] = &createKick;
-	_registry["OPER"] = &createOper;
-	_registry["LIST"] = &createList;
-	_registry["JOIN"] = &createJoin;
+	_registry["PASS"] = &createPass;
+	_registry["USER"] = &createUser;
+	// _registry["INVITE"] = &createInvite;
+	// _registry["TOPIC"] = &createTopic;
+	// _registry["MODE"] = &createMode;
+	// _registry["KICK"] = &createKick;
+	// _registry["OPER"] = &createOper;
+	// _registry["LIST"] = &createList;
+	// _registry["JOIN"] = &createJoin;
 }
 
 ACommand*	CommandFactory::createCommand(std::vector<std::string>& params)

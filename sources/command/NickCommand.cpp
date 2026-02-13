@@ -44,7 +44,7 @@ std::string	NickCommand::ExecuteCommand(Client& target, std::map<int, Client>& C
 {
 	(void)ChannelArray;
 	setReplyArray(target, _CommandArray[1]);
-	if (!target.getIsRegistred())
+	if (!target.getIsRegistered())
 		return (_replyArray[notRegistered]);
 
 	size_t	replyCase = isValidNickname(ClientArray);

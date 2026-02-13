@@ -5,9 +5,9 @@
 
 typedef enum e_PassEnum
 {
-	needMoreParams = 0,
-	alreadyRegistred = 1,
-	passwdMissmatch = 2
+	passNeedMoreParams = 0,
+	passAlreadyRegistred = 1,
+	passPasswdMissmatch = 2
 
 }	t_PassEnum;
 

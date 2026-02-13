@@ -48,10 +48,10 @@ std::string	UserCommand::ExecuteCommand(Client& target, std::map<int, Client>& C
 	setReplyArray(target, "", 0);
 	
 	if (!isValidParams())
-		return _replyArray[needMoreParams];
+		return _replyArray[userNeedMoreParams];
 
 	if (!target.getUsername().empty())
-		return _replyArray[alreadyRegistred];
+		return _replyArray[userAlreadyRegistred];
 
 	size_t	i = 0;
 

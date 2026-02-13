@@ -1,4 +1,5 @@
 #include "PassCommand.hpp"
+#include "Irc.hpp"
 
 // - PASS - used to set a 'connection password'.
 // 	The optional password can and MUST be set before any attempt to register
@@ -23,12 +24,12 @@ std::string	PassCommand::ExecuteCommand(Client& target, std::map<int, Client>& C
 	(void)ChannelArray;
 	setReplyArray(target);
 	if (_CommandArray.size() == 1 || _CommandArray[1].empty())
-		return _replyArray[needMoreParams];
-	if (target.getIsRegistred())
-		return _replyArray[alreadyRegistred];
+		return _replyArray[passNeedMoreParams];
+	if (target.getIsRegistered())
+		return _replyArray[passAlreadyRegistred];
 	if (_CommandArray[1] != ircMacro::PASSWORD)
-		return _replyArray[passwdMissmatch];
-	target.setIsRegistred();
+		return _replyArray[passPasswdMissmatch];
+	target.setIsRegistered();
 	return "";
 }
 

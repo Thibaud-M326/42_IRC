@@ -11,9 +11,7 @@ namespace ircMacro
 	const char BOLD_PURPLE[] = "\e[1;35m";
 	const char BOLD_CYAN[] = "\e[1;36m";
 	const char STOP_COLOR[] = "\e[0m";
-
 	extern char	PASSWORD[];
-	const char	CRLF[] = "\r\n";
 	const bool	SUCCESS = 0;
 	const char	specialCharArray[] =
 		{ '[', '\\', ']', '^', '_',

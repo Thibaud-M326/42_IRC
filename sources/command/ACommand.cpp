@@ -1,6 +1,6 @@
 #include "ACommand.hpp"
 #include "Irc.hpp"
-ACommand::ACommand(std::vector<std::string>& params, std::string& password): _CommandArray(params), _password(password) {}
+ACommand::ACommand(std::vector<std::string>& params): _CommandArray(params) {}
 
 ACommand::~ACommand() {}
 
