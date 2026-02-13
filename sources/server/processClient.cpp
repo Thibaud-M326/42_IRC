@@ -1,22 +1,31 @@
 #include "Server.hpp"
 #include "Exception.hpp"
 #include "Client.hpp"
+#include "Irc.hpp"
 #include <map>
 
-//on envoi la commande que si on a clrf a la fin du raw data et qu'on est a
-//la fin de la string
+void	Server::executeClient(std::string rawCommands)
+{
+	
+}
+
 void	Server::processClient()
 {
 	findClient();
 	
 	std::string clrf = "\r\n";
 	std::string clientBuf = _client->getBuffer();
+	std::size_t found;
+	std::string rawCommands;
+	std::string afterLastClrf;
 
-	std::size_t found = clientBuf.rfind(clrf);
-
+	found = clientBuf.rfind(clrf);
 	if (found!=std::string::npos)
-		std::cout << 
+	{
+		rawCommands = clientBuf.substr(0, found);
+		afterLastClrf = clientBuf.substr(found + clrf.length());
 
-
-	std::cout << "_client.getFd() " << _client->getFd() << " _client.getBuffer() : \n" << _client->getBuffer();
+		if (afterLastClrf.empty())
+			executeClient(rawCommands);
+	}
 }

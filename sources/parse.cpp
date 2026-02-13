@@ -10,8 +10,6 @@
 #define BOLD_CYAN "\e[1;36m"
 #define STOP_COLOR "\e[0m"
 
-
-
 std::vector<std::vector<std::string> >	parseCommand(std::string raw_value)
 {
 	std::vector<std::vector<std::string> > result;
@@ -68,8 +66,8 @@ void	display_vec(std::vector<std::vector<std::string> > val)
 	}
 }
 
-int	main()
-{
-	display_vec(parseCommand("JOIN chanel\r\nQUIT chan\r\n PRIVMSG user :coucou ca va ?\r\n"));
-	return 0;
-}
+// int	main()
+// {
+// 	display_vec(parseCommand("JOIN chanel\r\nQUIT chan\r\n PRIVMSG user :coucou ca va ?\r\n"));
+// 	return 0;
+// }

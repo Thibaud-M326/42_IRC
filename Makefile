@@ -1,6 +1,5 @@
 CPP = c++
 CPPFLAGS = -g3 -Wall -Wextra -Werror -MMD -MP -std=c++98
-# CPPFLAGS = -g3 -Wall -Wextra -MMD -MP -std=c++98
 NAME = ircserv 
 
 OBJ_DIR = ./.obj
@@ -13,6 +12,7 @@ SERVER_DIR = server
 
 SRC =														\
 		$(SRC_DIR)/main.cpp									\
+		$(SRC_DIR)/parse.cpp								\
 		$(SRC_DIR)/$(CLIENT_DIR)/Client.cpp					\
 		$(SRC_DIR)/$(EXCEPT_DIR)/Exception.cpp				\
 		$(SRC_DIR)/$(SERVER_DIR)/acceptConnection.cpp		\
@@ -24,6 +24,7 @@ SRC =														\
 		$(SRC_DIR)/$(SERVER_DIR)/serverUtils.cpp			\
 
 INC_DIRS = 								\
+		-I$(INC_DIR)/					\
 		-I$(INC_DIR)/$(CLIENT_DIR)/		\
 		-I$(INC_DIR)/$(EXCEPT_DIR)/		\
 		-I$(INC_DIR)/$(SERVER_DIR)/ 	\

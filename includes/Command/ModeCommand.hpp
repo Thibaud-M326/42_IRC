@@ -7,7 +7,7 @@ class ModeCommand : public ACommand
 {
 	public:
 		ModeCommand(std::vector<std::string>& params);
-		std::string		ExecuteCommand(std::map<int, Client> ClientArray, std::vector<Channel> ChannelArray);
+		std::string		ExecuteCommand(Client& target, std::map<int, Client>& ClientArray, std::vector<Channel>& ChannelArray);
 };
 
 #endif

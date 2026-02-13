@@ -12,9 +12,11 @@ typedef enum e_NickEnum
 
 class NickCommand : public ACommand
 {
+	private:
+		const std::string	replyArray[4];
 	public:
 		NickCommand(std::vector<std::string>& params);
-		std::string		ExecuteCommand(std::map<int, Client> ClientArray, std::vector<Channel> ChannelArray);
+		std::string		ExecuteCommand(Client& target, std::map<int, Client>& ClientArray, std::vector<Channel>& ChannelArray);
 };
 
 #endif

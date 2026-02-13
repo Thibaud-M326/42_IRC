@@ -14,14 +14,8 @@
 
 #define MAX_EVENT 10
 #define PORT 6667
-#define READ_BUFFER_SIZE 3
+#define READ_BUFFER_SIZE 1024
 
-//je veut qu'en instanciant un server, mon serveur se mette a ecouter sur le port et le
-//mdp qu'on m'a donnee
-
-//la copie de serveur est interdite
-
-//la destruction de mon serveur vas fermer l ecoute et se debarasser de tous les fd enregistre
 class Server {
 
 	private:
@@ -55,6 +49,7 @@ class Server {
 		void	printClients();
 		void	readClient(int event_index);
 		void	processClient();
+		void	executeClient(std::string rawCommands);
 		void	findClient();
 
 	public :
