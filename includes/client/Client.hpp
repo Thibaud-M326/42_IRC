@@ -30,7 +30,11 @@ class Client
 		int			getIpAddress() const;
 		int			getFd() const;
 		std::string getBuffer() const;
+<<<<<<< HEAD
 		bool		getIsRegistered() const;
+=======
+		bool		getIsRegistred() const;
+>>>>>>> asinsard
 
 		/* setters */
 		void	setPrefix();
@@ -40,7 +44,11 @@ class Client
 		void	setIpAddress(int& Ip_address);
 		void	setFd(int Fd);
 		void	setBuffer(std::string buffer);
+<<<<<<< HEAD
 		void	setIsRegistered();
+=======
+		void	setIsRegistred();
+>>>>>>> asinsard
 
 		void	appendRawData(const char* readBuffer);
 };

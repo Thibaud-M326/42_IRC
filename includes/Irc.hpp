@@ -1,7 +1,7 @@
 #ifndef IRC_HPP
 # define IRC_HPP
 
-namespace irc_macro
+namespace ircMacro
 {
 	const char CRLF[] = "\r\n";
 	const char BOLD_GREEN[] = "\e[1;32m";
@@ -11,14 +11,22 @@ namespace irc_macro
 	const char BOLD_PURPLE[] = "\e[1;35m";
 	const char BOLD_CYAN[] = "\e[1;36m";
 	const char STOP_COLOR[] = "\e[0m";
+
+	extern char	PASSWORD[];
+	const char	CRLF[] = "\r\n";
+	const bool	SUCCESS = 0;
+	const char	specialCharArray[] =
+		{ '[', '\\', ']', '^', '_',
+			'`', '{', '|', '}', '\0' };
 }
-using	irc_macro::CRLF;
-using	irc_macro::BOLD_GREEN;
-using	irc_macro::BOLD_RED;
-using	irc_macro::BOLD_BLUE;
-using	irc_macro::BOLD_YELLOW;
-using	irc_macro::BOLD_PURPLE;
-using	irc_macro::BOLD_CYAN;
-using	irc_macro::STOP_COLOR;
+
+using	ircMacro::CRLF;
+using	ircMacro::BOLD_GREEN;
+using	ircMacro::BOLD_RED;
+using	ircMacro::BOLD_BLUE;
+using	ircMacro::BOLD_YELLOW;
+using	ircMacro::BOLD_PURPLE;
+using	ircMacro::BOLD_CYAN;
+using	ircMacro::STOP_COLOR;
 
 #endif
