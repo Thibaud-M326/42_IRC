@@ -7,6 +7,7 @@ typedef enum e_UserEnum
 {
 	userNeedMoreParams = 1,
 	userAlreadyRegistred = 2,
+	userNotRegistered = 3
 }	t_UserEnum;
 
 class UserCommand : public ACommand

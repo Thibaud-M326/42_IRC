@@ -16,11 +16,16 @@ void	Server::executeClient(std::string rawCommands)
 	commands = parse.parseCommand();
 	std::vector<Channel>	chan;
 
+	parse.display_vec(commands);
 	for (std::vector<std::vector<std::string> >::iterator it = commands.begin(); it != commands.end(); it++)
 	{
 		ACommand *cmd = factory.createCommand(*it);
-		cmd->ExecuteCommand(*_client, _clients, chan);
-		delete cmd;
+		if (cmd)
+		{
+			std::string	reply = cmd->ExecuteCommand(*_client, _clients, chan);
+			std::cout << reply << std::endl;
+			delete cmd;
+		}
 	}
 }
 

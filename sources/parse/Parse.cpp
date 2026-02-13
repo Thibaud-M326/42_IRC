@@ -1,4 +1,5 @@
 #include "Parse.hpp"
+#include "Irc.hpp"
 
 Parse::Parse(std::string rawValue)
 :
@@ -48,24 +49,20 @@ std::vector<std::vector<std::string> >	Parse::parseCommand()
 	return result;
 }
 
-// void	Parse::display_vec(std::vector<std::vector<std::string> > val)
-// {
-// 	for (size_t i = 0; i < val.size(); i++)
-// 	{
-// 		if (val.size() == 1 || i == val.size() / 2)
-// 			std::cout << irc_macro::BOLD_BLUE "VEC --->" << BOLD_CYAN << "|Sub Vector --->" STOP_COLOR;
-// 		else
-// 			std::cout << std::setw(15) << irc_macro::BOLD_CYAN << "|Sub Vector --->";
-// 		for (size_t j = 0; j < val[i].size(); j++)
-// 		{
-// 			std::cout << irc_macro::BOLD_YELLOW "[" << val[i][j] << "]" STOP_COLOR;
-// 		}
-// 		std::cout << '\n';
-// 	}
-// }
+void	Parse::display_vec(std::vector<std::vector<std::string> > val)
+{
+	for (size_t i = 0; i < val.size(); i++)
+	{
+		if (val.size() == 1 || i == val.size() / 2)
+			std::cout << ircMacro::BOLD_BLUE << "VEC --->" << ircMacro::BOLD_CYAN << "|Sub Vector --->" << ircMacro::STOP_COLOR;
 
-// int	main()
-// {
-// 	display_vec(parseCommand("JOIN chanel\r\nQUIT chan\r\n PRIVMSG user :coucou ca va ?\r\n"));
-// 	return 0;
-// }
+		else
+			std::cout << std::setw(15) << ircMacro::BOLD_CYAN << "|Sub Vector --->";
+
+		for (size_t j = 0; j < val[i].size(); j++)
+		{
+			std::cout << ircMacro::BOLD_YELLOW << "[" << val[i][j] << "]" << ircMacro::STOP_COLOR;
+		}
+		std::cout << '\n';
+	}
+}

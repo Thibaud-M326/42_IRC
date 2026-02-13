@@ -33,6 +33,8 @@ unsigned int	NickCommand::isValidNickname(std::map<int, Client>& ClientArray)
 
 void	NickCommand::setReplyArray(Client& target, std::string& badNickname)
 {
+	if (_replyArray.size() > 1)
+		_replyArray.clear();
 	_replyArray.push_back(RPL::NICK(target));
 	_replyArray.push_back(ERR::NONICKNAMEGIVEN(target));
 	_replyArray.push_back(ERR::ERRONEUSNICKNAME(target, badNickname));
@@ -43,9 +45,6 @@ void	NickCommand::setReplyArray(Client& target, std::string& badNickname)
 std::string	NickCommand::ExecuteCommand(Client& target, std::map<int, Client>& ClientArray, std::vector<Channel>& ChannelArray)
 {
 	(void)ChannelArray;
-	setReplyArray(target, _CommandArray[1]);
-	if (!target.getIsRegistered())
-		return (_replyArray[notRegistered]);
 
 	size_t	replyCase = isValidNickname(ClientArray);
 
@@ -53,6 +52,10 @@ std::string	NickCommand::ExecuteCommand(Client& target, std::map<int, Client>& C
 		target.setNickname(_CommandArray[1]);
 
 	setReplyArray(target, _CommandArray[1]);
+
+	if (!target.getIsRegistered())
+		return (_replyArray[notRegistered]);
+
 
 	return (_replyArray[replyCase]);
 }

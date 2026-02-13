@@ -11,20 +11,12 @@ namespace ircMacro
 	const char BOLD_PURPLE[] = "\e[1;35m";
 	const char BOLD_CYAN[] = "\e[1;36m";
 	const char STOP_COLOR[] = "\e[0m";
-	extern char	PASSWORD[];
+	const char	PASSWORD[] = "password";
 	const bool	SUCCESS = 0;
 	const char	specialCharArray[] =
 		{ '[', '\\', ']', '^', '_',
 			'`', '{', '|', '}', '\0' };
 }
 
-using	ircMacro::CRLF;
-using	ircMacro::BOLD_GREEN;
-using	ircMacro::BOLD_RED;
-using	ircMacro::BOLD_BLUE;
-using	ircMacro::BOLD_YELLOW;
-using	ircMacro::BOLD_PURPLE;
-using	ircMacro::BOLD_CYAN;
-using	ircMacro::STOP_COLOR;
 
 #endif

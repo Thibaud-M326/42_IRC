@@ -16,7 +16,7 @@ class Parse {
 		~Parse();
 
 		std::vector<std::vector<std::string> >	parseCommand();
-		// void	display_vec(std::vector<std::vector<std::string> > val);
+		void	display_vec(std::vector<std::vector<std::string> > val);
 };
 
 #endif

@@ -1,11 +1,12 @@
 #include "Server.hpp"
 #include <iostream>
+#include "Irc.hpp"
 
 int main()
 {
 	try 
 	{
-		Server serv("6667", "password");
+		Server serv("6667", ircMacro::PASSWORD);
 
 		serv.init_server_socket();
 		serv.init_epoll();

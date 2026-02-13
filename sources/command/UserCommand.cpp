@@ -20,17 +20,21 @@ UserCommand::UserCommand(std::vector<std::string>& params): ACommand(params) {}
 
 void	UserCommand::setReplyArray(Client& target, std::string realName, int index)
 {
+	if (_replyArray.size() > 1)
+		_replyArray.clear();
+
 	std::ostringstream	oss;
 	oss << index;
 
 	_replyArray.push_back(RPL::USER(target, realName, oss.str()));
 	_replyArray.push_back(ERR::NEEDMOREPARAMS(target, "USER"));
 	_replyArray.push_back(ERR::ALREADYREGISTRED(target));
+	_replyArray.push_back(ERR::NOTREGISTERED(target));
 }
 
 bool	UserCommand::isValidParams()
 {
-	if (_CommandArray.size() != 3 || _CommandArray[1].size() > 32)
+	if (_CommandArray.size() != 5 || _CommandArray[1].size() > 32)
 		return false;
 	for (size_t i = 0; i < _CommandArray.size(); i++)
 	{
@@ -47,6 +51,9 @@ std::string	UserCommand::ExecuteCommand(Client& target, std::map<int, Client>& C
 
 	setReplyArray(target, "", 0);
 	
+	if (!target.getIsRegistered())
+		return _replyArray[userNotRegistered];
+
 	if (!isValidParams())
 		return _replyArray[userNeedMoreParams];
 
@@ -61,7 +68,11 @@ std::string	UserCommand::ExecuteCommand(Client& target, std::map<int, Client>& C
 			break ;
 		i++;
 	}
-	setReplyArray(target, _CommandArray[2], i);
+
+	target.setUsername(_CommandArray[1]);
+
+	setReplyArray(target, _CommandArray[4], i);
+
 	return _replyArray[ircMacro::SUCCESS];
 }
 
