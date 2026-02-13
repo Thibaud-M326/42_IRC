@@ -54,7 +54,7 @@ class Server {
 		void	addClient();
 		void	printClients();
 		void	readClient(int event_index);
-		void	processClient(int readSize);
+		void	processClient();
 		void	findClient();
 
 	public :

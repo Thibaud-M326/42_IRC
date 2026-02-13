@@ -105,7 +105,7 @@ void	Client::setBuffer(std::string buffer)
 	_Cbuffer = buffer;
 }
 
-void	Client::appendRawData(const char* readBuf, int readSize)
+void	Client::appendRawData(const char* readBuf)
 {
-	_Cbuffer.append(readBuf, readSize);
+	_Cbuffer.append(readBuf);
 }

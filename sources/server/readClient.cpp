@@ -19,6 +19,9 @@
 //3 ajouter au _buffer du client les data
 //4 parcourir ce buffer pour trouver un message (termine par clrf)
 //5 les message sont stocke dans une map du client_socket; message)
+
+
+//
 void Server::readClient(int event_index)
 {
 	int readSize;
@@ -30,23 +33,24 @@ void Server::readClient(int event_index)
 	while(0 < (readSize = read(_client_socket_fd, _buffer, sizeof(_buffer))))
 	{
 		findClient();
-
-		_client->appendRawData(_buffer, readSize);
-
-		std::cout << "_client.getFd()" << _client->getFd() << "_client.getBuffer() : " << _client->getBuffer() << std::endl;
+		_client->appendRawData(_buffer);
 	}
 
 	//client disconnected
 	if (readSize == 0)
 	{
-		//quand le client se deconnecte, il faut tuer l'instance dans la map
 		std::cout << "Client " << _client_socket_fd << " disconnected" << std::endl;
+		_clients.erase(_client_socket_fd);
 		close(_client_socket_fd);
 	}
 
-	//error occured
 	if (readSize == -1)
 	{
+		//packet read entierly
+		if (errno == EAGAIN)
+		{
+			processClient();
+		}
 		if (errno != EAGAIN)
 		{
 			close(_client_socket_fd);

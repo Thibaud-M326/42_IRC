@@ -39,7 +39,7 @@ class Client
 		void	setFd(int Fd);
 		void	setBuffer(std::string buffer);
 
-		void	appendRawData(const char* readBuffer, int readSize);
+		void	appendRawData(const char* readBuffer);
 };
 
 #endif
