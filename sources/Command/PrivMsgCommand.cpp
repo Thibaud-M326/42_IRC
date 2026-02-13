@@ -1,0 +1,10 @@
+#include "PrivMsgCommand.hpp"
+
+PrivMsgCommand::PrivMsgCommand(std::vector<std::string>& params): ACommand(params) {}
+
+std::string	PrivMsgCommand::ExecuteCommand(std::map<int, Client> ClientArray, std::vector<Channel> ChannelArray)
+{
+	(void)ClientArray;
+	(void)ChannelArray;
+	return ("");
+}
