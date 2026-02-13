@@ -14,7 +14,7 @@
 
 #define MAX_EVENT 10
 #define PORT 6667
-#define READ_BUFFER_SIZE 1024
+#define READ_BUFFER_SIZE 3
 
 //je veut qu'en instanciant un server, mon serveur se mette a ecouter sur le port et le
 //mdp qu'on m'a donnee
@@ -31,7 +31,7 @@ class Server {
 		int _serv_socket_fd;
 		sockaddr_in _serv_sock_addr;
 		socklen_t	_serv_sock_addr_len;
-		
+
 		int _epoll_fd;
 		epoll_event _events[MAX_EVENT];
 		epoll_event _ev;
@@ -45,7 +45,9 @@ class Server {
 
 		Client _client;
 		std::map<int, Client>	_clients;
-		
+
+		std::string _message;
+
 		int		set_nonblocking(int fd);
 		void	acceptConnection();
 		void	addClientToEpoll();
@@ -62,7 +64,6 @@ class Server {
 		void	init_server_socket();
 		void	init_epoll();
 		void	run();
-
 };
 
 #endif

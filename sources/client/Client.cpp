@@ -20,10 +20,10 @@ Client::Client(const int fd, int ip_address):
 	_StrMode(""),
 	_Ip_address(ip_address),
 	_Fd(fd),
-	_Cbuffer("") 
+	_Cbuffer("")
 {}
 
-Client::~Client() 
+Client::~Client()
 {
 	std::cout << "Client destructor called" << std::endl;
 }
@@ -107,7 +107,5 @@ void	Client::setBuffer(std::string buffer)
 
 void	Client::appendRawData(const char* readBuf, int readSize)
 {
-	(void)readSize;
-
-	_Cbuffer.append(readBuf);
+	_Cbuffer.append(readBuf, readSize);
 }
