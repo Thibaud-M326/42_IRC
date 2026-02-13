@@ -68,7 +68,7 @@ CommandFactory::CommandFactory()
 	_registry["JOIN"] = &createJoin;
 }
 
-ACommand*	CommandFactory::createCommand(std::vector<std::string >& params)
+ACommand*	CommandFactory::createCommand(std::vector<std::string>& params)
 {
 	std::map<std::string, CreateFunc>::iterator	it;
 
