@@ -8,6 +8,7 @@ Client::Client():
 	_StrMode(""),
 	_Ip_address(0),
 	_Fd(0),
+	_isRegistred(false),
 	_Cbuffer("")
 {
 	std::cout << "Client constructor called" << std::endl;
@@ -20,6 +21,7 @@ Client::Client(const int fd, int ip_address):
 	_StrMode(""),
 	_Ip_address(ip_address),
 	_Fd(fd),
+	_isRegistred(false),
 	_Cbuffer("")
 {}
 
@@ -61,6 +63,11 @@ int	Client::getFd() const
 std::string	Client::getBuffer() const
 {
 	return _Cbuffer;
+}
+
+bool	Client::getIsRegistred() const
+{
+	return _isRegistred;
 }
 
 void	Client::setPrefix()
@@ -109,3 +116,7 @@ void	Client::appendRawData(const char* readBuf, int readSize)
 {
 	_Cbuffer.append(readBuf, readSize);
 }
+
+void	Client::setIsRegistred()
+{
+	_isRegistred = true; }

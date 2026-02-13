@@ -37,13 +37,13 @@ std::vector<std::vector<std::string> >	parseCommand(std::string raw_value)
 			size_t word_end = raw_value.find(' ', word_start);
 			if (word_end == std::string::npos || word_end > end_line)
 				word_end = end_line;
-			if (raw_value[word_start] != ':')
-				words.push_back(raw_value.substr(word_start, word_end - word_start));
-			else
+			if ((words.size() > 0 && words[0] == "PASS") || raw_value[word_start] == ':')
 			{
 				word_end = raw_value.find("\r\n", word_start);
 				words.push_back(raw_value.substr(word_start, word_end  - word_start));
 			}
+			else
+				words.push_back(raw_value.substr(word_start, word_end - word_start));
 			word_start = word_end;
 		}
 		result.push_back(words);
@@ -70,6 +70,6 @@ void	display_vec(std::vector<std::vector<std::string> > val)
 
 int	main()
 {
-	display_vec(parseCommand("JOIN chanel\r\nQUIT chan\r\n PRIVMSG user :coucou ca va ?\r\n"));
+	display_vec(parseCommand("PASS aklejfa akjefak sdh      dsd\r\nQUIT chan\r\n PRIVMSG user :coucou ca va ?\r\n"));
 	return 0;
 }
