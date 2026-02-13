@@ -3,20 +3,24 @@
 #include "Client.hpp"
 #include "Irc.hpp"
 #include "Parse.hpp"
+#include "CommandFactory.hpp"
 #include <map>
 
 void	Server::executeClient(std::string rawCommands)
 {
 	Parse parse(rawCommands);
 	std::vector<std::vector<std::string> > commands;
+	CommandFactory factory;
+
 
 	commands = parse.parseCommand();
+	std::vector<Channel>	chan;
 
-	std::vector<std::vector<std::string> >::iterator it = commands.begin();
-
-	for (it; it != commands.end(); it++)
+	for (std::vector<std::vector<std::string> >::iterator it = commands.begin(); it != commands.end(); it++)
 	{
-		(void)it;
+		ACommand *cmd = factory.createCommand(*it);
+		cmd->ExecuteCommand(*_client, _clients, chan);
+		delete cmd;
 	}
 }
 
