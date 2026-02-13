@@ -68,3 +68,8 @@ void	display_vec(std::vector<std::vector<std::string> > val)
 	}
 }
 
+int	main()
+{
+	display_vec(parseCommand("JOIN chanel\r\nQUIT chan\r\n PRIVMSG user :coucou ca va ?\r\n"));
+	return 0;
+}

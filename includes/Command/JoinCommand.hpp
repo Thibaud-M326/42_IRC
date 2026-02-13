@@ -6,7 +6,7 @@
 class JoinCommand : public ACommand
 {
 	public:
-		JoinCommand(std::vector<std::vector<std::string> >& params);
+		JoinCommand(std::vector<std::string>& params);
 		std::string		ExecuteCommand(std::map<int, Client> ClientArray, std::vector<Channel> ChannelArray);
 };
 

@@ -6,7 +6,7 @@
 class PrivMsgCommand : public ACommand
 {
 	public:
-		PrivMsgCommand(std::vector<std::vector<std::string> >& params);
+		PrivMsgCommand(std::vector<std::string>& params);
 		std::string		ExecuteCommand(std::map<int, Client> ClientArray, std::vector<Channel> ChannelArray);
 };
 

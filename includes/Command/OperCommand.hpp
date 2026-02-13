@@ -6,7 +6,7 @@
 class OperCommand : public ACommand
 {
 	public:
-		OperCommand(std::vector<std::vector<std::string> >& params);
+		OperCommand(std::vector<std::string>& params);
 		std::string		ExecuteCommand(std::map<int, Client> ClientArray, std::vector<Channel> ChannelArray);
 };
 

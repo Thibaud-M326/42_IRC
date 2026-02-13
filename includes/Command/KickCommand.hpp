@@ -6,7 +6,7 @@
 class KickCommand : public ACommand
 {
 	public:
-		KickCommand(std::vector<std::vector<std::string> >& params);
+		KickCommand(std::vector<std::string>& params);
 		std::string		ExecuteCommand(std::map<int, Client> ClientArray, std::vector<Channel> ChannelArray);
 };
 

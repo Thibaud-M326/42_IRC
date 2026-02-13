@@ -4,7 +4,7 @@
 #include <map>
 # include "ACommand.hpp"
 
-typedef ACommand* (*CreateFunc)(std::vector<std::vector<std::string> >&);
+typedef ACommand* (*CreateFunc)(std::vector<std::string>&);
 
 class CommandFactory
 {
@@ -13,7 +13,7 @@ class CommandFactory
 
 	public:
 		CommandFactory();
-		ACommand* createCommand(std::vector<std::vector<std::string> >& params);
+		ACommand* createCommand(std::vector<std::string>& params);
 };
 
 #endif

@@ -6,7 +6,7 @@
 class InviteCommand : public ACommand
 {
 	public:
-		InviteCommand(std::vector<std::vector<std::string> >& params);
+		InviteCommand(std::vector<std::string>& params);
 		std::string		ExecuteCommand(std::map<int, Client> ClientArray, std::vector<Channel> ChannelArray);
 };
 

@@ -6,7 +6,7 @@
 class TopicCommand : public ACommand
 {
 	public:
-		TopicCommand(std::vector<std::vector<std::string> >& params);
+		TopicCommand(std::vector<std::string>& params);
 		std::string		ExecuteCommand(std::map<int, Client> ClientArray, std::vector<Channel> ChannelArray);
 };
 
