@@ -1,4 +1,6 @@
+#include "Error.hpp"
 #include "NickCommand.hpp"
+#include "Reply.hpp"
 
 // Parameters: <nickname>
 // Numeric Replies:

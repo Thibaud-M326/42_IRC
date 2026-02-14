@@ -1,8 +1,6 @@
 #include "Server.hpp"
-#include "Exception.hpp"
 #include "Client.hpp"
 #include <iostream>
-#include <map>
 
 void	Server::printClients()
 {

@@ -1,7 +1,7 @@
 #ifndef COMMANDFACTORY_HPP
 # define COMMANDFACTORY_HPP
 
-#include <map>
+# include <map>
 # include "ACommand.hpp"
 
 typedef ACommand* (*CreateFunc)(std::vector<std::string>&);

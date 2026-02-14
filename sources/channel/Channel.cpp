@@ -1,5 +1,4 @@
 #include "Channel.hpp"
-#include "Client.hpp"
 
 Channel::Channel() {}
 

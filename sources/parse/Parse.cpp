@@ -1,5 +1,7 @@
-#include "Parse.hpp"
+#include <iomanip>
+#include <iostream>
 #include "Irc.hpp"
+#include "Parse.hpp"
 
 Parse::Parse(std::string rawValue)
 :

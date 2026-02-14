@@ -1,3 +1,5 @@
+#include "Error.hpp"
+#include "Reply.hpp"
 #include "UserCommand.hpp"
 
 // -USER - is used at the beginning of connection to specify the username, hostname and realname of a new user.

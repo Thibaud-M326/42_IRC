@@ -4,7 +4,6 @@
 # include "Client.hpp"
 # include "Channel.hpp"
 # include "Irc.hpp"
-# include <vector>
 # include <sstream>
 
 namespace RPL

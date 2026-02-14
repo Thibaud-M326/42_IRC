@@ -1,12 +1,9 @@
-#include "Server.hpp"
-#include "Exception.hpp"
-#include "Client.hpp"
-#include <iostream>
-#include <errno.h>
 #include <fcntl.h>
+#include <iostream>
 #include <unistd.h>
-#include <sys/socket.h>
-#include <sys/epoll.h>
+#include "Client.hpp"
+#include "Exception.hpp"
+#include "Server.hpp"
 
 int	Server::set_nonblocking(int sockfd)
 {

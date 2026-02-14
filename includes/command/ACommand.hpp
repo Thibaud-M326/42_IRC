@@ -3,10 +3,10 @@
 
 # include <vector>
 # include <map>
-# include "Client.hpp"
-# include "Channel.hpp"
-# include "Reply.hpp"
-# include "Error.hpp"
+# include <string>
+
+class Client;
+class Channel;
 
 class ACommand
 {

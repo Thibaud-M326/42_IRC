@@ -1,12 +1,12 @@
 #ifndef EXCEPTION_HPP
 #define EXCEPTION_HPP
 
-#include <exception>
-#include <string>
-#include <cstring>
-#include <errno.h>
+# include <exception>
+# include <string>
+# include <cstring>
+# include <errno.h>
 
-#define ERR_MSG std::strerror(errno), __FILE__, __FUNCTION__, __LINE__
+# define ERR_MSG std::strerror(errno), __FILE__, __FUNCTION__, __LINE__
 
 //throw ExceptionPerror(ERR_MSG);
 class ExceptionPerror : public std::exception

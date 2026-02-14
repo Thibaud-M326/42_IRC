@@ -18,5 +18,4 @@ namespace ircMacro
 			'`', '{', '|', '}', '\0' };
 }
 
-
 #endif

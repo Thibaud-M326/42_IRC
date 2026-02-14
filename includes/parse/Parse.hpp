@@ -1,10 +1,8 @@
 #ifndef PARSE_HPP
 #define PARSE_HPP
 
-#include <vector>
-#include <iostream>
-#include <iomanip>
-#include "Irc.hpp"
+# include <vector>
+# include <string>
 
 class Parse {
 

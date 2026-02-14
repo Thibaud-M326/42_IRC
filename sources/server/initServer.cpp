@@ -1,10 +1,6 @@
+#include <iostream>
 #include "Server.hpp"
 #include "Exception.hpp"
-#include <iostream>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <sys/epoll.h>
 
 void Server::init_server_socket()
 {

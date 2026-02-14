@@ -1,9 +1,8 @@
-#include "Server.hpp"
-#include "Exception.hpp"
-#include "Client.hpp"
 #include <iostream>
-#include <errno.h>
 #include <unistd.h>
+#include "Client.hpp"
+#include "Exception.hpp"
+#include "Server.hpp"
 
 void Server::readClient(int event_index)
 {

@@ -1,5 +1,6 @@
 #include "Client.hpp"
 #include <sstream>
+#include <iostream>
 
 Client::Client():
 	_Prefix(""),

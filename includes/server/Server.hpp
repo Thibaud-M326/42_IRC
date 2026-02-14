@@ -1,19 +1,14 @@
 #ifndef SERVER_HPP
-#define SERVER_HPP
+# define SERVER_HPP
 
-#include "Exception.hpp"
+# include <string>
+# include <sys/epoll.h>
+# include <netinet/in.h>
+# include <map>
 
-#include <string>
-#include <sys/epoll.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <map>
-#include <fcntl.h>
-#include <unistd.h>
-
-#define MAX_EVENT 10
-#define PORT 6667
-#define READ_BUFFER_SIZE 1024
+# define MAX_EVENT 10
+# define PORT 6667
+# define READ_BUFFER_SIZE 1024
 
 class Client;
 class Channel;

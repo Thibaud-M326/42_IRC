@@ -1,5 +1,5 @@
+#include "Error.hpp"
 #include "PassCommand.hpp"
-#include "Irc.hpp"
 
 // - PASS - used to set a 'connection password'.
 // 	The optional password can and MUST be set before any attempt to register

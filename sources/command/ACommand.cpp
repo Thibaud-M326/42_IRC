@@ -1,5 +1,6 @@
 #include "ACommand.hpp"
 #include "Irc.hpp"
+
 ACommand::ACommand(std::vector<std::string>& params): _CommandArray(params) {}
 
 ACommand::~ACommand() {}
