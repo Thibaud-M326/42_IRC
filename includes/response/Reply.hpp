@@ -47,7 +47,7 @@ namespace RPL
 
 	inline std::string	UMODEIS(Client& target)
 	{
-		return (target.getPrefix() + "221 " +  target.get_StrMode() + ircMacro::CRLF);
+		return (target.getPrefix() + "221 " +  target.getMode() + ircMacro::CRLF);
 	}
 
 	inline std::string	CHANNELMODEIS(Client& target, Channel& chan)

@@ -3,28 +3,25 @@
 #include <iostream>
 
 Client::Client():
-	_Prefix(""),
-	_Username(""),
-	_Nickname(""),
-	_StrMode(""),
-	_Ip_address(0),
-	_Fd(0),
+	_prefix(""),
+	_username(""),
+	_nickname(""),
+	_ip_address(0),
+	_fd(0),
 	_isRegistered(false),
-	_Cbuffer("")
+	_cbuffer("")
 {
 	std::cout << "Client constructor called" << std::endl;
 }
 
 Client::Client(const int fd, int ip_address):
-	_Prefix(""),
-	_Username(""),
-	_Nickname(""),
-	_StrMode(""),
-	_Ip_address(ip_address),
-	_Fd(fd),
+	_prefix(""),
+	_username(""),
+	_nickname(""),
+	_ip_address(ip_address),
+	_fd(fd),
 	_isRegistered(false),
-	_Cbuffer("")
-{}
+	_cbuffer("") {}
 
 Client::~Client()
 {
@@ -33,37 +30,32 @@ Client::~Client()
 
 std::string	Client::getPrefix() const
 {
-	return _Prefix;
+	return _prefix;
 }
 
 std::string	Client::getUsername() const
 {
-	return _Username;
+	return _username;
 }
 
 std::string	Client::getNickname() const
 {
-	return _Nickname;
-}
-
-std::string	Client::get_StrMode() const
-{
-	return _StrMode;
+	return _nickname;
 }
 
 int	Client::getIpAddress() const
 {
-	return _Ip_address;
+	return _ip_address;
 }
 
 int	Client::getFd() const
 {
-	return _Fd;
+	return _fd;
 }
 
 std::string	Client::getBuffer() const
 {
-	return _Cbuffer;
+	return _cbuffer;
 }
 
 bool	Client::getIsRegistered() const
@@ -71,53 +63,91 @@ bool	Client::getIsRegistered() const
 	return _isRegistered;
 }
 
+std::string	Client::getMode() const
+{
+	if (!_mode.count())
+		return "";
+
+	std::ostringstream	oss;
+
+	oss << '+';
+	for (size_t i = _mode.size() -1; i > 0; i--)
+	{
+		if (_mode[i])
+			oss << ircMacro::modeCharArray[i];
+	}
+	return oss.str();
+}
+
+std::string	Client::getModeParams() const
+{
+	std::ostringstream	oss;
+	for (size_t i = 0; i < _modeParams.size(); i++)
+	{
+		oss << _modeParams[i];
+		if (!_modeParams[i].empty() && i != _modeParams.size() - 1)
+			oss << ' ';
+	}
+	return oss.str();
+}
+
 void	Client::setPrefix()
 {
-	if (_Username != "" && _Nickname != "")
+	if (!_username.empty() && !_nickname.empty())
 	{
 		std::ostringstream	oss;
-		oss << _Nickname << "!" << _Username << "@" << _Ip_address << " ";
-		_Prefix = oss.str();
+		oss << _nickname << "!" << _username << "@" << _ip_address << " ";
+		_prefix = oss.str();
 	}
 }
 
-void	Client::setUsername(std::string& Username)
+void	Client::setUsername(std::string& username)
 {
-	_Username = Username;
+	_username = username;
 	setPrefix();
 }
 
-void	Client::setNickname(std::string& Nickname)
+void	Client::setNickname(std::string& nickname)
 {
-	_Nickname = Nickname;
+	_nickname = nickname;
 	setPrefix();
 }
 
-void	Client::set_StrMode(std::string& StrMode)
+void	Client::setIpAddress(int& ip_address)
 {
-	_StrMode = StrMode;
+	_ip_address = ip_address;
 }
 
-void	Client::setIpAddress(int& Ip_address)
+void	Client::setFd(int fd)
 {
-	_Ip_address = Ip_address;
-}
-
-void	Client::setFd(int Fd)
-{
-	_Fd = Fd;
+	_fd = fd;
 }
 
 void	Client::setBuffer(std::string buffer)
 {
-	_Cbuffer = buffer;
+	_cbuffer = buffer;
 }
 
 void	Client::appendRawData(const char* readBuf)
 {
-	_Cbuffer.append(readBuf);
+	_cbuffer.append(readBuf);
 }
 
 void	Client::setIsRegistered()
 {
-	_isRegistered = true; }
+	_isRegistered = true;
+}
+
+void	Client::setMode(t_modeEnum index, bool value)
+{
+	if (value)
+		_mode.set(index);
+	else
+		_mode.reset(index);
+}
+
+void	Client::setModeParams(std::string& params, t_modeEnum index)
+{
+	_modeParams[index] = params;
+}
+
