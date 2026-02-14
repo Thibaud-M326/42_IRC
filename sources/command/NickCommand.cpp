@@ -8,55 +8,48 @@
 
 NickCommand::NickCommand(std::vector<std::string>& params): ACommand(params) {}
 
-unsigned int	NickCommand::isValidNickname(std::map<int, Client>& ClientArray)
+std::string	NickCommand::isValidNickname(Client& target, std::map<int, Client*>& ClientArray)
 {
 	if (_CommandArray.size() == 1 || _CommandArray[1].size() == 0)
-		return noNickNameGiven;
-	for (std::map<int, Client>::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
+		return ERR::NONICKNAMEGIVEN(target);
+
+
+	if (_CommandArray.size() != 2 || _CommandArray[1].size() > 9)
+		return ERR::ERRONEUSNICKNAME(target, _CommandArray[1]);
+
+	std::string	nickname = _CommandArray[1];
+
+	for (std::map<int, Client*>::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
 	{
-		if (_CommandArray[1] == it->second.getNickname())
-			return nickNameInUse;
+		if (nickname == it->second->getNickname())
+			return ERR::NICKNAMEINUSE(target, nickname);
 	}
-	if (_CommandArray[1].size() > 9)
-		return erroneusNickName;
 	for (size_t i = 0; i < _CommandArray.size(); i++)
 	{
-		if ((i == 0 && !std::isalpha(_CommandArray[1][i])
-					&& !isSpecialChar(_CommandArray[1][i]))
-				&& (!std::isalnum(_CommandArray[1][i])
-					&& !isSpecialChar(_CommandArray[1][i])
-					&& _CommandArray[1][i] != '-'))
-				return erroneusNickName;
+		if ((i == 0 && !std::isalpha(nickname[i])
+					&& !isSpecialChar(nickname[i]))
+				&& (!std::isalnum(nickname[i])
+					&& !isSpecialChar(nickname[i])
+					&& nickname[i] != '-'))
+				return ERR::ERRONEUSNICKNAME(target, nickname);
 	}
-	return ircMacro::SUCCESS;
+	return "";
 }
 
-void	NickCommand::setReplyArray(Client& target, std::string& badNickname)
-{
-	if (_replyArray.size() > 1)
-		_replyArray.clear();
-	_replyArray.push_back(RPL::NICK(target));
-	_replyArray.push_back(ERR::NONICKNAMEGIVEN(target));
-	_replyArray.push_back(ERR::ERRONEUSNICKNAME(target, badNickname));
-	_replyArray.push_back(ERR::NICKNAMEINUSE(target, badNickname));
-	_replyArray.push_back(ERR::NOTREGISTERED(target));
-}
-
-std::string	NickCommand::ExecuteCommand(Client& target, std::map<int, Client>& ClientArray, std::vector<Channel>& ChannelArray)
+std::string	NickCommand::ExecuteCommand(Client& target, std::map<int, Client*>& ClientArray, std::vector<Channel>& ChannelArray)
 {
 	(void)ChannelArray;
 
-	size_t	replyCase = isValidNickname(ClientArray);
-
-	if (replyCase == ircMacro::SUCCESS)
-		target.setNickname(_CommandArray[1]);
-
-	setReplyArray(target, _CommandArray[1]);
-
 	if (!target.getIsRegistered())
-		return (_replyArray[notRegistered]);
+		return ERR::NOTREGISTERED(target);
 
+	std::string	replyCase = isValidNickname(target, ClientArray);
 
-	return (_replyArray[replyCase]);
+	if (replyCase.empty())
+		return replyCase;
+
+	target.setNickname(_CommandArray[1]);
+
+	return (RPL::NICK(target));
 }
 

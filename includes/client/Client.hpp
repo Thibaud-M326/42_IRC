@@ -2,19 +2,23 @@
 # define CLIENT_HPP
 
 # include <iostream>
+# include <map>
+
+class Channel;
 
 class Client
 {
 	private:
-		std::string	_Prefix;
-		std::string	_Username;
-		std::string	_Nickname;
-		std::string	_StrMode;
-		int			_Ip_address;
-		int			_Fd;
-		bool		_isRegistered;
+		std::string						_Prefix;
+		std::string						_Username;
+		std::string						_Nickname;
+		std::string						_StrMode;
+		int								_Ip_address;
+		int								_Fd;
+		bool							_isRegistered;
 
-		std::string _Cbuffer;
+		std::string						_Cbuffer;
+		std::map<std::string, Channel*>	_channelList;
 
 	public:
 		/* class prerequisites */
@@ -23,26 +27,26 @@ class Client
 		~Client();
 
 		/* getters */
+		bool		getIsRegistered() const;
+		int			getIpAddress() const;
+		int			getFd() const;
 		std::string	getPrefix() const;
 		std::string	getUsername() const;
 		std::string	getNickname() const;
 		std::string	get_StrMode() const;
-		int			getIpAddress() const;
-		int			getFd() const;
 		std::string getBuffer() const;
-		bool		getIsRegistered() const;
 
 		/* setters */
-		void	setPrefix();
-		void	setUsername(std::string& Username);
-		void	setNickname(std::string& Nickname);
-		void	set_StrMode(std::string& StrMode);
-		void	setIpAddress(int& Ip_address);
-		void	setFd(int Fd);
-		void	setBuffer(std::string buffer);
-		void	setIsRegistered();
-
-		void	appendRawData(const char* readBuffer);
+		void		setPrefix();
+		void		setUsername(std::string& Username);
+		void		setNickname(std::string& Nickname);
+		void		set_StrMode(std::string& StrMode);
+		void		setIpAddress(int& Ip_address);
+		void		setFd(int Fd);
+		void		setBuffer(std::string buffer);
+		void		setIsRegistered();
+	
+		void		appendRawData(const char* readBuffer);
 };
 
 #endif

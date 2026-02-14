@@ -37,7 +37,7 @@ void	Server::addClient()
 {
 	int IpAdrress = _client_sock_addr.sin_addr.s_addr;
 
-	Client client(_client_socket_fd, IpAdrress);
+	Client *client = new Client(_client_socket_fd, IpAdrress);
 
 	//faire aveec insert
 	_clients[_client_socket_fd] = client;

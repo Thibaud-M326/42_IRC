@@ -14,9 +14,11 @@ namespace RPL
 		return (target.getPrefix() + "NICK " + target.getNickname() + ircMacro::CRLF);
 	}
 
-	inline std::string	USER(Client& target, std::string realName, std::string index)
+	inline std::string	USER(Client& target, std::string realName, size_t index)
 	{
-		return ("USER " + target.getUsername() + " " + index + " * " + realName + ircMacro::CRLF);
+		std::ostringstream	oss;
+		oss << index;
+		return ("USER " + target.getUsername() + " " + oss.str() + " * " + realName + ircMacro::CRLF);
 	}
 
 	inline std::string	WELCOME(Client& target)

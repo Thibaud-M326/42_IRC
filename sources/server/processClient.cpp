@@ -23,7 +23,7 @@ void	Server::executeClient(std::string rawCommands)
 		if (cmd)
 		{
 			std::string	reply = cmd->ExecuteCommand(*_client, _clients, chan);
-			std::cout << reply << std::endl;
+			write(_client->getFd(), reply.c_str(), reply.size());
 			delete cmd;
 		}
 	}

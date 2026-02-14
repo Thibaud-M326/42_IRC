@@ -11,25 +11,21 @@
 
 PassCommand::PassCommand(std::vector<std::string>& params): ACommand(params) {}
 
-void	PassCommand::setReplyArray(Client& target)
-{
-	_replyArray.push_back(ERR::NEEDMOREPARAMS(target, "PASS"));
-	_replyArray.push_back(ERR::ALREADYREGISTRED(target));
-	_replyArray.push_back(ERR::PASSWDMISMATCH(target));
-}
-
-std::string	PassCommand::ExecuteCommand(Client& target, std::map<int, Client>& ClientArray, std::vector<Channel>& ChannelArray)
+std::string	PassCommand::ExecuteCommand(Client& target, std::map<int, Client*>& ClientArray, std::vector<Channel>& ChannelArray)
 {
 	(void)ClientArray;
 	(void)ChannelArray;
-	setReplyArray(target);
 	if (_CommandArray.size() == 1 || _CommandArray[1].empty())
-		return _replyArray[passNeedMoreParams];
+		return ERR::NEEDMOREPARAMS(target, "PASS");
+
 	if (target.getIsRegistered())
-		return _replyArray[passAlreadyRegistred];
+		return ERR::ALREADYREGISTRED(target);
+
 	if (_CommandArray[1] != ircMacro::PASSWORD)
-		return _replyArray[passPasswdMissmatch];
+		return ERR::PASSWDMISMATCH(target);
+
 	target.setIsRegistered();
+
 	return "";
 }
 

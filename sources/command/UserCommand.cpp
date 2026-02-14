@@ -18,20 +18,6 @@
 
 UserCommand::UserCommand(std::vector<std::string>& params): ACommand(params) {}
 
-void	UserCommand::setReplyArray(Client& target, std::string realName, int index)
-{
-	if (_replyArray.size() > 1)
-		_replyArray.clear();
-
-	std::ostringstream	oss;
-	oss << index;
-
-	_replyArray.push_back(RPL::USER(target, realName, oss.str()));
-	_replyArray.push_back(ERR::NEEDMOREPARAMS(target, "USER"));
-	_replyArray.push_back(ERR::ALREADYREGISTRED(target));
-	_replyArray.push_back(ERR::NOTREGISTERED(target));
-}
-
 bool	UserCommand::isValidParams()
 {
 	if (_CommandArray.size() != 5 || _CommandArray[1].size() > 32)
@@ -45,34 +31,32 @@ bool	UserCommand::isValidParams()
 	return true;
 }
 
-std::string	UserCommand::ExecuteCommand(Client& target, std::map<int, Client>& ClientArray, std::vector<Channel>& ChannelArray)
+std::string	UserCommand::ExecuteCommand(Client& target, std::map<int, Client*>& ClientArray, std::vector<Channel>& ChannelArray)
 {
 	(void)ChannelArray;
-
-	setReplyArray(target, "", 0);
 	
 	if (!target.getIsRegistered())
-		return _replyArray[userNotRegistered];
+		return ERR::NOTREGISTERED(target);
 
 	if (!isValidParams())
-		return _replyArray[userNeedMoreParams];
+		return ERR::NEEDMOREPARAMS(target, "USER");
+
+	std::string	username(_CommandArray[1]), realname(_CommandArray[4]);
 
 	if (!target.getUsername().empty())
-		return _replyArray[userAlreadyRegistred];
+		return ERR::ALREADYREGISTRED(target);
 
-	size_t	i = 0;
+	size_t	index = 0;
 
-	for (std::map<int, Client>::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
+	for (std::map<int, Client*>::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
 	{
-		if (&it->second == &target)
+		if (it->second == &target)
 			break ;
-		i++;
+		index++;
 	}
 
 	target.setUsername(_CommandArray[1]);
 
-	setReplyArray(target, _CommandArray[4], i);
-
-	return _replyArray[ircMacro::SUCCESS];
+	return RPL::USER(target, _CommandArray[4], index);
 }
 

@@ -1,7 +1,9 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-# include "Client.hpp"
+#include <iostream>
+
+class Client;
 
 class Channel
 {

@@ -3,19 +3,11 @@
 
 # include "ACommand.hpp"
 
-typedef enum e_UserEnum
-{
-	userNeedMoreParams = 1,
-	userAlreadyRegistred = 2,
-	userNotRegistered = 3
-}	t_UserEnum;
-
 class UserCommand : public ACommand
 {
 	public:
 		UserCommand(std::vector<std::string>& params);
-		std::string		ExecuteCommand(Client& target, std::map<int, Client>& ClientArray, std::vector<Channel>& ChannelArray);
-		void			setReplyArray(Client& target, std::string realName, int index);
+		std::string		ExecuteCommand(Client& target, std::map<int, Client*>& ClientArray, std::vector<Channel>& ChannelArray);
 		bool			isValidParams();
 };
 

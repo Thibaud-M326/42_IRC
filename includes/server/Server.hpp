@@ -2,7 +2,6 @@
 #define SERVER_HPP
 
 #include "Exception.hpp"
-#include "Client.hpp"
 
 #include <string>
 #include <sys/epoll.h>
@@ -16,31 +15,35 @@
 #define PORT 6667
 #define READ_BUFFER_SIZE 1024
 
+class Client;
+class Channel;
+
 class Server {
 
 	private:
-		std::string _port;
-		std::string _password;
+		std::string						 _port;
+		std::string						_password;
 
-		int _serv_socket_fd;
-		sockaddr_in _serv_sock_addr;
-		socklen_t	_serv_sock_addr_len;
+		int								_serv_socket_fd;
+		sockaddr_in						_serv_sock_addr;
+		socklen_t						_serv_sock_addr_len;
 
-		int _epoll_fd;
-		epoll_event _events[MAX_EVENT];
-		epoll_event _ev;
+		int								_epoll_fd;
+		epoll_event						_events[MAX_EVENT];
+		epoll_event						_ev;
 
-		int _client_socket_fd;
-		sockaddr_in _client_sock_addr;
-		socklen_t	_client_sock_addr_len;
+		int								_client_socket_fd;
+		sockaddr_in						_client_sock_addr;
+		socklen_t						_client_sock_addr_len;
 
-		int	_nfds;
-		char _buffer[READ_BUFFER_SIZE];
+		int								_nfds;
+		char							_buffer[READ_BUFFER_SIZE];
 
-		Client *_client;
-		std::map<int, Client>	_clients;
+		Client							*_client;
+		std::map<int, Client*>			_clients;
+		std::map<std::string, Channel*>	_channelArray;
 
-		std::string _message;
+		std::string						_message;
 
 		int		set_nonblocking(int fd);
 		void	acceptConnection();
@@ -52,7 +55,7 @@ class Server {
 		void	executeClient(std::string rawCommands);
 		void	findClient();
 
-	public :
+	public:
 		Server(std::string port, std::string password);
 		~Server();
 

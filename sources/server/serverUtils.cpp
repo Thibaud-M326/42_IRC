@@ -6,16 +6,15 @@
 
 void	Server::printClients()
 {
-	std::map<int, Client>::iterator it;
-
-	for (it = _clients.begin(); it != _clients.end(); it++)
+	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
 	{
-		std::cout << it->first << " : " << it->second.getFd() << std::endl;
-		std::cout << it->first << " : " << it->second.getIpAddress() << std::endl;
+		std::cout << it->first << " : " << it->second->getFd() << std::endl;
+		std::cout << it->first << " : " << it->second->getIpAddress() << std::endl;
 	}
 }
 
 void	Server::findClient()
 {
-	_client = &_clients[_client_socket_fd];
+	_client = _clients[_client_socket_fd];
 }
+

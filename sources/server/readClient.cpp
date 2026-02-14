@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "Exception.hpp"
+#include "Client.hpp"
 #include <iostream>
 #include <errno.h>
 #include <unistd.h>
