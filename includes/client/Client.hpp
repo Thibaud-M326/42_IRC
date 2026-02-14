@@ -1,24 +1,23 @@
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
-# include <string>
-# include <map>
+# include "Irc.hpp"
 
 class Channel;
 
 class Client
 {
 	private:
-		std::string						_Prefix;
-		std::string						_Username;
-		std::string						_Nickname;
-		std::string						_StrMode;
-		int								_Ip_address;
-		int								_Fd;
-		bool							_isRegistered;
+		std::string	_Prefix;
+		std::string	_Username;
+		std::string	_Nickname;
+		std::string	_StrMode;
+		int			_Ip_address;
+		int			_Fd;
+		bool		_isRegistered;
 
-		std::string						_Cbuffer;
-		std::map<std::string, Channel*>	_channelList;
+		std::string	_Cbuffer;
+		mapChannels	_channelList;
 
 	public:
 		/* class prerequisites */

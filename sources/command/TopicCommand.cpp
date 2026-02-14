@@ -2,9 +2,10 @@
 
 TopicCommand::TopicCommand(std::vector<std::string>& params): ACommand(params) {}
 
-std::string	TopicCommand::ExecuteCommand(Client& target, std::map<int, Client*>& ClientArray, std::vector<Channel>& ChannelArray)
+std::string	TopicCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
 {
 	(void)ClientArray;
 	(void)ChannelArray;
+	(void)target;
 	return ("");
 }

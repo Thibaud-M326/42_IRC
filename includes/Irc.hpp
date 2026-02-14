@@ -1,6 +1,15 @@
 #ifndef IRC_HPP
 # define IRC_HPP
 
+# include <map>
+# include <string>
+
+class Client;
+class Channel;
+
+typedef	std::map<int, Client*>			mapClients;
+typedef	std::map<std::string, Channel*>	mapChannels;
+
 namespace ircMacro
 {
 	const char CRLF[] = "\r\n";

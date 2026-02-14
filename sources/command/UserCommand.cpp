@@ -33,7 +33,7 @@ bool	UserCommand::isValidParams()
 	return true;
 }
 
-std::string	UserCommand::ExecuteCommand(Client& target, std::map<int, Client*>& ClientArray, std::vector<Channel>& ChannelArray)
+std::string	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
 {
 	(void)ChannelArray;
 	

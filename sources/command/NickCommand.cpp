@@ -10,7 +10,7 @@
 
 NickCommand::NickCommand(std::vector<std::string>& params): ACommand(params) {}
 
-std::string	NickCommand::isValidNickname(Client& target, std::map<int, Client*>& ClientArray)
+std::string	NickCommand::isValidNickname(Client& target, mapClients& ClientArray)
 {
 	if (_CommandArray.size() == 1 || _CommandArray[1].size() == 0)
 		return ERR::NONICKNAMEGIVEN(target);
@@ -38,7 +38,7 @@ std::string	NickCommand::isValidNickname(Client& target, std::map<int, Client*>&
 	return "";
 }
 
-std::string	NickCommand::ExecuteCommand(Client& target, std::map<int, Client*>& ClientArray, std::vector<Channel>& ChannelArray)
+std::string	NickCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
 {
 	(void)ChannelArray;
 
