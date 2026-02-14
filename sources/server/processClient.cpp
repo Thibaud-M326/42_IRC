@@ -13,7 +13,6 @@ void	Server::executeClient(std::string rawCommands)
 
 
 	commands = parse.parseCommand();
-	mapChannels	chan;
 
 	parse.display_vec(commands);
 	for (std::vector<std::vector<std::string> >::iterator it = commands.begin(); it != commands.end(); it++)
@@ -21,8 +20,9 @@ void	Server::executeClient(std::string rawCommands)
 		ACommand *cmd = factory.createCommand(*it);
 		if (cmd)
 		{
-			std::string	reply = cmd->ExecuteCommand(*_client, _clients, chan);
-			write(_client->getFd(), reply.c_str(), reply.size());
+			std::vector<std::string>	reply = cmd->ExecuteCommand(*_client, _clients, _channelArray);
+			for (size_t i = 0; i < reply.size(); i++)
+				write(_client->getFd(), reply[i].c_str(), reply.size());
 			delete cmd;
 		}
 	}

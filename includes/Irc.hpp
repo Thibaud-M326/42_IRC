@@ -9,11 +9,11 @@ class Channel;
 
 typedef enum e_modeEnum
 {
-	inviteOnly = 0,
-	restrictTopic = 1,
-	restrictPassword = 2,
-	operatorPrivileges = 4,
-	userLimit = 5
+	userLimit = 0, // 'l'
+	operatorPrivileges = 1, // 'o'
+	restrictPassword = 2, // 'k'
+	restrictTopic = 3, // 't'
+	inviteOnly = 4, // 'i'
 }	t_modeEnum;
 
 typedef	std::map<int, Client*>			mapClients;

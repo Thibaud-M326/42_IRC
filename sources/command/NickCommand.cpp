@@ -10,48 +10,48 @@
 
 NickCommand::NickCommand(std::vector<std::string>& params): ACommand(params) {}
 
-std::string	NickCommand::isValidNickname(Client& target, mapClients& ClientArray)
+void	NickCommand::isValidNickname(Client& target, mapClients& ClientArray)
 {
-	if (_CommandArray.size() == 1 || _CommandArray[1].size() == 0)
-		return ERR::NONICKNAMEGIVEN(target);
+	if (_commandArray.size() == 1 || _commandArray[1].size() == 0)
+		_replyArray.push_back(ERR::NONICKNAMEGIVEN(target));
 
 
-	if (_CommandArray.size() != 2 || _CommandArray[1].size() > 9)
-		return ERR::ERRONEUSNICKNAME(target, _CommandArray[1]);
+	if (_commandArray.size() != 2 || _commandArray[1].size() > 9)
+		_replyArray.push_back(ERR::ERRONEUSNICKNAME(target, _commandArray[1]));
 
-	std::string	nickname = _CommandArray[1];
+	std::string	nickname = _commandArray[1];
 
 	for (std::map<int, Client*>::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
 	{
 		if (nickname == it->second->getNickname())
-			return ERR::NICKNAMEINUSE(target, nickname);
+			_replyArray.push_back(ERR::NICKNAMEINUSE(target, nickname));
 	}
-	for (size_t i = 0; i < _CommandArray.size(); i++)
+	for (size_t i = 0; i < _commandArray.size(); i++)
 	{
 		if ((i == 0 && !std::isalpha(nickname[i])
 					&& !isSpecialChar(nickname[i]))
 				&& (!std::isalnum(nickname[i])
 					&& !isSpecialChar(nickname[i])
 					&& nickname[i] != '-'))
-				return ERR::ERRONEUSNICKNAME(target, nickname);
+				_replyArray.push_back(ERR::ERRONEUSNICKNAME(target, nickname));
 	}
-	return "";
 }
 
-std::string	NickCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
+std::vector<std::string>	NickCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
 {
 	(void)ChannelArray;
 
 	if (!target.getIsRegistered())
-		return ERR::NOTREGISTERED(target);
+		_replyArray.push_back(ERR::NOTREGISTERED(target));
 
-	std::string	replyCase = isValidNickname(target, ClientArray);
+	isValidNickname(target, ClientArray);
 
-	if (replyCase.empty())
-		return replyCase;
+	if (_replyArray.empty())
+	{
+		target.setNickname(_commandArray[1]);
+		_replyArray.push_back(RPL::NICK(target));
+	}
 
-	target.setNickname(_CommandArray[1]);
-
-	return (RPL::NICK(target));
+	return _replyArray;
 }
 

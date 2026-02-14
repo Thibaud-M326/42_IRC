@@ -7,8 +7,8 @@ class UserCommand : public ACommand
 {
 	public:
 		UserCommand(std::vector<std::string>& params);
-		std::string		ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray);
-		bool			isValidParams();
+		std::vector<std::string>	ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray);
+		bool						isValidParams();
 };
 
 #endif

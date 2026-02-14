@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Client.hpp"
+#include "Channel.hpp"
 #include "Server.hpp"
 
 Server::Server(std::string port, std::string password)
@@ -25,8 +26,9 @@ Server::Server(std::string port, std::string password)
 
 Server::~Server()
 {
-	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
+	for (mapClients::iterator it = _clients.begin(); it != _clients.end(); it++)
 		delete it->second;
-
+	for (mapChannels::iterator it = _channelArray.begin(); it != _channelArray.end(); it++)
+		delete it->second;
 	std::cout << "Server destructor called" << std::endl;
 }

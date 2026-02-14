@@ -47,12 +47,12 @@ namespace RPL
 
 	inline std::string	UMODEIS(Client& target)
 	{
-		return (target.getPrefix() + "221 " +  target.getMode() + ircMacro::CRLF);
+		return (target.getPrefix() + "221 " +  target.getStrMode() + ircMacro::CRLF);
 	}
 
 	inline std::string	CHANNELMODEIS(Client& target, Channel& chan)
 	{
-		return (target.getPrefix() + "324 " + chan.getName() + " " + chan.getMode() + " " + chan.getModeParams() + ircMacro::CRLF);
+		return (target.getPrefix() + "324 " + chan.getName() + " " + chan.getStrMode() + " " + chan.getModeParams() + ircMacro::CRLF);
 	}
 
 	inline std::string	INVITELIST(Client& target, Channel& chan, std::string& invite_list)

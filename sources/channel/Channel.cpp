@@ -15,7 +15,12 @@ std::string	Channel::getTopic() const
 	return _topic;
 }
 
-std::string	Channel::getMode() const
+std::bitset<ircMacro::NB_MODE>	Channel::getMode() const
+{
+	return _mode;
+}
+
+std::string	Channel::getStrMode() const
 {
 	if (!_mode.count())
 		return "";
@@ -74,5 +79,19 @@ void	Channel::setModeParams(std::string& params, t_modeEnum index)
 void	Channel::setOperator(Client	*ope)
 {
 	_operator = ope;
+}
+
+void	Channel::addClient(Client* client)
+{
+	_clientList.push_back(client);
+}
+
+void	Channel::removeClient(Client* client)
+{
+	for (std::vector<Client*>::iterator it = _clientList.begin(); it != _clientList.end(); it++)
+	{
+		if (*it == client)
+			_clientList.erase(it);
+	}
 }
 

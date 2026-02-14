@@ -29,16 +29,16 @@ class Client
 		~Client();
 
 		/* getters */
-		bool		getIsRegistered() const;
-		int			getIpAddress() const;
-		int			getFd() const;
-		std::string	getPrefix() const;
-		std::string	getUsername() const;
-		std::string	getNickname() const;
-		std::string	getStrMode() const;
-		std::string getBuffer() const;
-		std::string getMode() const;
-		std::string getModeParams() const;
+		bool							getIsRegistered() const;
+		int								getIpAddress() const;
+		int								getFd() const;
+		std::string						getPrefix() const;
+		std::string						getUsername() const;
+		std::string						getNickname() const;
+		std::string 					getBuffer() const;
+		std::bitset<ircMacro::NB_MODE>	getMode() const;
+		std::string						getStrMode() const;
+		std::string 					getModeParams() const;
 
 		/* setters */
 		void		setPrefix();

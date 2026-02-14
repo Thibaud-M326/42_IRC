@@ -63,7 +63,12 @@ bool	Client::getIsRegistered() const
 	return _isRegistered;
 }
 
-std::string	Client::getMode() const
+std::bitset<ircMacro::NB_MODE>	Client::getMode() const
+{
+	return _mode;
+}
+
+std::string	Client::getStrMode() const
 {
 	if (!_mode.count())
 		return "";

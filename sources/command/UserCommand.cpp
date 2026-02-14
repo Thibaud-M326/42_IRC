@@ -22,31 +22,31 @@ UserCommand::UserCommand(std::vector<std::string>& params): ACommand(params) {}
 
 bool	UserCommand::isValidParams()
 {
-	if (_CommandArray.size() != 5 || _CommandArray[1].size() > 32)
+	if (_commandArray.size() != 5 || _commandArray[1].size() > 32)
 		return false;
-	for (size_t i = 0; i < _CommandArray.size(); i++)
+	for (size_t i = 0; i < _commandArray.size(); i++)
 	{
-		if (!std::isalnum(_CommandArray[1][i])
-				&& !isSpecialChar(_CommandArray[1][i]))
+		if (!std::isalnum(_commandArray[1][i])
+				&& !isSpecialChar(_commandArray[1][i]))
 				return false;
 	}
 	return true;
 }
 
-std::string	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
+std::vector<std::string>	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
 {
 	(void)ChannelArray;
 	
 	if (!target.getIsRegistered())
-		return ERR::NOTREGISTERED(target);
+		_replyArray.push_back(ERR::NOTREGISTERED(target));
 
 	if (!isValidParams())
-		return ERR::NEEDMOREPARAMS(target, "USER");
+		_replyArray.push_back(ERR::NEEDMOREPARAMS(target, "USER"));
 
-	std::string	username(_CommandArray[1]), realname(_CommandArray[4]);
+	std::string	username(_commandArray[1]), realname(_commandArray[4]);
 
 	if (!target.getUsername().empty())
-		return ERR::ALREADYREGISTRED(target);
+		_replyArray.push_back(ERR::ALREADYREGISTRED(target));
 
 	size_t	index = 0;
 
@@ -57,8 +57,11 @@ std::string	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArray,
 		index++;
 	}
 
-	target.setUsername(_CommandArray[1]);
+	if (_replyArray.empty())
+		target.setUsername(_commandArray[1]);
 
-	return RPL::USER(target, _CommandArray[4], index);
+	_replyArray.push_back(RPL::USER(target, _commandArray[4], index));
+
+	return _replyArray;
 }
 
