@@ -61,10 +61,10 @@ static ACommand*	createUser(std::vector<std::string>& commands)
 // 	return new ListCommand(commands);
 // }
 
-// static ACommand*	createJoin(std::vector<std::string>& commands)
-// {
-// 	return new JoinCommand(commands);
-// }
+static ACommand*	createJoin(std::vector<std::string>& commands)
+{
+	return new JoinCommand(commands);
+}
 
 CommandFactory::CommandFactory()
 {
@@ -78,7 +78,7 @@ CommandFactory::CommandFactory()
 	// _registry["KICK"] = &createKick;
 	// _registry["OPER"] = &createOper;
 	// _registry["LIST"] = &createList;
-	// _registry["JOIN"] = &createJoin;
+	_registry["JOIN"] = &createJoin;
 }
 
 ACommand*	CommandFactory::createCommand(std::vector<std::string>& params)

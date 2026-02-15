@@ -7,7 +7,7 @@ class KickCommand : public ACommand
 {
 	public:
 		KickCommand(std::vector<std::string>& params);
-		std::vector<std::string>	ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray);
+		t_replyHandler	ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray);
 };
 
 #endif

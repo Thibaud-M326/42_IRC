@@ -7,7 +7,7 @@ class InviteCommand : public ACommand
 {
 	public:
 		InviteCommand(std::vector<std::string>& params);
-		std::vector<std::string>	ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray);
+		t_replyHandler	ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray);
 };
 
 #endif

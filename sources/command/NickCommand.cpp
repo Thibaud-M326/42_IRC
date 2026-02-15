@@ -1,4 +1,3 @@
-#include "Error.hpp"
 #include "NickCommand.hpp"
 #include "Reply.hpp"
 
@@ -10,21 +9,29 @@
 
 NickCommand::NickCommand(std::vector<std::string>& params): ACommand(params) {}
 
-void	NickCommand::isValidNickname(Client& target, mapClients& ClientArray)
+bool	NickCommand::isValidNickname(Client& target, mapClients& ClientArray, t_replyHandler& replyHandler)
 {
 	if (_commandArray.size() == 1 || _commandArray[1].size() == 0)
-		_replyArray.push_back(ERR::NONICKNAMEGIVEN(target));
-
+	{
+		replyHandler.add(target.getFd(), ERR::NONICKNAMEGIVEN(target));
+		return false;
+	}
 
 	if (_commandArray.size() != 2 || _commandArray[1].size() > 9)
-		_replyArray.push_back(ERR::ERRONEUSNICKNAME(target, _commandArray[1]));
+	{
+		replyHandler.add(target.getFd(), ERR::ERRONEUSNICKNAME(target, _commandArray[1]));
+		return false;
+	}
 
 	std::string	nickname = _commandArray[1];
 
 	for (std::map<int, Client*>::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
 	{
 		if (nickname == it->second->getNickname())
-			_replyArray.push_back(ERR::NICKNAMEINUSE(target, nickname));
+		{
+			replyHandler.add(target.getFd(), ERR::NICKNAMEINUSE(target, nickname));
+			return false;
+		}
 	}
 	for (size_t i = 0; i < _commandArray.size(); i++)
 	{
@@ -33,25 +40,31 @@ void	NickCommand::isValidNickname(Client& target, mapClients& ClientArray)
 				&& (!std::isalnum(nickname[i])
 					&& !isSpecialChar(nickname[i])
 					&& nickname[i] != '-'))
-				_replyArray.push_back(ERR::ERRONEUSNICKNAME(target, nickname));
+		{
+			replyHandler.add(target.getFd(), ERR::ERRONEUSNICKNAME(target, nickname));
+			return false;
+		}
 	}
+	return true;
 }
 
-std::vector<std::string>	NickCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
+t_replyHandler	NickCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
 {
 	(void)ChannelArray;
+	t_replyHandler	replyHandler;
 
 	if (!target.getIsRegistered())
-		_replyArray.push_back(ERR::NOTREGISTERED(target));
-
-	isValidNickname(target, ClientArray);
-
-	if (_replyArray.empty())
 	{
-		target.setNickname(_commandArray[1]);
-		_replyArray.push_back(RPL::NICK(target));
+		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
+		return replyHandler;
 	}
 
-	return _replyArray;
+	if (!isValidNickname(target, ClientArray, replyHandler))
+		return replyHandler;
+
+	target.setNickname(_commandArray[1]);
+	replyHandler.add(target.getFd(), RPL::NICK(target));
+
+	return replyHandler;
 }
 

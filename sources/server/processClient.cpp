@@ -20,9 +20,13 @@ void	Server::executeClient(std::string rawCommands)
 		ACommand *cmd = factory.createCommand(*it);
 		if (cmd)
 		{
-			std::vector<std::string>	reply = cmd->ExecuteCommand(*_client, _clients, _channelArray);
-			for (size_t i = 0; i < reply.size(); i++)
-				write(_client->getFd(), reply[i].c_str(), reply.size());
+		 	t_replyHandler	replyHandler = cmd->ExecuteCommand(*_client, _clients, _channelArray);
+			// BROADCAST
+			for (std::vector<t_outGoingMessages>::iterator it = replyHandler.messages.begin(); it != replyHandler.messages.end(); it++)
+			{
+				for (std::vector<int>::iterator fdIndex = it->targets.begin(); fdIndex != it->targets.end(); fdIndex++)
+					write(*fdIndex, it->reply.c_str(), it->reply.size());
+			}
 			delete cmd;
 		}
 	}

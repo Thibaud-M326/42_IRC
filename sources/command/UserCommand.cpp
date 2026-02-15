@@ -1,4 +1,3 @@
-#include "Error.hpp"
 #include "Reply.hpp"
 #include "UserCommand.hpp"
 
@@ -33,20 +32,29 @@ bool	UserCommand::isValidParams()
 	return true;
 }
 
-std::vector<std::string>	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
+t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
 {
 	(void)ChannelArray;
+	t_replyHandler	replyHandler;
 	
 	if (!target.getIsRegistered())
-		_replyArray.push_back(ERR::NOTREGISTERED(target));
-
+	{
+		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
+		return replyHandler;
+	}
 	if (!isValidParams())
-		_replyArray.push_back(ERR::NEEDMOREPARAMS(target, "USER"));
+	{
+		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "USER"));
+		return replyHandler;
+	}
 
 	std::string	username(_commandArray[1]), realname(_commandArray[4]);
 
 	if (!target.getUsername().empty())
-		_replyArray.push_back(ERR::ALREADYREGISTRED(target));
+	{
+		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED(target));
+		return replyHandler;
+	}
 
 	size_t	index = 0;
 
@@ -57,11 +65,9 @@ std::vector<std::string>	UserCommand::ExecuteCommand(Client& target, mapClients&
 		index++;
 	}
 
-	if (_replyArray.empty())
-		target.setUsername(_commandArray[1]);
+	target.setUsername(_commandArray[1]);
+	replyHandler.add(target.getFd(), RPL::USER(target, _commandArray[4], index));
 
-	_replyArray.push_back(RPL::USER(target, _commandArray[4], index));
-
-	return _replyArray;
+	return replyHandler;
 }
 

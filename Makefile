@@ -27,6 +27,7 @@ SRC =														\
 		$(SRC_DIR)/$(SERVER_DIR)/Server.cpp					\
 		$(SRC_DIR)/$(SERVER_DIR)/serverUtils.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/PassCommand.cpp			\
+		$(SRC_DIR)/$(COMMAND_DIR)/JoinCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/UserCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/NickCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/ACommand.cpp				\

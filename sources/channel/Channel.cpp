@@ -1,7 +1,8 @@
 #include "Channel.hpp"
+#include "Client.hpp"
 #include <sstream>
 
-Channel::Channel() {}
+Channel::Channel(): _modeParams(5) {}
 
 Channel::~Channel() {}
 
@@ -36,6 +37,22 @@ std::string	Channel::getStrMode() const
 	return oss.str();
 }
 
+std::vector<int>	Channel::getClientsFd() const
+{
+	std::vector<int>	clientsFd;
+
+	for (size_t i = 0; i > _clientList.size(); i++)
+	{
+		clientsFd.push_back(_clientList[i]->getFd());
+	}
+	return clientsFd;
+}
+
+std::vector<Client*>	Channel::getClientList() const
+{
+	return _clientList;
+}
+
 std::string	Channel::getModeParams() const
 {
 	std::ostringstream	oss;
@@ -51,6 +68,11 @@ std::string	Channel::getModeParams() const
 Client	*Channel::getOperator() const
 {
 	return _operator;
+}
+
+std::string	Channel::getKey() const
+{
+	return _key;
 }
 
 void	Channel::setName(std::string& name)
@@ -93,5 +115,10 @@ void	Channel::removeClient(Client* client)
 		if (*it == client)
 			_clientList.erase(it);
 	}
+}
+
+void	Channel::setKey(std::string& key)
+{
+	_key = key;
 }
 

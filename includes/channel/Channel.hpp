@@ -17,6 +17,7 @@ class Channel
 		Client							*_operator;
 		std::vector<std::string>		_modeParams;
 		std::vector<Client*>			_clientList;
+		std::string						_key;
 
 	public:
 		/* class prerequisites */
@@ -30,7 +31,9 @@ class Channel
 		std::bitset<ircMacro::NB_MODE>	getMode() const;
 		std::string						getModeParams() const;
 		Client	   						*getOperator() const;
-		std::vector<std::string>		getClientList() const;
+		std::vector<Client*>			getClientList() const;
+		std::vector<int>				getClientsFd() const;
+		std::string						getKey() const;
 
 		/* setters */
 		void							setName(std::string& name);
@@ -38,6 +41,7 @@ class Channel
 		void							setMode(t_modeEnum index, bool value);
 		void							setModeParams(std::string& params, t_modeEnum index);
 		void							setOperator(Client *ope);
+		void							setKey(std::string& key);
 
 		void							addClient(Client* client);
 		void							removeClient(Client* client);

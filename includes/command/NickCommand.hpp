@@ -7,9 +7,9 @@ class NickCommand : public ACommand
 {
 	public:
 		NickCommand(std::vector<std::string>& params);
-		std::vector<std::string>	ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray);
+		t_replyHandler	ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray);
 
-		void	isValidNickname(Client& target, mapClients& ClientArray);
+		bool	isValidNickname(Client& target, mapClients& ClientArray, t_replyHandler& reponseHandler);
 };
 
 #endif

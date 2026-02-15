@@ -1,5 +1,5 @@
-#include "Error.hpp"
 #include "PassCommand.hpp"
+#include "Reply.hpp"
 
 // - PASS - used to set a 'connection password'.
 // 	The optional password can and MUST be set before any attempt to register
@@ -11,22 +11,32 @@
 
 PassCommand::PassCommand(std::vector<std::string>& params): ACommand(params) {}
 
-std::vector<std::string>	PassCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
+t_replyHandler	PassCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
 {
 	(void)ClientArray;
 	(void)ChannelArray;
+	t_replyHandler	replyHandler;
+
 	if (_commandArray.size() == 1 || _commandArray[1].empty())
-		_replyArray.push_back(ERR::NEEDMOREPARAMS(target, "PASS"));
+	{
+		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "PASS"));
+		return replyHandler;
+	}
 
 	if (target.getIsRegistered())
-		_replyArray.push_back(ERR::ALREADYREGISTRED(target));
+	{
+		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED(target));
+		return replyHandler;
+	}
 
 	if (_commandArray[1] != ircMacro::PASSWORD)
-		_replyArray.push_back(ERR::PASSWDMISMATCH(target));
+	{
+		replyHandler.add(target.getFd(),ERR::PASSWDMISMATCH(target));
+		return replyHandler;
+	}
 
-	if (_replyArray.empty())
-		target.setIsRegistered();
+	target.setIsRegistered();
 
-	return _replyArray;
+	return replyHandler;
 }
 

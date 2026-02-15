@@ -5,9 +5,13 @@
 
 class JoinCommand : public ACommand
 {
+	private:
+		std::vector<std::pair<std::string, std::string> >	buildChannelParams(unsigned int& nbChan);
+		bool												isValidChar(char c);
+
 	public:
 		JoinCommand(std::vector<std::string>& params);
-		std::vector<std::string>	ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray);
+		t_replyHandler	ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray);
 };
 
 #endif

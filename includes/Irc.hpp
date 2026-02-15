@@ -32,6 +32,7 @@ namespace ircMacro
 	const char	PASSWORD[] = "password";
 	const bool	SUCCESS = 0;
 	const int	NB_MODE = 5;
+	const char	INVALID[] = "Invalid";
 
 	const char	modeCharArray[] =
 		{ 'l', 'o', 'k', 't', 'i' };
@@ -39,6 +40,8 @@ namespace ircMacro
 	const char	specialCharArray[] =
 		{ '[', '\\', ']', '^', '_',
 			'`', '{', '|', '}', '\0' };
+	const char chanCharArray[] =
+		{ '&', '#', '!', '+', '\0'};
 }
 
 #endif
