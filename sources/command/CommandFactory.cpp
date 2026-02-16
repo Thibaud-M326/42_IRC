@@ -90,6 +90,6 @@ ACommand*	CommandFactory::createCommand(std::vector<std::string>& params)
 	{
 		return it->second(params);
 	}
-	return it->second(params);
+	return NULL;
 }
 
