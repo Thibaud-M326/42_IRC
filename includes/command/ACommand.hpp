@@ -16,8 +16,10 @@ class ACommand
 	public:
 
 		ACommand(std::vector<std::string>& params);
+
 		virtual t_replyHandler	ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray) = 0;
-		bool								isSpecialChar(char c) const;
+		bool					isSpecialChar(char c) const;
+		bool					isChannel(std::string chan, mapChannels& ChannelArray) const;
 
 		virtual ~ACommand();
 
