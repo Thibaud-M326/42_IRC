@@ -8,7 +8,7 @@
 //     ERR_NICKNAMEINUSE = nick in use.
 
 NickCommand::NickCommand(std::vector<std::string>& params): ACommand(params) {}
-
+#include <iostream>
 bool	NickCommand::isValidNickname(Client& target, mapClients& ClientArray, t_replyHandler& replyHandler)
 {
 	if (_commandArray.size() == 1 || _commandArray[1].size() == 0)
@@ -16,7 +16,8 @@ bool	NickCommand::isValidNickname(Client& target, mapClients& ClientArray, t_rep
 		replyHandler.add(target.getFd(), ERR::NONICKNAMEGIVEN(target));
 		return false;
 	}
-
+	
+	
 	if (_commandArray.size() != 2 || _commandArray[1].size() > 9)
 	{
 		replyHandler.add(target.getFd(), ERR::ERRONEUSNICKNAME(target, _commandArray[1]));
@@ -24,7 +25,7 @@ bool	NickCommand::isValidNickname(Client& target, mapClients& ClientArray, t_rep
 	}
 
 	std::string	nickname = _commandArray[1];
-
+	
 	for (std::map<int, Client*>::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
 	{
 		if (nickname == it->second->getNickname())
@@ -52,6 +53,8 @@ t_replyHandler	NickCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 {
 	(void)ChannelArray;
 	t_replyHandler	replyHandler;
+// for (std::map<int, Client*>::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
+// 		std::cout << "NICK COMMAND == " <<it->second << '\n';
 
 	if (!target.getIsRegistered())
 	{

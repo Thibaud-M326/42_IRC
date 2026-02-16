@@ -175,7 +175,7 @@ namespace ERR
 
 	inline std::string	NICKNAMEINUSE(Client& target, std::string nickname)
 	{
-		return (target.getPrefix() + "433 " + nickname + " :Nickaname is already in use" + ircMacro::CRLF);
+		return (target.getPrefix() + "433 " + nickname + " :Nickname is already in use" + ircMacro::CRLF);
 	}
 
 	inline std::string	USERNOTINCHANNEL(Client& target, Channel& chan, std::string nick_list)
@@ -229,7 +229,7 @@ namespace ERR
 	}
 	inline std::string	NOTREGISTERED(Client& target)
 	{
-		return (target.getPrefix() + "451 :You have not registered");
+		return (target.getPrefix() + "451 :You have not registered" + ircMacro::CRLF);
 	}
 }
 

@@ -156,3 +156,30 @@ void	Client::setModeParams(std::string& params, t_modeEnum index)
 	_modeParams[index] = params;
 }
 
+bool 	Client::processClient()
+{
+	std::string clrf = "\r\n";
+	std::size_t found;
+	std::string rawCommands;
+	std::string afterLastClrf;
+
+	found = _cbuffer.rfind(clrf);
+	if (found!=std::string::npos)
+	{
+		rawCommands = _cbuffer.substr(0, found);
+		afterLastClrf = _cbuffer.substr(found + clrf.length());
+
+		std::cout << "client buffer\n||||\n" << _cbuffer << "|||| "<< std::endl;
+
+		// _cbuffer.clear();
+
+		if (afterLastClrf.empty())
+			return true;
+	}
+	return false;
+}
+
+void	Client::clearBuffer()
+{
+	_cbuffer.clear();
+}

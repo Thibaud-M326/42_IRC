@@ -52,6 +52,8 @@ class Client
 		void		setModeParams(std::string& params, t_modeEnum index);
 	
 		void		appendRawData(const char* readBuffer);
+		bool		processClient();
+		void		clearBuffer();	
 };
 
 #endif

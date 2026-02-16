@@ -5,13 +5,16 @@
 #include "Parse.hpp"
 #include "Server.hpp"
 
+#include <iostream>
+
 void	Server::executeClient(std::string rawCommands)
 {
 	Parse parse(rawCommands);
+	rawCommands.clear();
 	std::vector<std::vector<std::string> > commands;
 	CommandFactory factory;
 
-
+	_client->clearBuffer();
 	commands = parse.parseCommand();
 
 	parse.display_vec(commands);
@@ -25,30 +28,14 @@ void	Server::executeClient(std::string rawCommands)
 			for (std::vector<t_outGoingMessages>::iterator it = replyHandler.messages.begin(); it != replyHandler.messages.end(); it++)
 			{
 				for (std::vector<int>::iterator fdIndex = it->targets.begin(); fdIndex != it->targets.end(); fdIndex++)
-					write(*fdIndex, it->reply.c_str(), it->reply.size());
+				{
+					send(*fdIndex, it->reply.c_str(), it->reply.size(), 0);
+					std::cout << "Reponse envoyee\n||||\n" << it->reply << "\n||||\n";
+					it->reply.clear();
+				}
 			}
 			delete cmd;
 		}
 	}
-}
-
-void	Server::processClient()
-{
-	findClient();
-	
-	std::string clrf = "\r\n";
-	std::string clientBuf = _client->getBuffer();
-	std::size_t found;
-	std::string rawCommands;
-	std::string afterLastClrf;
-
-	found = clientBuf.rfind(clrf);
-	if (found!=std::string::npos)
-	{
-		rawCommands = clientBuf.substr(0, found);
-		afterLastClrf = clientBuf.substr(found + clrf.length());
-
-		if (afterLastClrf.empty())
-			executeClient(rawCommands);
-	}
+	std::cout << "-----------------------------------\n\n";
 }

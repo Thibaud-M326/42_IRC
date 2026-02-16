@@ -92,4 +92,3 @@ ACommand*	CommandFactory::createCommand(std::vector<std::string>& params)
 	}
 	return NULL;
 }
-

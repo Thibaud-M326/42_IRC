@@ -46,7 +46,6 @@ class Server {
 		void	addClient();
 		void	printClients();
 		void	readClient(int event_index);
-		void	processClient();
 		void	executeClient(std::string rawCommands);
 		void	findClient();
 

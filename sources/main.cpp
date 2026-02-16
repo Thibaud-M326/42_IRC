@@ -2,8 +2,6 @@
 #include <iostream>
 #include "Irc.hpp"
 
-
-
 int main()
 {
 	try 

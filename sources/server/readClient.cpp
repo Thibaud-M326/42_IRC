@@ -14,6 +14,7 @@ void Server::readClient(int event_index)
 	{
 		findClient();
 		_client->appendRawData(_buffer);
+		std::memset(_buffer, 0, sizeof(_buffer));
 	}
 
 	//client disconnected
@@ -29,7 +30,9 @@ void Server::readClient(int event_index)
 		//packet read entierly
 		if (errno == EAGAIN)
 		{
-			processClient();
+			findClient();
+			if (_client->processClient())
+				executeClient(_client->getBuffer());
 		}
 		if (errno != EAGAIN)
 		{
