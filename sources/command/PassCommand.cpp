@@ -32,4 +32,3 @@ std::string	PassCommand::ExecuteCommand(Client& target, std::map<int, Client>& C
 	target.setIsRegistered();
 	return "";
 }
-
