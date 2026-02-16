@@ -41,7 +41,7 @@ std::vector<int>	Channel::getClientsFd() const
 {
 	std::vector<int>	clientsFd;
 
-	for (size_t i = 0; i > _clientList.size(); i++)
+	for (size_t i = 0; i < _clientList.size(); i++)
 	{
 		clientsFd.push_back(_clientList[i]->getFd());
 	}

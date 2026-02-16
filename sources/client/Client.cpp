@@ -96,6 +96,11 @@ std::string	Client::getModeParams() const
 	return oss.str();
 }
 
+mapChannels	Client::getChannelList() const
+{
+	return _channelList;
+}
+
 void	Client::setPrefix()
 {
 	if (!_username.empty() && !_nickname.empty())
@@ -156,6 +161,25 @@ void	Client::setModeParams(std::string& params, t_modeEnum index)
 	_modeParams[index] = params;
 }
 
+void	Client::leaveChannel(Channel* channel)
+{
+	for (mapChannels::iterator it = _channelList.begin(); it != _channelList.end(); it++)
+	{
+		if (it->second == channel)
+			_channelList.erase(it);
+	}
+}
+
+void	Client::joinChannel(const std::string& chanName, Channel* Channel)
+{
+	_channelList.insert(std::make_pair(chanName, Channel));
+}
+
+void	Client::clearChannel()
+{
+	_channelList.clear();
+}
+
 bool 	Client::processClient()
 {
 	std::string clrf = "\r\n";
@@ -183,3 +207,4 @@ void	Client::clearBuffer()
 {
 	_cbuffer.clear();
 }
+

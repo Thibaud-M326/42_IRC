@@ -114,6 +114,21 @@ namespace RPL
 	{
 		return (target.getPrefix() + "323 :End of List" + ircMacro::CRLF);
 	}
+
+	inline std::string	JOIN0(Client& target)
+	{
+		return (target.getPrefix() + "JOIN 0" + ircMacro::CRLF);
+	}
+
+	inline std::string	JOINQUIT(Client& target, std::string chanName)
+	{
+		return (target.getPrefix() + ":Has quit the channel " + chanName + ircMacro::CRLF);
+	}
+
+	inline std::string	JOIN(Client& target, std::string chanName, std::string chankey)
+	{
+		return (target.getPrefix() + "JOIN " + chanName + chankey);
+	}
 }
 
 namespace ERR 
@@ -123,9 +138,9 @@ namespace ERR
 		return (target.getPrefix() + "401 " + target.getNickname() + " :No such nick/chan" + ircMacro::CRLF);
 	}
 
-	inline std::string	NOSUCHCHANNEL(Client& target, Channel& chan)
+	inline std::string	NOSUCHCHANNEL(Client& target, std::string& chan)
 	{
-		return (target.getPrefix() + "403 " + chan.getName() + " :No such channel" + ircMacro::CRLF);
+		return (target.getPrefix() + "403 " + chan + " :No such channel" + ircMacro::CRLF);
 	}
 
 	inline std::string	TOOMANYCHANNELS(Client& target, Channel& chan)

@@ -3,11 +3,16 @@
 
 # include "ACommand.hpp"
 
+typedef std::vector<std::pair<std::string, std::string> >	chanParams;
+
 class JoinCommand : public ACommand
 {
 	private:
-		std::vector<std::pair<std::string, std::string> >	buildChannelParams(unsigned int& nbChan);
-		bool												isValidChar(char c);
+		chanParams	buildChannelParams(unsigned int& nbChan);
+		bool	isValidChar(char c);
+		void	createChannel(mapChannels& ChannelArray, chanParams params);
+		void	joinChannel(mapChannels& ChannelArray, chanParams params,
+					Client& target, t_replyHandler& replyHandler);
 
 	public:
 		JoinCommand(std::vector<std::string>& params);

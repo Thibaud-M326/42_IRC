@@ -39,6 +39,7 @@ class Client
 		std::bitset<ircMacro::NB_MODE>	getMode() const;
 		std::string						getStrMode() const;
 		std::string 					getModeParams() const;
+		mapChannels						getChannelList() const;
 
 		/* setters */
 		void		setPrefix();
@@ -51,6 +52,9 @@ class Client
 		void		setMode(t_modeEnum index, bool value);
 		void		setModeParams(std::string& params, t_modeEnum index);
 	
+		void		leaveChannel(Channel *Channel);
+		void		joinChannel(const std::string& chanName, Channel *Channel);
+		void		clearChannel();
 		void		appendRawData(const char* readBuffer);
 		bool		processClient();
 		void		clearBuffer();	

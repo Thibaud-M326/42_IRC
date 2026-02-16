@@ -31,9 +31,9 @@ bool	JoinCommand::isValidChar(char c)
 	return false;
 }
 
-std::vector<std::pair<std::string, std::string> >	JoinCommand::buildChannelParams(unsigned int& nbChan)
+chanParams	JoinCommand::buildChannelParams(unsigned int& nbChan)
 {
-	std::vector<std::pair<std::string, std::string> >	chanParams;
+	chanParams	params;
 
 	for (std::vector<std::string>::iterator word = _commandArray.begin(); word != _commandArray.end(); word++)
 	{
@@ -46,10 +46,10 @@ std::vector<std::pair<std::string, std::string> >	JoinCommand::buildChannelParam
 				nbChan++;
 				if (nextWord == std::string::npos)
 				{
-					chanParams.push_back(std::make_pair(word->substr(index), ""));
+					params.push_back(std::make_pair(word->substr(index), ""));
 					break ;
 				}
-				chanParams.push_back(std::make_pair(word->substr(index, nextWord - index), ""));
+				params.push_back(std::make_pair(word->substr(index, nextWord - index), ""));
 				index = nextWord;
 			}
 		}
@@ -63,56 +63,107 @@ std::vector<std::pair<std::string, std::string> >	JoinCommand::buildChannelParam
 				break ;
 			if (nextWord == std::string::npos)
 			{
-				chanParams.push_back(std::make_pair(word->substr(index), ""));
+				params.push_back(std::make_pair(word->substr(index), ""));
 				break ;
 			}
-			chanParams.push_back(std::make_pair(word->substr(index, nextWord - index), ""));
+			params.push_back(std::make_pair(word->substr(index, nextWord - index), ""));
 			index = nextWord;
 		}
 	}
 
-	for (size_t i = 0; i < chanParams.size(); i++)
+	for (size_t i = 0; i < params.size(); i++)
 	{
-		if (i + nbChan <= chanParams.size())
+		if (i + nbChan < params.size())
 		{
-			chanParams[i].second = chanParams[i + nbChan].first;
-			chanParams.erase(chanParams.begin() + (i + nbChan));
+			params[i].second = params[i + nbChan].first;
+			params.erase(params.begin() + (i + nbChan));
 		}
 	}
 
-	return chanParams;
+	return params;
 }
 
-#include <iostream>
+void	JoinCommand::createChannel(mapChannels& ChannelArray, chanParams params)
+{
+	for (chanParams::iterator it = params.begin(); it != params.end(); it++)
+	{
+		if (ChannelArray.find(it->first) == ChannelArray.end())
+		{
+			Channel	*chan = new Channel();
+			chan->setName(it->first);
+			chan->setKey(it->second);
+			ChannelArray.insert(std::make_pair(it->first, chan));
+		}
+	}
+}
+
+void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
+					Client& target, t_replyHandler& replyHandler)
+{
+	for (chanParams::iterator it = params.begin(); it != params.end(); it++)
+	{
+		mapChannels::iterator chanToJoin = ChannelArray.find(it->first);
+
+		if (chanToJoin != ChannelArray.end())
+		{
+			if (chanToJoin->second->getMode()[inviteOnly])
+			{
+				replyHandler.add(target.getFd(), ERR::INVITEONLYCHAN(target, *chanToJoin->second));
+				return ;
+			}
+			if (it->second == chanToJoin->second->getKey())
+			{
+				target.joinChannel(chanToJoin->first, chanToJoin->second);
+				chanToJoin->second->addClient(&target);
+				replyHandler.add(chanToJoin->second->getClientsFd(), RPL::JOIN(target, it->first, it->second));
+			}
+			else
+				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(target, *chanToJoin->second));
+		}
+	}
+}
+
+
 t_replyHandler	JoinCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
 {
 	(void)ClientArray;
-	(void)ChannelArray;
 	t_replyHandler	replyHandler;
 	unsigned int	nbChan = 0;
 
-	// if (!target.getIsRegistered())
-	// {
-	// 	replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
-	// 	return replyHandler;
-	// }
+	if (!target.getIsRegistered())
+	{
+		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
+		return replyHandler;
+	}
 
-	std::vector<std::pair<std::string, std::string> >	chanParams = buildChannelParams(nbChan);
+	chanParams	params = buildChannelParams(nbChan);
 
-	// for (size_t i = 0; i < chanParams.size(); i++)
-	// {
-	// 	std::cout << ircMacro::BOLD_BLUE << "|" << ircMacro::BOLD_YELLOW
-	// 		<< chanParams[i].first.c_str() << ircMacro::BOLD_BLUE
-	// 		<< "|" << ircMacro::BOLD_YELLOW
-	// 		<< chanParams[i].second.c_str() << ircMacro::BOLD_BLUE
-	// 		<< "|" << ircMacro::STOP_COLOR << '\n';
-	// }
+	mapChannels	tmpChannelList(target.getChannelList());
+	if (params.begin()->second == "0")
+	{
+		for (mapChannels::iterator it = tmpChannelList.begin(); it != tmpChannelList.end(); it++)
+		{
+			it->second->removeClient(&target);
+			replyHandler.add(it->second->getClientsFd(), RPL::JOINQUIT(target, it->first));
+		}
+		target.clearChannel();
+		return replyHandler;
+	}
 
-	if (chanParams.empty())
+	if (params.empty())
 	{
 		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "JOIN"));
 		return replyHandler;
 	}
+	else if (!params.empty() && nbChan == 0)
+	{
+		for (chanParams::iterator it = params.begin(); it != params.end(); it++)
+			replyHandler.add(target.getFd(), ERR::NOSUCHCHANNEL(target, it->second));
+		return replyHandler;
+	}
+
+	createChannel(ChannelArray, params);
+	joinChannel(ChannelArray, params, target, replyHandler);
 
 	return replyHandler;
 }
