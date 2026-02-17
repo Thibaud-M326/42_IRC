@@ -19,42 +19,74 @@ PrivMsgCommand::PrivMsgCommand(std::vector<std::string>& params): ACommand(param
 // ERR_NOTEXTTOSEND
 // :Pas de texte à envoyer
 
+//407    ERR_TOOMANYTARGETS
+//Returned to a client which trying to send a
+//PRIVMSG/NOTICE to too many recipients.
 
+//401    ERR_NOSUCHNICK
+//       "<nickname> :No such nick/channel"
+//       -Used to indicate the nickname parameter supplied to a
+//       command is currently unused.
 
-bool	PrivMsgCommand::isValidPrivMsg(Client& target, mapClients& ClientArray, t_replyHandler& replyHandler)
+//301    RPL_AWAY
+//       "<nick> :<away message>"
+
+bool	PrivMsgCommand::isValidPrivMsg(Client& clientSource, mapClients& clientArray, t_replyHandler& replyHandler)
 {
-	(void)ClientArray;
+	(void)clientArray;
 
 	if (_commandArray.size() == 1 || _commandArray[1].size() == 0)
 	{
-		replyHandler.add(target.getFd(), ERR::NORECIPIENT(target, _commandArray[0]));
+		replyHandler.add(clientSource.getFd(), ERR::NORECIPIENT(clientSource, _commandArray[0]));
 		return false;
 	}
 
-	if (_commandArray.size() == 3 || _commandArray[2].size() == 0)
+	if (_commandArray.size() == 2 || _commandArray[2].size() == 0)
 	{
-		replyHandler.add(target.getFd(), ERR::NOTEXTTOSEND(target));
+		replyHandler.add(clientSource.getFd(), ERR::NOTEXTTOSEND(clientSource));
 		return false;
 	}
 
-	// if (_commandArray.size() > 3)
-	// {
-	// 	replyHandler.add(target.getFd(), ERR::TOOMANYTARGETS(target));
-	// 	return false;
-	// }
+	//trop de clientSource separe par des virgules
+	if (_commandArray.size() > 3)
+	{
+		replyHandler.add(clientSource.getFd(), ERR::TOOMANYTARGETS(clientSource, _commandArray[1]));
+		return false;
+	}
 	
 	return true;
 }
 
-t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray) {
-	(void)ClientArray;
+//je dois trouver le bon client a qui envoyer le message
+//je dois ajouter le message au reply handler
+t_replyHandler	PrivMsgCommand::sendPrivMsgToNickname(Client& clientSource, mapClients& clientArray, t_replyHandler& replyHandler)
+{
+	std::string	clientDestNickname = _commandArray[1];
+	std::string	awayMessage = _commandArray[2];
+	Client* clientDest = NULL;
+
+	clientDest = findClientByNickName(clientDestNickname, clientArray);
+	if (!clientDest)
+	{
+		replyHandler.add(clientSource.getFd(), ERR::NOSUCHNICK(clientSource, _commandArray[1]));
+		return replyHandler;
+	}
+
+	replyHandler.add(clientSource.getFd(), RPL::AWAY(clientSource, awayMessage));
+	replyHandler.add(clientDest->getFd(), RPL::AWAY(clientSource, awayMessage));
+
+	return replyHandler;
+}
+
+t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& clientSource, mapClients& clientArray, mapChannels& ChannelArray) {
+	(void)clientArray;
 	(void)ChannelArray;
-	(void)target;
+	(void)clientSource;
 	t_replyHandler	replyHandler;
 
-	if (!target.getIsRegistered())
+	if (!clientSource.getIsRegistered())
 	{
-		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
+		replyHandler.add(clientSource.getFd(), ERR::NOTREGISTERED(clientSource));
 		return replyHandler;
 	}
 
@@ -63,15 +95,15 @@ t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& target, mapClients& Client
 		std::cout << *it << std::endl;
 	}
 
-	if (!isValidPrivMsg(target, ClientArray, replyHandler))
+	if (!isValidPrivMsg(clientSource, clientArray, replyHandler))
 		return replyHandler;
 
 	// if (isChannel(_commandArray[1], ChannelArray))
 		// vaeo	
-	else
-		//send to USER
+	// else
+		//send to USER	
 
-
+	sendPrivMsgToNickname(clientSource, clientArray, replyHandler);
 
 	return replyHandler;
 }

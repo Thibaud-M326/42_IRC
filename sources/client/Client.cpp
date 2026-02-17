@@ -169,7 +169,7 @@ bool 	Client::processClient()
 		rawCommands = _cbuffer.substr(0, found);
 		afterLastClrf = _cbuffer.substr(found + clrf.length());
 
-		std::cout << "client buffer\n||||\n" << _cbuffer << "|||| "<< std::endl;
+		std::cout << "client fd " << _fd << " buffer\n||||\n" << _cbuffer << "|||| "<< std::endl;
 
 		// _cbuffer.clear();
 

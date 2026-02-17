@@ -24,3 +24,13 @@ bool	ACommand::isChannel(std::string chan, mapChannels& ChannelArray) const
 	}
 	return 0;
 }
+
+Client*	ACommand::findClientByNickName(std::string nickname, mapClients& ClientArray)
+{
+	for (mapClients::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
+	{
+		if (it->second->getNickname() == nickname)
+			return it->second;
+	}
+	return NULL;
+}
