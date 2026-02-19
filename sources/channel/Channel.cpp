@@ -48,6 +48,18 @@ std::vector<int>	Channel::getClientsFd() const
 	return clientsFd;
 }
 
+std::vector<int>	Channel::getClientsFdButSource(int sourceFd) const
+{
+	std::vector<int>	clientsFd;
+
+	for (size_t i = 0; i < _clientList.size(); i++)
+	{
+		if (sourceFd != _clientList[i]->getFd())
+			clientsFd.push_back(_clientList[i]->getFd());
+	}
+	return clientsFd;
+}
+
 std::vector<Client*>	Channel::getClientList() const
 {
 	return _clientList;

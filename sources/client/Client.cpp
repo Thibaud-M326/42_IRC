@@ -106,7 +106,7 @@ void	Client::setPrefix()
 	if (!_username.empty() && !_nickname.empty())
 	{
 		std::ostringstream	oss;
-		oss << _nickname << "!" << _username << "@" << _ip_address << " ";
+		oss << ":" << _nickname << "!" << _username << "@" << _ip_address << " ";
 		_prefix = oss.str();
 	}
 }
@@ -194,8 +194,6 @@ bool 	Client::processClient()
 		afterLastClrf = _cbuffer.substr(found + clrf.length());
 
 		std::cout << "client fd " << _fd << " buffer\n||||\n" << _cbuffer << "|||| "<< std::endl;
-
-		// _cbuffer.clear();
 
 		if (afterLastClrf.empty())
 			return true;

@@ -20,6 +20,7 @@ typedef struct s_replyHandler
 
 	inline void	add(int fd, const std::string& rep)
 	{
+		std::cout << "haaaaaaaaaaaaaa" << std::endl;
 		t_outGoingMessages	msg;
 
 		msg.targets.push_back(fd);
@@ -31,9 +32,9 @@ typedef struct s_replyHandler
 	{
 		t_outGoingMessages	msg;
 
-		for (std::vector<int>::iterator it = fds.begin(); it != fds.end(); ++it) {
-			msg.targets.push_back(*it);
-		}
+		std::cout << "heuuuuuuuuuu" << std::endl;
+
+		msg.targets = fds;
 		msg.reply = rep;
 		messages.push_back(msg);
 	};
@@ -59,9 +60,9 @@ namespace RPL
 		return (target.getPrefix() + "001 " + target.getPrefix() + ircMacro::CRLF);
 	}
 
-	inline std::string	AWAY(Client& target, std::string& away_msg)
+	inline std::string	AWAY(Client& source, std::string& away_msg)
 	{
-		return (target.getPrefix() + "301 " + target.getNickname() + " :" + away_msg + ircMacro::CRLF);
+		return (source.getPrefix() + "301 " + source.getNickname() + " :" + away_msg + ircMacro::CRLF);
 	}
 
 	inline std::string	INVITING(Client& target, Channel& chan)
@@ -131,7 +132,16 @@ namespace RPL
 
 	inline std::string	JOIN(Client& target, std::string chanName, std::string chankey)
 	{
-		return (target.getPrefix() + "JOIN " + chanName + chankey);
+		std::string msg = target.getPrefix() + "JOIN " + chanName;
+		if (!chankey.empty())
+        	msg += " " + chankey;
+		msg += ircMacro::CRLF;
+		return msg;
+	}
+
+	inline std::string	PRIVMSG(Client& source, Client& target, std::string msg)
+	{
+		return (source.getPrefix() + "PRIVMSG " + target.getNickname() + " :" + msg + ircMacro::CRLF);
 	}
 }
 

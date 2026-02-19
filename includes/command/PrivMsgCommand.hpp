@@ -11,6 +11,7 @@ class PrivMsgCommand : public ACommand
 
 		bool	isValidPrivMsg(Client& clientSource, mapClients& ClientArray, t_replyHandler& replyHandler);
 		t_replyHandler	sendPrivMsgToNickname(Client& clientSource, mapClients& ClientArray, t_replyHandler& replyHandler);
+		t_replyHandler	sendPrivMsgToChannel(Channel& Chan, Client& clientSource, t_replyHandler& replyHandler);
 
 };
 

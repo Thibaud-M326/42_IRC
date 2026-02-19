@@ -72,21 +72,40 @@ t_replyHandler	PrivMsgCommand::sendPrivMsgToNickname(Client& clientSource, mapCl
 		replyHandler.add(clientSource.getFd(), ERR::NOSUCHNICK(clientSource, _commandArray[1]));
 		return replyHandler;
 	}
-
-	std::vector<int> sendList;
-	sendList.push_back(clientSource.getFd());
-	sendList.push_back(clientDest->getFd());
-
-	replyHandler.add(sendList, RPL::AWAY(clientSource, awayMessage));
-
+	
+	if(clientDest->getFd() == clientSource.getFd())
+	{
+		replyHandler.add(clientSource.getFd(), RPL::PRIVMSG(clientSource, *clientDest, awayMessage));
+		return replyHandler;
+	}
+	else
+	{
+		replyHandler.add(clientDest->getFd(), RPL::PRIVMSG(clientSource, *clientDest, awayMessage));
+	}
 	return replyHandler;
 }
 
-t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& clientSource, mapClients& clientArray, mapChannels& ChannelArray) {
-	(void)clientArray;
-	(void)ChannelArray;
+//trouver la liste des utilisateur qui sont dans un channel
+//si la liste est vide ??? NOSUCHNICK
+t_replyHandler	PrivMsgCommand::sendPrivMsgToChannel(Channel& chan, Client& clientSource, t_replyHandler& replyHandler)
+{
 	(void)clientSource;
+	std::string	awayMessage = _commandArray[2];
+
+	std::cout << "break life" << std::endl;
+
+	std::vector<int> clientsFd;
+	clientsFd = chan.getClientsFdButSource(clientSource.getFd());
+
+	// replyHandler.add(clientsFd, RPL::PRIVMSG(clientSource, awayMessage));
+	
+	return replyHandler;
+}
+
+t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& clientSource, mapClients& clientArray, mapChannels& ChannelArray) 
+{
 	t_replyHandler	replyHandler;
+	Channel*		chan;
 
 	if (!clientSource.getIsRegistered())
 	{
@@ -96,18 +115,16 @@ t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& clientSource, mapClients& 
 
 	for (std::vector<std::string>::iterator it = _commandArray.begin(); it != _commandArray.end(); it++)
 	{
-		std::cout << *it << std::endl;
+		std::cout << "entrance : " << *it << std::endl;
 	}
 
 	if (!isValidPrivMsg(clientSource, clientArray, replyHandler))
 		return replyHandler;
 
-	// if (isChannel(_commandArray[1], ChannelArray))
-		// vaeo	
-	// else
-		//send to USER	
-
-	sendPrivMsgToNickname(clientSource, clientArray, replyHandler);
+	if ((chan = getChannelByName(_commandArray[1], ChannelArray)))
+		sendPrivMsgToChannel(*chan, clientSource, replyHandler);
+	else
+		sendPrivMsgToNickname(clientSource, clientArray, replyHandler);
 
 	return replyHandler;
 }

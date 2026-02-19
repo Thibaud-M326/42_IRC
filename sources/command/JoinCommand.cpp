@@ -167,4 +167,3 @@ t_replyHandler	JoinCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	return replyHandler;
 }
-

@@ -14,7 +14,7 @@ class Channel
 		std::string						_name;
 		std::string						_topic;
 		std::bitset<ircMacro::NB_MODE>	_mode;
-		Client							*_operator;
+		Client*							_operator;
 		std::vector<std::string>		_modeParams;
 		std::vector<Client*>			_clientList;
 		std::string						_key;
@@ -33,6 +33,7 @@ class Channel
 		Client	   						*getOperator() const;
 		std::vector<Client*>			getClientList() const;
 		std::vector<int>				getClientsFd() const;
+		std::vector<int>				getClientsFdButSource(int sourceFd) const;
 		std::string						getKey() const;
 
 		/* setters */

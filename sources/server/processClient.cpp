@@ -30,7 +30,8 @@ void	Server::executeClient(std::string rawCommands)
 				for (std::vector<int>::iterator fdIndex = it->targets.begin(); fdIndex != it->targets.end(); fdIndex++)
 				{
 					send(*fdIndex, it->reply.c_str(), it->reply.size(), 0);
-					std::cout << "Reponse envoyee\n||||\n" << it->reply << "\n||||\n";
+					std::cout << "Reponse envoyee a fd :" << *fdIndex << "\n||||\n" << it->reply << "\n||||\n";
+					// it->reply.clear();
 				}
 			}
 			delete cmd;
