@@ -15,3 +15,22 @@ bool	ACommand::isSpecialChar(char c) const
 	return false;
 }
 
+bool	ACommand::isChannel(std::string chan, mapChannels& ChannelArray) const
+{
+	for(mapChannels::iterator it = ChannelArray.begin(); it != ChannelArray.end(); it++)
+	{
+		if (chan == it->second->getName())	
+			return 1;
+	}
+	return 0;
+}
+
+Client*	ACommand::findClientByNickName(std::string nickname, mapClients& ClientArray)
+{
+	for (mapClients::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
+	{
+		if (it->second->getNickname() == nickname)
+			return it->second;
+	}
+	return NULL;
+}

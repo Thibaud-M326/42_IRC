@@ -11,10 +11,10 @@
 #include "TopicCommand.hpp"
 #include "UserCommand.hpp"
 
-// static ACommand*	createPrivMsg(std::vector<std::string>& commands)
-// {
-// 	return new PrivMsgCommand(commands);
-// }
+static ACommand*	createPrivMsg(std::vector<std::string>& commands)
+{
+	return new PrivMsgCommand(commands);
+}
 
 static ACommand*	createNick(std::vector<std::string>& commands)
 {
@@ -68,7 +68,7 @@ static ACommand*	createJoin(std::vector<std::string>& commands)
 
 CommandFactory::CommandFactory()
 {
-	// _registry["PRIVMSG"] = &createPrivMsg;
+	_registry["PRIVMSG"] = &createPrivMsg;
 	_registry["NICK"] = &createNick;
 	_registry["PASS"] = &createPass;
 	_registry["USER"] = &createUser;
