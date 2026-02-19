@@ -1,4 +1,5 @@
 #include "PrivMsgCommand.hpp"
+#include <vector>
 
 #include <iostream>
 
@@ -72,8 +73,11 @@ t_replyHandler	PrivMsgCommand::sendPrivMsgToNickname(Client& clientSource, mapCl
 		return replyHandler;
 	}
 
-	replyHandler.add(clientSource.getFd(), RPL::AWAY(clientSource, awayMessage));
-	replyHandler.add(clientDest->getFd(), RPL::AWAY(clientSource, awayMessage));
+	std::vector<int> sendList;
+	sendList.push_back(clientSource.getFd());
+	sendList.push_back(clientDest->getFd());
+
+	replyHandler.add(sendList, RPL::AWAY(clientSource, awayMessage));
 
 	return replyHandler;
 }

@@ -6,6 +6,8 @@
 # include "Irc.hpp"
 # include <sstream>
 
+#include <iostream>
+
 typedef struct s_outGoingMessages
 {
 	std::vector<int>				targets;
@@ -29,7 +31,9 @@ typedef struct s_replyHandler
 	{
 		t_outGoingMessages	msg;
 
-		msg.targets = fds;
+		for (std::vector<int>::iterator it = fds.begin(); it != fds.end(); ++it) {
+			msg.targets.push_back(*it);
+		}
 		msg.reply = rep;
 		messages.push_back(msg);
 	};
