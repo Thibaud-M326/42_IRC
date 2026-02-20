@@ -139,9 +139,9 @@ namespace RPL
 		return msg;
 	}
 
-	inline std::string	PRIVMSG(Client& source, Client& target, std::string msg)
+	inline std::string	PRIVMSG(Client& source, std::string target, std::string msg)
 	{
-		return (source.getPrefix() + "PRIVMSG " + target.getNickname() + " :" + msg + ircMacro::CRLF);
+		return (source.getPrefix() + "PRIVMSG " + target + " :" + msg + ircMacro::CRLF);
 	}
 }
 

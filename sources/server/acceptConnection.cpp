@@ -55,9 +55,7 @@ void	Server::acceptConnection()
 		}
 
 		set_nonblocking(_client_socket_fd);
-
 		addClientToEpoll();
-
 		addClient();
 
 		std::cout << "client fd : " << _client_socket_fd << " connected" << std::endl;

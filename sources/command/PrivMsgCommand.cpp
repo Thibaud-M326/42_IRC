@@ -1,5 +1,7 @@
 #include "PrivMsgCommand.hpp"
 #include <vector>
+#include <algorithm>
+
 
 #include <iostream>
 
@@ -63,8 +65,11 @@ bool	PrivMsgCommand::isValidPrivMsg(Client& clientSource, mapClients& clientArra
 t_replyHandler	PrivMsgCommand::sendPrivMsgToNickname(Client& clientSource, mapClients& clientArray, t_replyHandler& replyHandler)
 {
 	std::string	clientDestNickname = _commandArray[1];
-	std::string	awayMessage = _commandArray[2];
+	std::string	message = _commandArray[2];
 	Client* clientDest = NULL;
+
+	if (message[0] == ':')
+		message.erase(0, 1);
 
 	clientDest = findClientByNickName(clientDestNickname, clientArray);
 	if (!clientDest)
@@ -75,29 +80,32 @@ t_replyHandler	PrivMsgCommand::sendPrivMsgToNickname(Client& clientSource, mapCl
 	
 	if(clientDest->getFd() == clientSource.getFd())
 	{
-		replyHandler.add(clientSource.getFd(), RPL::PRIVMSG(clientSource, *clientDest, awayMessage));
+		replyHandler.add(clientSource.getFd(), RPL::PRIVMSG(clientSource, clientDest->getNickname(), message));
 		return replyHandler;
 	}
 	else
 	{
-		replyHandler.add(clientDest->getFd(), RPL::PRIVMSG(clientSource, *clientDest, awayMessage));
+		replyHandler.add(clientDest->getFd(), RPL::PRIVMSG(clientSource, clientDest->getNickname(), message));
 	}
 	return replyHandler;
 }
 
-//trouver la liste des utilisateur qui sont dans un channel
-//si la liste est vide ??? NOSUCHNICK
 t_replyHandler	PrivMsgCommand::sendPrivMsgToChannel(Channel& chan, Client& clientSource, t_replyHandler& replyHandler)
 {
-	(void)clientSource;
-	std::string	awayMessage = _commandArray[2];
+	std::string	message = _commandArray[2];
 
-	std::cout << "break life" << std::endl;
+	if (message[0] == ':')
+		message.erase(0, 1);
 
-	std::vector<int> clientsFd;
-	clientsFd = chan.getClientsFdButSource(clientSource.getFd());
+	std::vector<Client*> clients;
+	clients = chan.getClientList();
 
-	// replyHandler.add(clientsFd, RPL::PRIVMSG(clientSource, awayMessage));
+	for (std::vector<Client*>::iterator it = clients.begin(); it != clients.end(); it++)	
+	{
+		Client* clientDest = *it;
+		if (clientDest->getFd() != clientSource.getFd())
+			replyHandler.add(clientDest->getFd(), RPL::PRIVMSG(clientSource, chan.getName(), message));
+	}
 	
 	return replyHandler;
 }
