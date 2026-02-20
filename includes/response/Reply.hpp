@@ -20,7 +20,6 @@ typedef struct s_replyHandler
 
 	inline void	add(int fd, const std::string& rep)
 	{
-		std::cout << "haaaaaaaaaaaaaa" << std::endl;
 		t_outGoingMessages	msg;
 
 		msg.targets.push_back(fd);
@@ -31,8 +30,6 @@ typedef struct s_replyHandler
 	inline void	add(std::vector<int> fds, const std::string& rep)
 	{
 		t_outGoingMessages	msg;
-
-		std::cout << "heuuuuuuuuuu" << std::endl;
 
 		msg.targets = fds;
 		msg.reply = rep;
@@ -173,13 +170,13 @@ namespace ERR
 	// 411: PRIVMSG/NOTICE sent without recipient parameter
 	inline std::string	NORECIPIENT(Client& target, std::string command)
 	{
-		return (target.getPrefix() + "411 :No recipient given (" + command + ")" + ircMacro::CRLF);
+		return (target.getPrefix() + "411 " + " :No recipient given (" + command + ")" + ircMacro::CRLF);
 	}
 
 	// 412: PRIVMSG/NOTICE sent without text to send
 	inline std::string	NOTEXTTOSEND(Client& target)
 	{
-		return (target.getPrefix() + "412 :No text to send" + ircMacro::CRLF);
+		return (target.getPrefix() + "412 " + target.getNickname() + " :No text to send" + ircMacro::CRLF);
 	}
 
 	// 421: Server received unknown command

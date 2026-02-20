@@ -7,7 +7,7 @@ class ListCommand : public ACommand
 {
 	public:
 		ListCommand(std::vector<std::string>& params);
-		t_replyHandler		ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray);
+		t_replyHandler		ExecuteCommand(Client& source, mapClients& ClientArray, mapChannels& ChannelArray);
 };
 
 #endif

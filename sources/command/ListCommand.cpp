@@ -2,10 +2,13 @@
 
 ListCommand::ListCommand(std::vector<std::string>& params): ACommand(params) {}
 
-std::vector<std::string>	ListCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
+t_replyHandler	ListCommand::ExecuteCommand(Client& source, mapClients& ClientArray, mapChannels& ChannelArray)
 {
 	(void)ClientArray;
 	(void)ChannelArray;
-	(void)target;
-	return _replyArray;
+	t_replyHandler	replyHandler;
+
+	replyHandler.add(source.getFd(), "LIST #twilight,#42");
+
+	return replyHandler;
 }

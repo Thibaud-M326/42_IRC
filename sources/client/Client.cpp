@@ -11,7 +11,6 @@ Client::Client():
 	_isRegistered(false),
 	_cbuffer("")
 {
-	std::cout << "Client constructor called" << std::endl;
 }
 
 Client::Client(const int fd, int ip_address):
@@ -25,7 +24,6 @@ Client::Client(const int fd, int ip_address):
 
 Client::~Client()
 {
-	std::cout << "Client destructor called" << std::endl;
 }
 
 std::string	Client::getPrefix() const
@@ -193,7 +191,7 @@ bool 	Client::processClient()
 		rawCommands = _cbuffer.substr(0, found);
 		afterLastClrf = _cbuffer.substr(found + clrf.length());
 
-		std::cout << "client fd " << _fd << " buffer\n||||\n" << _cbuffer << "|||| "<< std::endl;
+		std::cout << "[PARSE] Client fd: " << _fd << " | Buffer: " << rawCommands.length() << " bytes" << std::endl;
 
 		if (afterLastClrf.empty())
 			return true;

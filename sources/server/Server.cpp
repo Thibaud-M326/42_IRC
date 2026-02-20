@@ -21,7 +21,6 @@ Server::Server(std::string port, std::string password)
 	_client(NULL),
 	_clients()
 {
-	std::cout << "Server constructor called" << std::endl;
 }
 
 Server::~Server()
@@ -30,5 +29,4 @@ Server::~Server()
 		delete it->second;
 	for (mapChannels::iterator it = _channelArray.begin(); it != _channelArray.end(); it++)
 		delete it->second;
-	std::cout << "Server destructor called" << std::endl;
 }

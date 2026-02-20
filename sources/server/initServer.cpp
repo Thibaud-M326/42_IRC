@@ -25,7 +25,7 @@ void Server::init_server_socket()
 	if (-1 == listen(_serv_socket_fd, 1))
 		throw ExceptionPerror(ERR_MSG);
 
-	std::cout << "The socket server is set and listening" << std::endl;
+	std::cout << "[INIT] Server socket created and listening on port " << PORT << std::endl;
 }
 
 void Server::init_epoll()
@@ -40,5 +40,5 @@ void Server::init_epoll()
 	if (-1 == epoll_ctl(_epoll_fd, EPOLL_CTL_ADD, _serv_socket_fd, &_ev))
 		throw ExceptionPerror(ERR_MSG);
 	
-	std::cout << "Server is listening and epoll is set" << '\n';
+	std::cout << "[EPOLL] Epoll initialized (fd: " << _epoll_fd << ")" << std::endl;
 }

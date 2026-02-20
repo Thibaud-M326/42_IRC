@@ -58,6 +58,6 @@ void	Server::acceptConnection()
 		addClientToEpoll();
 		addClient();
 
-		std::cout << "client fd : " << _client_socket_fd << " connected" << std::endl;
+		std::cout << "[ACCEPT] Client connected (fd: " << _client_socket_fd << ")" << std::endl;
 	}
 }

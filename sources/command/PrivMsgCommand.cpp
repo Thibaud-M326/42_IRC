@@ -12,27 +12,16 @@ PrivMsgCommand::PrivMsgCommand(std::vector<std::string>& params): ACommand(param
 //    Parameters: <msgtarget> <text to be sent>
 
 //optionel :
-    //    404    ERR_CANNOTSENDTOCHAN
-    //           "<channel name> :Cannot send to channel"
 
+// ERR_CANNOTSENDTOCHAN
 
-// ERR_NORECIPIENT
-// :Pas de destinataire donné (<commande>)
+// ERR_NORECIPIENT :OK
 
-// ERR_NOTEXTTOSEND
-// :Pas de texte à envoyer
+// ERR_NOTEXTTOSEND :OK
 
-//407    ERR_TOOMANYTARGETS
-//Returned to a client which trying to send a
-//PRIVMSG/NOTICE to too many recipients.
+// ERR_TOOMANYTARGETS :TODO
 
-//401    ERR_NOSUCHNICK
-//       "<nickname> :No such nick/channel"
-//       -Used to indicate the nickname parameter supplied to a
-//       command is currently unused.
-
-//301    RPL_AWAY
-//       "<nick> :<away message>"
+// ERR_NOSUCHNICK : OK
 
 bool	PrivMsgCommand::isValidPrivMsg(Client& clientSource, mapClients& clientArray, t_replyHandler& replyHandler)
 {
@@ -56,12 +45,10 @@ bool	PrivMsgCommand::isValidPrivMsg(Client& clientSource, mapClients& clientArra
 		replyHandler.add(clientSource.getFd(), ERR::TOOMANYTARGETS(clientSource, _commandArray[1]));
 		return false;
 	}
-	
+
 	return true;
 }
 
-//je dois trouver le bon client a qui envoyer le message
-//je dois ajouter le message au reply handler
 t_replyHandler	PrivMsgCommand::sendPrivMsgToNickname(Client& clientSource, mapClients& clientArray, t_replyHandler& replyHandler)
 {
 	std::string	clientDestNickname = _commandArray[1];
@@ -106,7 +93,7 @@ t_replyHandler	PrivMsgCommand::sendPrivMsgToChannel(Channel& chan, Client& clien
 		if (clientDest->getFd() != clientSource.getFd())
 			replyHandler.add(clientDest->getFd(), RPL::PRIVMSG(clientSource, chan.getName(), message));
 	}
-	
+
 	return replyHandler;
 }
 
@@ -121,14 +108,10 @@ t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& clientSource, mapClients& 
 		return replyHandler;
 	}
 
-	for (std::vector<std::string>::iterator it = _commandArray.begin(); it != _commandArray.end(); it++)
-	{
-		std::cout << "entrance : " << *it << std::endl;
-	}
-
 	if (!isValidPrivMsg(clientSource, clientArray, replyHandler))
 		return replyHandler;
 
+		
 	if ((chan = getChannelByName(_commandArray[1], ChannelArray)))
 		sendPrivMsgToChannel(*chan, clientSource, replyHandler);
 	else

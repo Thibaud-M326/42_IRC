@@ -17,10 +17,9 @@ void Server::readClient(int event_index)
 		std::memset(_buffer, 0, sizeof(_buffer));
 	}
 
-	//client disconnected
 	if (readSize == 0)
 	{
-		std::cout << "Client " << _client_socket_fd << " disconnected" << std::endl;
+		std::cout << "[READ] Client disconnected (fd: " << _client_socket_fd << ")" << std::endl;
 		_clients.erase(_client_socket_fd);
 		close(_client_socket_fd);
 	}
