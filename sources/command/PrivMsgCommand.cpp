@@ -49,9 +49,9 @@ bool	PrivMsgCommand::isValidPrivMsg(Client& clientSource, mapClients& clientArra
 	return true;
 }
 
-t_replyHandler	PrivMsgCommand::sendPrivMsgToNickname(Client& clientSource, mapClients& clientArray, t_replyHandler& replyHandler)
+t_replyHandler	PrivMsgCommand::sendPrivMsgToNickname(std::string msgTarget, Client& clientSource, mapClients& clientArray, t_replyHandler& replyHandler)
 {
-	std::string	clientDestNickname = _commandArray[1];
+	std::string	clientDestNickname = msgTarget;
 	std::string	message = _commandArray[2];
 	Client* clientDest = NULL;
 
@@ -111,11 +111,19 @@ t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& clientSource, mapClients& 
 	if (!isValidPrivMsg(clientSource, clientArray, replyHandler))
 		return replyHandler;
 
-		
-	if ((chan = getChannelByName(_commandArray[1], ChannelArray)))
-		sendPrivMsgToChannel(*chan, clientSource, replyHandler);
-	else
-		sendPrivMsgToNickname(clientSource, clientArray, replyHandler);
+	std::stringstream	ss(_commandArray[1]);
+	std::string			msgTarget;
+	char				del = ',';
+
+	while (getline(ss, msgTarget, del))
+	{
+		std::cout << "msgTarget : " << msgTarget << std::endl;
+
+		if ((chan = getChannelByName(msgTarget, ChannelArray)))
+			sendPrivMsgToChannel(*chan, clientSource, replyHandler);
+		else
+			sendPrivMsgToNickname(msgTarget, clientSource, clientArray, replyHandler);
+	}
 
 	return replyHandler;
 }
