@@ -35,7 +35,7 @@ namespace ircMacro
 	const char	INVALID[] = "Invalid";
 
 	const char	modeCharArray[] =
-		{ 'l', 'o', 'k', 't', 'i' };
+		{ 'l', 'o', 'k', 't', 'i', '\0' };
 
 	const char	specialCharArray[] =
 		{ '[', '\\', ']', '^', '_',

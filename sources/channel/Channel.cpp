@@ -77,9 +77,9 @@ std::string	Channel::getModeParams() const
 	return oss.str();
 }
 
-Client	*Channel::getOperator() const
+std::vector<Client*>	Channel::getOperators() const
 {
-	return _operator;
+	return _operators;
 }
 
 std::string	Channel::getKey() const
@@ -110,21 +110,33 @@ void	Channel::setModeParams(std::string& params, t_modeEnum index)
 	_modeParams[index] = params;
 }
 
-void	Channel::setOperator(Client	*ope)
+void	Channel::addOperator(Client& ope)
 {
-	_operator = ope;
+	_operators.push_back(&ope);
 }
 
-void	Channel::addClient(Client* client)
+void	Channel::removeOperator(Client& ope)
 {
-	_clientList.push_back(client);
+	std::vector<Client*>::iterator it = _operators.begin();
+	while (it != _operators.end())
+	{
+		if (*it == &ope)
+			break ;
+		it++;
+	}
+	_operators.erase(it);
 }
 
-void	Channel::removeClient(Client* client)
+void	Channel::addClient(Client& client)
+{
+	_clientList.push_back(&client);
+}
+
+void	Channel::removeClient(Client& client)
 {
 	for (std::vector<Client*>::iterator it = _clientList.begin(); it != _clientList.end(); it++)
 	{
-		if (*it == client)
+		if (*it == &client)
 			_clientList.erase(it);
 	}
 }

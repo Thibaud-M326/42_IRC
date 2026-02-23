@@ -49,7 +49,7 @@ class Client
 		void		setFd(int Fd);
 		void		setBuffer(std::string buffer);
 		void		setIsRegistered();
-		void		setMode(t_modeEnum index, bool value);
+		void		setMode(char mode, char ope);
 		void		setModeParams(std::string& params, t_modeEnum index);
 	
 		void		leaveChannel(Channel *Channel);

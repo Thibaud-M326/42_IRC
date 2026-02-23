@@ -37,11 +37,12 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	(void)ChannelArray;
 	t_replyHandler	replyHandler;
 	
-	if (!target.getIsRegistered())
+	if (!target.getIsRegistered() || target.getNickname().empty())
 	{
 		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
 		return replyHandler;
 	}
+
 	if (!isValidParams())
 	{
 		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "USER"));
@@ -67,6 +68,7 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	target.setUsername(_commandArray[1]);
 	replyHandler.add(target.getFd(), RPL::USER(target, _commandArray[4], index));
+	target.setIsRegistered();
 
 	return replyHandler;
 }

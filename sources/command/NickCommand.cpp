@@ -64,7 +64,6 @@ t_replyHandler	NickCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		return replyHandler;
 
 	target.setNickname(_commandArray[1]);
-	replyHandler.add(target.getFd(), RPL::NICK(target));
 
 	return replyHandler;
 }

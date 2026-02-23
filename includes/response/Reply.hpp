@@ -77,9 +77,9 @@ namespace RPL
 		return (target.getPrefix() + "332 " +  chan.getName() + " :" + chan.getTopic() + ircMacro::CRLF);
 	}
 
-	inline std::string	UMODEIS(Client& target)
+	inline std::string	UMODEIS(Client& target, std::string mode)
 	{
-		return (target.getPrefix() + "221 " +  target.getStrMode() + ircMacro::CRLF);
+		return (target.getPrefix() + "221 " +  mode + ircMacro::CRLF);
 	}
 
 	inline std::string	CHANNELMODEIS(Client& target, Channel& chan)
@@ -97,9 +97,9 @@ namespace RPL
 		return (target.getPrefix() + "347 " + chan.getName() + " :End of channel invite list" + ircMacro::CRLF);
 	}
 
-	inline std::string	UNIQOPIS(Client& target, Channel& chan)
+	inline std::string	UNIQOPIS(Client& target, Channel& chan, Client& ope)
 	{
-		return (target.getPrefix() + "325 " + chan.getName() + " " + chan.getOperator()->getUsername() + ircMacro::CRLF);
+		return (target.getPrefix() + "325 " + chan.getName() + " " + ope.getUsername() + ircMacro::CRLF);
 	}
 
 	inline std::string	YOUREOPER(Client& target)
@@ -275,11 +275,6 @@ namespace ERR
 		return (target.getPrefix() + "482 " + chan.getName() + " :You're not channel operator" + ircMacro::CRLF);
 	}
 
-	// 501: Invalid MODE flag provided by user
-	inline std::string	UMODEUNKNOWNFLAG(Client& target)
-	{
-		return (target.getPrefix() + "501 :Unknown MODE flag" + ircMacro::CRLF);
-	}
 	// 451: User not yet registered
 	inline std::string	NOTREGISTERED(Client& target)
 	{
