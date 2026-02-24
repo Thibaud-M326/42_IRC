@@ -14,6 +14,7 @@ typedef enum e_modeEnum
 	restrictPassword = 2, // 'k'
 	restrictTopic = 3, // 't'
 	inviteOnly = 4, // 'i'
+	failure = 5
 }	t_modeEnum;
 
 typedef	std::map<int, Client*>			mapClients;

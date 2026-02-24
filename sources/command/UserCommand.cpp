@@ -37,9 +37,15 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	(void)ChannelArray;
 	t_replyHandler	replyHandler;
 	
-	if (!target.getIsRegistered() || target.getNickname().empty())
+	if (!target.getIsConnected() || target.getNickname().empty())
 	{
 		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
+		return replyHandler;
+	}
+
+	if (target.getIsRegistered())
+	{
+		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED(target));
 		return replyHandler;
 	}
 
@@ -50,12 +56,6 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	}
 
 	std::string	username(_commandArray[1]), realname(_commandArray[4]);
-
-	if (!target.getUsername().empty())
-	{
-		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED(target));
-		return replyHandler;
-	}
 
 	size_t	index = 0;
 

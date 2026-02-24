@@ -41,10 +41,10 @@ static ACommand*	createUser(std::vector<std::string>& commands)
 // 	return new TopicCommand(commands);
 // }
 
-// static ACommand*	createMode(std::vector<std::string>& commands)
-// {
-// 	return new ModeCommand(commands);
-// }
+static ACommand*	createMode(std::vector<std::string>& commands)
+{
+	return new ModeCommand(commands);
+}
 
 // static ACommand*	createKick(std::vector<std::string>& commands)
 // {
@@ -74,7 +74,7 @@ CommandFactory::CommandFactory()
 	_registry["USER"] = &createUser;
 	// _registry["INVITE"] = &createInvite;
 	// _registry["TOPIC"] = &createTopic;
-	// _registry["MODE"] = &createMode;
+	_registry["MODE"] = &createMode;
 	// _registry["KICK"] = &createKick;
 	// _registry["OPER"] = &createOper;
 	// _registry["LIST"] = &createList;

@@ -54,7 +54,7 @@ t_replyHandler	NickCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	(void)ChannelArray;
 	t_replyHandler	replyHandler;
 
-	if (!target.getIsRegistered())
+	if (!target.getIsConnected())
 	{
 		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
 		return replyHandler;

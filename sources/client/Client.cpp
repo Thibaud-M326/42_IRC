@@ -99,6 +99,16 @@ mapChannels	Client::getChannelList() const
 	return _channelList;
 }
 
+bool	Client::getIsConnected() const
+{
+	return _isConnected;
+}
+
+void	Client::setIsConnected()
+{
+	_isConnected = true;
+}
+
 void	Client::setPrefix()
 {
 	if (!_username.empty() && !_nickname.empty())

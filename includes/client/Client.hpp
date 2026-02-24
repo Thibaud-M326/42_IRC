@@ -16,6 +16,7 @@ class Client
 		int								_ip_address;
 		int								_fd;
 		bool							_isRegistered;
+		bool							_isConnected;
 		std::bitset<ircMacro::NB_MODE>	_mode;
 		std::vector<std::string>		_modeParams;
 		mapChannels						_channelList;
@@ -30,6 +31,7 @@ class Client
 
 		/* getters */
 		bool							getIsRegistered() const;
+		bool							getIsConnected() const;
 		int								getIpAddress() const;
 		int								getFd() const;
 		std::string						getPrefix() const;
@@ -42,22 +44,23 @@ class Client
 		mapChannels						getChannelList() const;
 
 		/* setters */
-		void		setPrefix();
-		void		setUsername(std::string& Username);
-		void		setNickname(std::string& Nickname);
-		void		setIpAddress(int& Ip_address);
-		void		setFd(int Fd);
-		void		setBuffer(std::string buffer);
-		void		setIsRegistered();
-		void		setMode(char mode, char ope);
-		void		setModeParams(std::string& params, t_modeEnum index);
+		void							setPrefix();
+		void							setUsername(std::string& Username);
+		void							setNickname(std::string& Nickname);
+		void							setIpAddress(int& Ip_address);
+		void							setFd(int Fd);
+		void							setBuffer(std::string buffer);
+		void							setIsRegistered();
+		void							setIsConnected();
+		void							setMode(char mode, char ope);
+		void							setModeParams(std::string& params, t_modeEnum index);
 	
-		void		leaveChannel(Channel *Channel);
-		void		joinChannel(const std::string& chanName, Channel *Channel);
-		void		clearChannel();
-		void		appendRawData(const char* readBuffer);
-		bool		processClient();
-		void		clearBuffer();	
+		void							leaveChannel(Channel *Channel);
+		void							joinChannel(const std::string& chanName, Channel *Channel);
+		void							clearChannel();
+		void							appendRawData(const char* readBuffer);
+		bool							processClient();
+		void							clearBuffer();	
 };
 
 #endif

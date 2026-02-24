@@ -23,7 +23,7 @@ t_replyHandler	PassCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		return replyHandler;
 	}
 
-	if (target.getIsRegistered())
+	if (target.getIsConnected())
 	{
 		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED(target));
 		return replyHandler;
@@ -35,7 +35,7 @@ t_replyHandler	PassCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		return replyHandler;
 	}
 
-	target.setIsRegistered();
+	target.setIsConnected();
 
 	return replyHandler;
 }

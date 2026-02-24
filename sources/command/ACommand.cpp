@@ -25,12 +25,12 @@ Channel*	ACommand::getChannelByName(std::string chanName, mapChannels& ChannelAr
 	return NULL;
 }
 
-Client*	ACommand::findClientByNickName(std::string nickname, mapClients& ClientArray) const
+Client*	ACommand::findClientByNickName(std::string nickname, std::vector<Client*> ClientArray) const
 {
-	for (mapClients::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
+	for (std::vector<Client*>::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
 	{
-		if (it->second->getNickname() == nickname)
-			return it->second;
+		if ((*it)->getNickname() == nickname)
+			return *it;
 	}
 	return NULL;
 }

@@ -20,7 +20,7 @@ class ACommand
 		virtual t_replyHandler	ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray) = 0;
 		bool					isSpecialChar(char c) const;
 		Channel*				getChannelByName(std::string chan, mapChannels& ChannelArray) const;
-		Client*					findClientByNickName(std::string nickname, mapClients& ClientArray) const;
+		Client*					findClientByNickName(std::string nickname, std::vector<Client*> ClientArray) const;
 
 		virtual ~ACommand();
 
