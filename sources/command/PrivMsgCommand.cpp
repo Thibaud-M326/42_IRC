@@ -115,7 +115,7 @@ t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& clientSource, mapClients& 
 	std::string			msgTarget;
 	char				del = ',';
 
-	while (getline(ss, msgTarget, del))
+	while (std::getline(ss, msgTarget, del))
 	{
 		std::cout << "msgTarget : " << msgTarget << std::endl;
 
