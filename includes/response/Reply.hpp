@@ -140,6 +140,13 @@ namespace RPL
 	{
 		return (source.getPrefix() + "PRIVMSG " + target + " :" + msg + ircMacro::CRLF);
 	}
+
+	inline std::string	KICK(std::string chan, std::string user, std::string reason)
+	{
+		if (reason.empty())
+			return ("KICK " + chan + " " + user + ircMacro::CRLF);
+		return ("KICK " + chan + " " + user + " :" + reason + ircMacro::CRLF);
+	}
 }
 
 namespace ERR 
