@@ -69,22 +69,31 @@ void	ModeCommand::modeUserLimit(char& signMode, size_t& count, t_replyHandler& r
 	count++;
 }
 
-// mode - change the channel’s mode: users may query and change the characteristics of a channel.
-// Parameters: <channel> *( ( "-" / "+" ) *<modes> *<modeparams> )
-// Numeric Replies:
-//
-//      ERR_NEEDMOREPARAMS              ERR_KEYSET
-//      ERR_NOCHANMODES                 ERR_CHANOPRIVSNEEDED
-//      ERR_USERNOTINCHANNEL            ERR_UNKNOWNMODE
-//      RPL_CHANNELMODEIS
+void	ModeCommand::modeInvitOnly(char& signMode, size_t& count)
+{
+	if (signMode == '+')
+	{
+		_channel->setMode(inviteOnly, true);
+	}
+	else
+	{
+		_channel->setMode(inviteOnly, false);
+	}
+	count++;
+}
 
-// i: Set/remove Invite-only channel
-// t: Set/remove the restrictions of the TOPIC command to channel operators
-// k: Set/remove the channel key (password)
-// o: Give/take channel operator privilege
-// l: Set/remove the user limit to channel
-
-// MODE #chan +i-ok alice pass
+void	ModeCommand::modeTopicRestriction(char& signMode, size_t& count)
+{
+	if (signMode == '+')
+	{
+		_channel->setMode(restrictTopic, true);
+	}
+	else
+	{
+		_channel->setMode(restrictTopic, false);
+	}
+	count++;
+}
 
 void	ModeCommand::modeOperatorPrivilege(char& signMode, size_t& count, t_replyHandler& replyHandler)
 {
@@ -174,12 +183,12 @@ void	ModeCommand::handleMode(t_replyHandler& replyHandler)
 			}
 			case ircMacro::modeCharArray[restrictTopic]:
 			{
-				modeTopicRestriction(signMode, count, replyHandler);
+				modeTopicRestriction(signMode, count);
 				break ;
 			}
 			case ircMacro::modeCharArray[inviteOnly]:
 			{
-				modeInvitOnly(signMode, count, replyHandler);
+				modeInvitOnly(signMode, count);
 				break ;
 			}
 			case ircMacro::modeCharArray[failure]:
@@ -215,7 +224,17 @@ t_replyHandler	ModeCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	}
 
 	_channel = index->second;
+
+	Client	*tmp = findClientByNickName(target.getNickname(), _channel->getClientList());
+
+	if (!tmp)
+	{
+		replyHandler.add(target.getFd(), ERR::USERNOTINCHANNEL(target, *_channel, target.getNickname()));
+		return replyHandler;
+	}
+
 	_client = target;
+	
 	if (!isOper(target, *_channel))
 	{
 		replyHandler.add(target.getFd(), ERR::CHANOPRIVSNEEDED(target, *_channel));

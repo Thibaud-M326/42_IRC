@@ -92,7 +92,7 @@ void	JoinCommand::createChannel(mapChannels& ChannelArray, chanParams params, Cl
 			Channel	*chan = new Channel();
 			chan->setName(it->first);
 			chan->setKey(it->second);
-			chan->addOperator(ope);
+			chan->addOperator(&ope);
 			ChannelArray.insert(std::make_pair(it->first, chan));
 		}
 	}
@@ -124,7 +124,7 @@ void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
 			else if (it->second == chanToJoin->second->getKey())
 			{
 				target.joinChannel(chanToJoin->first, chanToJoin->second);
-				chanToJoin->second->addClient(target);
+				chanToJoin->second->addClient(&target);
 				replyHandler.add(chanToJoin->second->getClientsFd(), RPL::JOIN(target, it->first, it->second));
 			}
 			else
@@ -153,7 +153,7 @@ t_replyHandler	JoinCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	{
 		for (mapChannels::iterator it = tmpChannelList.begin(); it != tmpChannelList.end(); it++)
 		{
-			it->second->removeClient(target);
+			it->second->removeClient(&target);
 			replyHandler.add(it->second->getClientsFd(), RPL::JOINQUIT(target, it->first));
 		}
 		target.clearChannel();

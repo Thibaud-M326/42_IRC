@@ -15,8 +15,8 @@ class ModeCommand : public ACommand
 		void			modeUserLimit(char& signMode, size_t& count, t_replyHandler& replyHandler);
 		void			modeOperatorPrivilege(char& signMode, size_t& coun, t_replyHandler& replyHandlert);
 		void			modeChannelKey(char& signMode, size_t& count, t_replyHandler& replyHandler);
-		void			modeTopicRestriction(char& signMode, size_t& count, t_replyHandler& replyHandler);
-		void			modeInvitOnly(char& signMode, size_t& count, t_replyHandler& replyHandler);
+		void			modeTopicRestriction(char& signMode, size_t& count);
+		void			modeInvitOnly(char& signMode, size_t& count);
 		void			handleMode(t_replyHandler& replyHandler);
 
 	public:
