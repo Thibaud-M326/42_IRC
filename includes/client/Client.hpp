@@ -39,7 +39,7 @@ class Client
 		std::bitset<ircMacro::NB_MODE>	getMode() const;
 		std::string						getStrMode() const;
 		std::string 					getModeParams() const;
-		mapChannels						getChannelList() const;
+		mapChannels&					getChannelList();
 
 		/* setters */
 		void		setPrefix();

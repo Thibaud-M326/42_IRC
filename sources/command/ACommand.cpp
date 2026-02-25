@@ -8,10 +8,16 @@ ACommand::~ACommand() {}
 bool	ACommand::isSpecialChar(char c) const
 {
 	for (size_t i = 0; ircMacro::specialCharArray[i]; i++)
-	{
 		if (c == ircMacro::specialCharArray[i])
 			return true;
-	}
+	return false;
+}
+
+bool	ACommand::isValidChar(char c) const
+{
+	for (int i = 0; ircMacro::chanCharArray[i]; i++)
+		if (c == ircMacro::chanCharArray[i])
+			return true;
 	return false;
 }
 
@@ -33,4 +39,15 @@ Client*	ACommand::findClientByNickName(std::string nickname, mapClients& ClientA
 			return it->second;
 	}
 	return NULL;
+}
+
+
+bool	ACommand::channelExist(std::string channelName, mapChannels& channelArray)
+{
+	for (mapChannels::iterator channel = channelArray.begin(); channel != channelArray.end(); channel++)
+	{
+		if (channelName == channel->first)
+			return true;
+	}
+	return false;
 }

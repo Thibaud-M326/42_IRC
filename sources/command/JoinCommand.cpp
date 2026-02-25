@@ -23,14 +23,6 @@
 
 JoinCommand::JoinCommand(std::vector<std::string>& params): ACommand(params) {}
 
-bool	JoinCommand::isValidChar(char c)
-{
-	for (int i = 0; ircMacro::chanCharArray[i]; i++)
-		if (c == ircMacro::chanCharArray[i])
-			return true;
-	return false;
-}
-
 chanParams	JoinCommand::buildChannelParams(unsigned int& nbChan)
 {
 	chanParams	params;

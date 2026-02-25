@@ -203,6 +203,12 @@ namespace ERR
 		return (target.getPrefix() + "464 :Password incorrect" + ircMacro::CRLF);
 	}
 
+	// 476: Bad channel mask
+	inline std::string	BADCHANMASK(Client& target, std::string channelName)
+	{
+		return (target.getPrefix() + "476 " + channelName + ":Bad Channel Mask" + ircMacro::CRLF);
+	}
+
 	// 431: NICK command received with no nickname parameter
 	inline std::string	NONICKNAMEGIVEN(Client& target)
 	{
@@ -280,10 +286,18 @@ namespace ERR
 	{
 		return (target.getPrefix() + "501 :Unknown MODE flag" + ircMacro::CRLF);
 	}
+
 	// 451: User not yet registered
 	inline std::string	NOTREGISTERED(Client& target)
 	{
 		return (target.getPrefix() + "451 :You have not registered" + ircMacro::CRLF);
+	}
+
+	// 482: Client is not operator
+	inline std::string	CHANOPRIVSNEEDED(Client& target, std::string channelName)
+	{
+		(void)channelName;
+		return (target.getPrefix() + "482 :You're not channel operator" + ircMacro::CRLF);
 	}
 }
 

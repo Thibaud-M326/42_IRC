@@ -94,7 +94,7 @@ std::string	Client::getModeParams() const
 	return oss.str();
 }
 
-mapChannels	Client::getChannelList() const
+mapChannels&	Client::getChannelList()
 {
 	return _channelList;
 }

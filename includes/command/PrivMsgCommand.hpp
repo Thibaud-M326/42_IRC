@@ -9,7 +9,7 @@ class PrivMsgCommand : public ACommand
 		PrivMsgCommand(std::vector<std::string>& params);
 		t_replyHandler	ExecuteCommand(Client& clientSource, mapClients& ClientArray, mapChannels& ChannelArray);
 
-		bool	isValidPrivMsg(Client& clientSource, mapClients& ClientArray, t_replyHandler& replyHandler);
+		bool	isValidPrivMsg(Client& clientSource, t_replyHandler& replyHandler);
 		t_replyHandler	sendPrivMsgToNickname(std::string msgTarget, Client& clientSource, mapClients& ClientArray, t_replyHandler& replyHandler);
 		t_replyHandler	sendPrivMsgToChannel(Channel& Chan, Client& clientSource, t_replyHandler& replyHandler);
 

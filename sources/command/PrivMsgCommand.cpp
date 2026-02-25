@@ -23,10 +23,8 @@ PrivMsgCommand::PrivMsgCommand(std::vector<std::string>& params): ACommand(param
 
 // ERR_NOSUCHNICK : OK
 
-bool	PrivMsgCommand::isValidPrivMsg(Client& clientSource, mapClients& clientArray, t_replyHandler& replyHandler)
+bool	PrivMsgCommand::isValidPrivMsg(Client& clientSource, t_replyHandler& replyHandler)
 {
-	(void)clientArray;
-
 	if (_commandArray.size() == 1 || _commandArray[1].size() == 0)
 	{
 		replyHandler.add(clientSource.getFd(), ERR::NORECIPIENT(clientSource, _commandArray[0]));
@@ -108,7 +106,7 @@ t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& clientSource, mapClients& 
 		return replyHandler;
 	}
 
-	if (!isValidPrivMsg(clientSource, clientArray, replyHandler))
+	if (!isValidPrivMsg(clientSource, replyHandler))
 		return replyHandler;
 
 	std::stringstream	ss(_commandArray[1]);
