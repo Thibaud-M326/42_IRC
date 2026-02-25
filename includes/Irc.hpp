@@ -38,6 +38,16 @@ namespace ircMacro
 	const char	modeCharArray[] =
 		{ 'l', 'o', 'k', 't', 'i', '\0' };
 
+	typedef enum e_modeChar
+	{
+		modeUserLimit = 'l',
+		modeOperatorPrivileges = 'o',
+		modeRestrictPassword = 'k',
+		modeRestrictTopic = 't',
+		modeInviteOnly = 'i',
+		modeFailure = '\0'
+	} t_modeChar;
+
 	const char	specialCharArray[] =
 		{ '[', '\\', ']', '^', '_',
 			'`', '{', '|', '}', '\0' };

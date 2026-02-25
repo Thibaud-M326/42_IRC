@@ -7,7 +7,7 @@
 #include "NickCommand.hpp"
 #include "PassCommand.hpp"
 #include "PrivMsgCommand.hpp"
-#include "Quit.hpp"
+#include "QuitCommand.hpp"
 #include "TopicCommand.hpp"
 #include "UserCommand.hpp"
 

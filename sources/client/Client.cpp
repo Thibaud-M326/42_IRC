@@ -114,7 +114,7 @@ void	Client::setPrefix()
 	if (!_username.empty() && !_nickname.empty())
 	{
 		std::ostringstream	oss;
-		oss << ":" << _nickname << "!" << _username << "@" << _ip_address << " ";
+		oss << _nickname << "!" << _username << "@" << _ip_address << " ";
 		_prefix = oss.str();
 	}
 }

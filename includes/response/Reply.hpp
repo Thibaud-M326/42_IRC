@@ -42,7 +42,7 @@ namespace RPL
 {
 	inline std::string	NICK(Client& target)
 	{
-		return (target.getPrefix() + "NICK " + target.getNickname() + ircMacro::CRLF);
+		return ("NICK " + target.getNickname() + ircMacro::CRLF);
 	}
 
 	inline std::string	USER(Client& target, std::string realName, size_t index)
@@ -54,231 +54,268 @@ namespace RPL
 
 	inline std::string	WELCOME(Client& target)
 	{
-		return (target.getPrefix() + "001 " + target.getPrefix() + ircMacro::CRLF);
+		return ("001 :Welcome to the Internet Relay Network " + target.getPrefix() + ircMacro::CRLF);
 	}
 
 	inline std::string	AWAY(Client& source, std::string& away_msg)
 	{
-		return (source.getPrefix() + "301 " + source.getNickname() + " :" + away_msg + ircMacro::CRLF);
+		return ("301 " + source.getNickname() + " :" + away_msg + ircMacro::CRLF);
 	}
 
 	inline std::string	INVITING(Client& target, Channel& chan)
 	{
-		return (target.getPrefix() + "341 " + target.getNickname() + " " + chan.getName() + ircMacro::CRLF);
+		return ("341 " + target.getNickname() + " " + chan.getName() + ircMacro::CRLF);
 	}
 
-	inline std::string	NOTOPIC(Client& target, Channel& chan)
+	inline std::string	NOTOPIC(Channel& chan)
 	{
-		return (target.getPrefix() + "331 " +  chan.getName() + " :No topic is set" + ircMacro::CRLF);
+		return ("331 " +  chan.getName() + " :No topic is set" + ircMacro::CRLF);
 	}
 
-	inline std::string	TOPIC(Client& target, Channel& chan)
+	inline std::string	TOPIC(Channel& chan)
 	{
-		return (target.getPrefix() + "332 " +  chan.getName() + " :" + chan.getTopic() + ircMacro::CRLF);
+		return ("332 " +  chan.getName() + " :" + chan.getTopic() + ircMacro::CRLF);
 	}
 
-	inline std::string	UMODEIS(Client& target, std::string mode)
+	inline std::string	UMODEIS(std::string mode)
 	{
-		return (target.getPrefix() + "221 " +  mode + ircMacro::CRLF);
+		return ("221 " +  mode + ircMacro::CRLF);
 	}
 
-	inline std::string	CHANNELMODEIS(Client& target, Channel& chan)
+	inline std::string	CHANNELMODEIS(Channel& chan)
 	{
-		return (target.getPrefix() + "324 " + chan.getName() + " " + chan.getStrMode() + " " + chan.getModeParams() + ircMacro::CRLF);
+		return ("324 " + chan.getName() + " " + chan.getStrMode() + " " + chan.getModeParams() + ircMacro::CRLF);
 	}
 
-	inline std::string	INVITELIST(Client& target, Channel& chan, std::string& invite_list)
+	inline std::string	INVITELIST(Channel& chan, std::string& invite_list)
 	{
-		return (target.getPrefix() + "346 " + chan.getName() + " " + invite_list + ircMacro::CRLF);
+		return ("346 " + chan.getName() + " " + invite_list + ircMacro::CRLF);
 	}
 
-	inline std::string	ENDOFINVITELIST(Client& target, Channel& chan)
+	inline std::string	ENDOFINVITELIST(Channel& chan)
 	{
-		return (target.getPrefix() + "347 " + chan.getName() + " :End of channel invite list" + ircMacro::CRLF);
+		return ("347 " + chan.getName() + " :End of channel invite list" + ircMacro::CRLF);
 	}
 
-	inline std::string	UNIQOPIS(Client& target, Channel& chan, Client& ope)
+	inline std::string	UNIQOPIS(Channel& chan, Client& ope)
 	{
-		return (target.getPrefix() + "325 " + chan.getName() + " " + ope.getUsername() + ircMacro::CRLF);
+		return ("325 " + chan.getName() + " " + ope.getUsername() + ircMacro::CRLF);
 	}
 
-	inline std::string	YOUREOPER(Client& target)
+	inline std::string	YOUREOPER()
 	{
-		return (target.getPrefix() + "381 :You are now an IRC operator" + ircMacro::CRLF);
+		std::ostringstream	oss;
+
+		oss << "381 :You are now an IRC operator" << ircMacro::CRLF;
+		return oss.str();
 	}
 
-	inline std::string	LIST(Client& target, Channel& chan)
+	inline std::string	LIST(Channel& chan)
 	{
-		return (target.getPrefix() + "322 " + chan.getName() + " # visible :" + chan.getTopic() + ircMacro::CRLF);
+		return ("322 " + chan.getName() + " # visible :" + chan.getTopic() + ircMacro::CRLF);
 	}
 
-	inline std::string	LISTEND(Client& target)
+	inline std::string	LISTEND()
 	{
-		return (target.getPrefix() + "323 :End of List" + ircMacro::CRLF);
+		std::ostringstream	oss;
+
+		oss << "323 :End of List" << ircMacro::CRLF;
+		return oss.str();
 	}
 
-	inline std::string	JOIN0(Client& target)
+	inline std::string	JOIN0()
 	{
-		return (target.getPrefix() + "JOIN 0" + ircMacro::CRLF);
+		std::ostringstream	oss;
+
+		oss << "JOIN 0" << ircMacro::CRLF;
+		return oss.str();
 	}
 
 	inline std::string	JOINQUIT(Client& target, std::string chanName)
 	{
-		return (target.getPrefix() + ":Has quit the channel " + chanName + ircMacro::CRLF);
+		return (target.getNickname() + ":Has quit the channel " + chanName + ircMacro::CRLF);
 	}
 
-	inline std::string	JOIN(Client& target, std::string chanName, std::string chankey)
+	inline std::string	HASJOIN(Client& target, std::string chanName)
 	{
-		std::string msg = target.getPrefix() + "JOIN " + chanName;
+		return (target.getNickname() + " :Has join the channel " + chanName + ircMacro::CRLF);
+	}
+
+	inline std::string	JOIN(std::string chanName, std::string chankey)
+	{
+		std::string msg = "JOIN " + chanName;
 		if (!chankey.empty())
         	msg += " " + chankey;
 		msg += ircMacro::CRLF;
 		return msg;
 	}
 
-	inline std::string	PRIVMSG(Client& source, std::string target, std::string msg)
+	inline std::string	PRIVMSG(Client& source, std::string msg)
 	{
-		return (source.getPrefix() + "PRIVMSG " + target + " :" + msg + ircMacro::CRLF);
+		return ("PRIVMSG " + source.getNickname() + " :" + msg + ircMacro::CRLF);
+	}
+
+	inline	std::string	QUIT(std::string msg)
+	{
+		return ("QUIT " + msg + ircMacro::CRLF);
 	}
 }
 
 namespace ERR 
 {
 	// 401: No such nick/channel
-	inline std::string	NOSUCHNICK(Client& target, std::string nickname)
+	inline std::string	NOSUCHNICK(std::string nickname)
 	{
-		return (target.getPrefix() + "401 " + nickname + " :No such nick/chan" + ircMacro::CRLF);
+		return ("401 " + nickname + " :No such nick/chan" + ircMacro::CRLF);
 	}
 
-	inline std::string	NOSUCHCHANNEL(Client& target, std::string& chan)
+	inline std::string	NOSUCHCHANNEL(std::string& chan)
 	{
-		return (target.getPrefix() + "403 " + chan + " :No such channel" + ircMacro::CRLF);
+		return ("403 " + chan + " :No such channel" + ircMacro::CRLF);
 	}
 
 	// 405: User has joined too many channels
-	inline std::string	TOOMANYCHANNELS(Client& target, Channel& chan)
+	inline std::string	TOOMANYCHANNELS(Channel& chan)
 	{
-		return (target.getPrefix() + "405 " + chan.getName() + " :You have joined too many channels" + ircMacro::CRLF);
+		return ("405 " + chan.getName() + " :You have joined too many channels" + ircMacro::CRLF);
 	}
 
 	// 407: Too many recipients for PRIVMSG/NOTICE message
-	inline std::string	TOOMANYTARGETS(Client& target, std::string targetChannels)
+	inline std::string	TOOMANYTARGETS(std::string targetChannels)
 	{
-		return (target.getPrefix() + targetChannels + ":407 recipients." + "Too many recipients" + ircMacro::CRLF);
+		return (targetChannels + ":407 recipients." + "Too many recipients" + ircMacro::CRLF);
 	}
 
 	// 411: PRIVMSG/NOTICE sent without recipient parameter
-	inline std::string	NORECIPIENT(Client& target, std::string command)
+	inline std::string	NORECIPIENT(std::string command)
 	{
-		return (target.getPrefix() + "411 " + " :No recipient given (" + command + ")" + ircMacro::CRLF);
+		std::ostringstream	oss;
+
+		oss << "411 " << " :No recipient given (" << command << ")" << ircMacro::CRLF;
+		return oss.str();
 	}
 
 	// 412: PRIVMSG/NOTICE sent without text to send
 	inline std::string	NOTEXTTOSEND(Client& target)
 	{
-		return (target.getPrefix() + "412 " + target.getNickname() + " :No text to send" + ircMacro::CRLF);
+		return ("412 " + target.getNickname() + " :No text to send" + ircMacro::CRLF);
 	}
 
 	// 421: Server received unknown command
-	inline std::string	UNKNOWNCOMMAND(Client& target, std::string command)
+	inline std::string	UNKNOWNCOMMAND(std::string command)
 	{
-		return (target.getPrefix() + "421 " + command + " :Unknown command" + ircMacro::CRLF);
+		return ("421 " + command + " :Unknown command" + ircMacro::CRLF);
 	}
 
 	// 461: Command issued with insufficient parameters
-	inline std::string	NEEDMOREPARAMS(Client& target, std::string command)
+	inline std::string	NEEDMOREPARAMS(std::string command)
 	{
-		return (target.getPrefix() + "461 " + command + " :Not enough parameters" + ircMacro::CRLF);
+		return ("461 " + command + " :Not enough parameters" + ircMacro::CRLF);
 	}
 
 	// 462: Command issued before user has fully registered
-	inline std::string	ALREADYREGISTRED(Client& target)
+	inline std::string	ALREADYREGISTRED()
 	{
-		return (target.getPrefix() + "462 :Unauthorized command (already registered)" + ircMacro::CRLF);
+		std::ostringstream	oss;
+
+		oss << "462 :Unauthorized command (already registered)" << ircMacro::CRLF;
+		return oss.str();
 	}
 
 	// 464: Password provided is incorrect
-	inline std::string	PASSWDMISMATCH(Client& target)
+	inline std::string	PASSWDMISMATCH()
 	{
-		return (target.getPrefix() + "464 :Password incorrect" + ircMacro::CRLF);
+		std::ostringstream	oss;
+
+		oss << "464 :Password incorrect" << ircMacro::CRLF;
+		return oss.str();
 	}
 
 	// 431: NICK command received with no nickname parameter
-	inline std::string	NONICKNAMEGIVEN(Client& target)
+	inline std::string	NONICKNAMEGIVEN()
 	{
-		return (target.getPrefix() + "431 :No nickname given" + ircMacro::CRLF);
+		std::ostringstream	oss;
+
+		oss << "431 :No nickname given" << ircMacro::CRLF;
+		return oss.str();
 	}
 
 	// 432: Nickname contains invalid characters
-	inline std::string	ERRONEUSNICKNAME(Client& target, std::string nickname)
+	inline std::string	ERRONEUSNICKNAME(std::string nickname)
 	{
-		return (target.getPrefix() + "432 " + nickname + " :Erroneous nickname" + ircMacro::CRLF);
+		return ("432 " + nickname + " :Erroneous nickname" + ircMacro::CRLF);
 	}
 
 	// 433: Chosen nickname is already in use on server
-	inline std::string	NICKNAMEINUSE(Client& target, std::string nickname)
+	inline std::string	NICKNAMEINUSE(std::string nickname)
 	{
-		return (target.getPrefix() + "433 " + nickname + " :Nickname is already in use" + ircMacro::CRLF);
+		return ("433 " + nickname + " :Nickname is already in use" + ircMacro::CRLF);
 	}
 
 	// 441: User is not on the specified channel
-	inline std::string	USERNOTINCHANNEL(Client& target, Channel& chan, std::string nick_list)
+	inline std::string	USERNOTINCHANNEL(Channel& chan, std::string nick_list)
 	{
-		return (target.getPrefix() + "441 " + nick_list + " " + chan.getName() + " :They aren't on that channel" + ircMacro::CRLF);
+		return ("441 " + nick_list + " " + chan.getName() + " :They aren't on that channel" + ircMacro::CRLF);
 	}
 
 	// 442: Client is not on the specified channel
-	inline std::string	NOTONCHANNEL(Client& target, Channel& chan)
+	inline std::string	NOTONCHANNEL(Channel& chan)
 	{
-		return (target.getPrefix() + "442 " + chan.getName() + " :You're not on that channel" + ircMacro::CRLF);
+		return ("442 " + chan.getName() + " :You're not on that channel" + ircMacro::CRLF);
 	}
 
 	// 443: User already on channel (e.g., during INVITE)
-	inline std::string	USERONCHANNEL(Client& target, Channel& chan, std::string user)
+	inline std::string	USERONCHANNEL(Channel& chan, std::string user)
 	{
-		return (target.getPrefix() + "443 " + user + chan.getName() + " :Is already on channel" + ircMacro::CRLF);
+		return ("443 " + user + chan.getName() + " :Is already on channel" + ircMacro::CRLF);
 	}
 
 	// 467: Channel key has already been set
-	inline std::string	KEYSET(Client& target, Channel& chan)
+	inline std::string	KEYSET(Channel& chan)
 	{
-		return (target.getPrefix() + "467 " + chan.getName() + " :Channel key already set" + ircMacro::CRLF);
+		return ("467 " + chan.getName() + " :Channel key already set" + ircMacro::CRLF);
 	}
 
 	// 471: Channel is full (user limit reached)
-	inline std::string	CHANNELISFULL(Client& target, Channel& chan)
+	inline std::string	CHANNELISFULL(Channel& chan)
 	{
-		return (target.getPrefix() + "471 " + chan.getName() + " :Cannot join channel (+l)" + ircMacro::CRLF);
+		return ("471 " + chan.getName() + " :Cannot join channel (+l)" + ircMacro::CRLF);
 	}
 
 	// 472: Unknown channel mode character
-	inline std::string	UNKNOWNMODE(Client& target, Channel& chan, char c)
+	inline std::string	UNKNOWNMODE(Channel& chan, char c)
 	{
-		return (target.getPrefix() + "472 " + c + " :is unknown mode char to me for " + chan.getName() + ircMacro::CRLF);
+		std::ostringstream	oss;
+
+		oss << "472 " << c << " :is unknown mode char to me for " << chan.getName() << ircMacro::CRLF;
+		return oss.str();
 	}
 
 	// 473: Cannot join invite-only channel
-	inline std::string	INVITEONLYCHAN(Client& target, Channel& chan)
+	inline std::string	INVITEONLYCHAN(Channel& chan)
 	{
-		return (target.getPrefix() + "473 " + chan.getName() + " :Cannot join channel (+i)" + ircMacro::CRLF);
+		return ("473 " + chan.getName() + " :Cannot join channel (+i)" + ircMacro::CRLF);
 	}
 
 	// 475: Cannot join channel - bad key provided
-	inline std::string	BADCHANNELKEY(Client& target, Channel& chan)
+	inline std::string	BADCHANNELKEY(Channel& chan)
 	{
-		return (target.getPrefix() + "475 " + chan.getName() + " :Cannot join channel (+k)" + ircMacro::CRLF);
+		return ("475 " + chan.getName() + " :Cannot join channel (+k)" + ircMacro::CRLF);
 	}
 
 	// 482: User is not channel operator
-	inline std::string	CHANOPRIVSNEEDED(Client& target, Channel& chan)
+	inline std::string	CHANOPRIVSNEEDED(Channel& chan)
 	{
-		return (target.getPrefix() + "482 " + chan.getName() + " :You're not channel operator" + ircMacro::CRLF);
+		return ("482 " + chan.getName() + " :You're not channel operator" + ircMacro::CRLF);
 	}
 
 	// 451: User not yet registered
-	inline std::string	NOTREGISTERED(Client& target)
+	inline std::string	NOTREGISTERED()
 	{
-		return (target.getPrefix() + "451 :You have not registered" + ircMacro::CRLF);
+		std::ostringstream	oss;
+
+		oss << "451 :You have not registered" << ircMacro::CRLF;
+		return oss.str();
 	}
 }
 

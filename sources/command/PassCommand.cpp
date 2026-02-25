@@ -19,19 +19,19 @@ t_replyHandler	PassCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	if (_commandArray.size() == 1 || _commandArray[1].empty())
 	{
-		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "PASS"));
+		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS("PASS"));
 		return replyHandler;
 	}
 
 	if (target.getIsConnected())
 	{
-		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED(target));
+		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED());
 		return replyHandler;
 	}
 
 	if (_commandArray[1] != ircMacro::PASSWORD)
 	{
-		replyHandler.add(target.getFd(),ERR::PASSWDMISMATCH(target));
+		replyHandler.add(target.getFd(),ERR::PASSWDMISMATCH());
 		return replyHandler;
 	}
 

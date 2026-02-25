@@ -39,19 +39,19 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	
 	if (!target.getIsConnected() || target.getNickname().empty())
 	{
-		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
+		replyHandler.add(target.getFd(), ERR::NOTREGISTERED());
 		return replyHandler;
 	}
 
 	if (target.getIsRegistered())
 	{
-		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED(target));
+		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED());
 		return replyHandler;
 	}
 
 	if (!isValidParams())
 	{
-		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "USER"));
+		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS("USER"));
 		return replyHandler;
 	}
 

@@ -9,20 +9,20 @@ t_replyHandler	TopicCommand::ExecuteCommand(Client& target, mapClients& ClientAr
 
 	if (!target.getIsRegistered())
 	{
-		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
+		replyHandler.add(target.getFd(), ERR::NOTREGISTERED());
 		return replyHandler;
 	}
 
 	if (_commandArray.size() == 1)
 	{
-		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "TOPIC"));
+		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS("TOPIC"));
 		return replyHandler;
 	}
 
 	Channel	*channel = getChannelByName(_commandArray[1], ChannelArray);
 	if (!channel)
 	{
-		replyHandler.add(target.getFd(), ERR::NOSUCHCHANNEL(target, _commandArray[1]));
+		replyHandler.add(target.getFd(), ERR::NOSUCHCHANNEL(_commandArray[1]));
 		return replyHandler;
 	}
 
@@ -30,16 +30,16 @@ t_replyHandler	TopicCommand::ExecuteCommand(Client& target, mapClients& ClientAr
 
 	if (!tmp)
 	{
-		replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(target, *channel));
+		replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(*channel));
 		return replyHandler;
 	}
 
 	if (_commandArray.size() == 2)
 	{
 		if (channel->getTopic().empty())
-			replyHandler.add(target.getFd(), RPL::NOTOPIC(target, *channel));
+			replyHandler.add(target.getFd(), RPL::NOTOPIC(*channel));
 		else
-			replyHandler.add(target.getFd(), RPL::NOTOPIC(target, *channel));
+			replyHandler.add(target.getFd(), RPL::NOTOPIC(*channel));
 	}
 	else
 	{
@@ -49,20 +49,20 @@ t_replyHandler	TopicCommand::ExecuteCommand(Client& target, mapClients& ClientAr
 			{
 				channel->setTopic(&_commandArray[2][1]);
 				if (channel->getTopic().empty())
-					replyHandler.add(channel->getClientsFd(), RPL::NOTOPIC(target, *channel));
+					replyHandler.add(channel->getClientsFd(), RPL::NOTOPIC(*channel));
 				else
-					replyHandler.add(channel->getClientsFd(), RPL::TOPIC(target, *channel));
+					replyHandler.add(channel->getClientsFd(), RPL::TOPIC(*channel));
 			}
 			else
-				replyHandler.add(target.getFd(), ERR::CHANOPRIVSNEEDED(target, *channel));
+				replyHandler.add(target.getFd(), ERR::CHANOPRIVSNEEDED(*channel));
 		}
 		else
 		{
 			channel->setTopic(&_commandArray[2][1]);
 			if (channel->getTopic().empty())
-				replyHandler.add(channel->getClientsFd(), RPL::NOTOPIC(target, *channel));
+				replyHandler.add(channel->getClientsFd(), RPL::NOTOPIC(*channel));
 			else
-				replyHandler.add(channel->getClientsFd(), RPL::TOPIC(target, *channel));
+				replyHandler.add(channel->getClientsFd(), RPL::TOPIC(*channel));
 		}
 	}
 

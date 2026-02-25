@@ -29,7 +29,7 @@ bool	PrivMsgCommand::isValidPrivMsg(Client& clientSource, mapClients& clientArra
 
 	if (_commandArray.size() == 1 || _commandArray[1].size() == 0)
 	{
-		replyHandler.add(clientSource.getFd(), ERR::NORECIPIENT(clientSource, _commandArray[0]));
+		replyHandler.add(clientSource.getFd(), ERR::NORECIPIENT(_commandArray[0]));
 		return false;
 	}
 
@@ -42,7 +42,7 @@ bool	PrivMsgCommand::isValidPrivMsg(Client& clientSource, mapClients& clientArra
 	//trop de clientSource separe par des virgules
 	if (_commandArray.size() > 3)
 	{
-		replyHandler.add(clientSource.getFd(), ERR::TOOMANYTARGETS(clientSource, _commandArray[1]));
+		replyHandler.add(clientSource.getFd(), ERR::TOOMANYTARGETS(_commandArray[1]));
 		return false;
 	}
 
@@ -58,21 +58,21 @@ t_replyHandler	PrivMsgCommand::sendPrivMsgToNickname(std::string msgTarget, Clie
 	if (message[0] == ':')
 		message.erase(0, 1);
 
-	clientDest = findClientByNickName(clientDestNickname, clientArray);
+	clientDest = findClientByNickName(clientDestNickname, buildClientVec(clientArray));
 	if (!clientDest)
 	{
-		replyHandler.add(clientSource.getFd(), ERR::NOSUCHNICK(clientSource, _commandArray[1]));
+		replyHandler.add(clientSource.getFd(), ERR::NOSUCHNICK(_commandArray[1]));
 		return replyHandler;
 	}
 	
 	if(clientDest->getFd() == clientSource.getFd())
 	{
-		replyHandler.add(clientSource.getFd(), RPL::PRIVMSG(clientSource, clientDest->getNickname(), message));
+		replyHandler.add(clientSource.getFd(), RPL::PRIVMSG(clientSource, message));
 		return replyHandler;
 	}
 	else
 	{
-		replyHandler.add(clientDest->getFd(), RPL::PRIVMSG(clientSource, clientDest->getNickname(), message));
+		replyHandler.add(clientDest->getFd(), RPL::PRIVMSG(clientSource, message));
 	}
 	return replyHandler;
 }
@@ -91,7 +91,7 @@ t_replyHandler	PrivMsgCommand::sendPrivMsgToChannel(Channel& chan, Client& clien
 	{
 		Client* clientDest = *it;
 		if (clientDest->getFd() != clientSource.getFd())
-			replyHandler.add(clientDest->getFd(), RPL::PRIVMSG(clientSource, chan.getName(), message));
+			replyHandler.add(clientDest->getFd(), RPL::PRIVMSG(clientSource, message));
 	}
 
 	return replyHandler;
@@ -104,7 +104,7 @@ t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& clientSource, mapClients& 
 
 	if (!clientSource.getIsRegistered())
 	{
-		replyHandler.add(clientSource.getFd(), ERR::NOTREGISTERED(clientSource));
+		replyHandler.add(clientSource.getFd(), ERR::NOTREGISTERED());
 		return replyHandler;
 	}
 
