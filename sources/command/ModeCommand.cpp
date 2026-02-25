@@ -26,19 +26,6 @@ char	ModeCommand::verifFlag()
 	return '\0';
 }
 
-bool	ModeCommand::isOper(Client& target, Channel& source)
-{
-	std::vector<Client*>	channel = source.getOperators();
-
-	for (std::vector<Client*>::iterator it = channel.begin(); it != channel.end(); it++)
-	{
-		if (&target == *it)
-			return true;
-	}
-
-	return false;
-}
-
 void	ModeCommand::modeUserLimit(char& signMode, size_t& count, t_replyHandler& replyHandler)
 {
 	if (signMode == '+')
@@ -216,20 +203,18 @@ t_replyHandler	ModeCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		return replyHandler;
 	}
 
-	mapChannels::iterator index = ChannelArray.find(_commandArray[1]);
-	if (index->first != _commandArray[1])
+	_channel = getChannelByName(_commandArray[1], ChannelArray);
+	if (!_channel)
 	{
 		replyHandler.add(target.getFd(), ERR::NOSUCHCHANNEL(target, _commandArray[1]));
 		return replyHandler;
 	}
 
-	_channel = index->second;
-
 	Client	*tmp = findClientByNickName(target.getNickname(), _channel->getClientList());
 
 	if (!tmp)
 	{
-		replyHandler.add(target.getFd(), ERR::USERNOTINCHANNEL(target, *_channel, target.getNickname()));
+		replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(target, *_channel));
 		return replyHandler;
 	}
 

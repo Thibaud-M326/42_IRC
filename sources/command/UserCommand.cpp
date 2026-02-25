@@ -69,6 +69,7 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	target.setUsername(_commandArray[1]);
 	replyHandler.add(target.getFd(), RPL::USER(target, _commandArray[4], index));
 	target.setIsRegistered();
+	replyHandler.add(target.getFd(), RPL::WELCOME(target));
 
 	return replyHandler;
 }

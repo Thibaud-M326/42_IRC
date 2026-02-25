@@ -41,7 +41,7 @@ class Channel
 
 		/* setters */
 		void							setName(std::string& name);
-		void							setTopic(std::string& topic);
+		void							setTopic(std::string topic);
 		void							setMode(t_modeEnum index, bool value);
 		void							setModeParams(std::string& params, t_modeEnum index);
 		void							setKey(std::string key);

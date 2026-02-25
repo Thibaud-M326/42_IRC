@@ -97,7 +97,7 @@ void	Channel::setName(std::string& name)
 	_name = name;
 }
 
-void	Channel::setTopic(std::string& topic)
+void	Channel::setTopic(std::string topic)
 {
 	_topic = topic;
 }

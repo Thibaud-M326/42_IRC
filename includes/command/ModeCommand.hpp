@@ -11,7 +11,6 @@ class ModeCommand : public ACommand
 
 		char			isValidFlag(char mode);
 		char			verifFlag();
-		bool			isOper(Client& target, Channel& chan);
 		void			modeUserLimit(char& signMode, size_t& count, t_replyHandler& replyHandler);
 		void			modeOperatorPrivilege(char& signMode, size_t& coun, t_replyHandler& replyHandlert);
 		void			modeChannelKey(char& signMode, size_t& count, t_replyHandler& replyHandler);

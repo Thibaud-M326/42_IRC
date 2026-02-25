@@ -15,6 +15,33 @@ bool	ACommand::isSpecialChar(char c) const
 	return false;
 }
 
+std::vector<Client*>	ACommand::buildClientVec(mapClients& ClientArray) const
+{
+	std::vector<Client*>	res;
+
+	for (mapClients::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
+	{
+		res.push_back(it->second);
+	}
+
+	return res;
+}
+
+bool	ACommand::isOper(Client& target, Channel& source)
+{
+	std::vector<Client*>	channel = source.getOperators();
+
+	for (std::vector<Client*>::iterator it = channel.begin(); it != channel.end(); it++)
+	{
+		if (&target == *it)
+			return true;
+	}
+
+	return false;
+}
+
+
+
 Channel*	ACommand::getChannelByName(std::string chanName, mapChannels& ChannelArray) const
 {
 	for(mapChannels::iterator it = ChannelArray.begin(); it != ChannelArray.end(); it++)
