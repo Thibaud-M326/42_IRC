@@ -5,9 +5,9 @@
 #include "ListCommand.hpp"
 #include "ModeCommand.hpp"
 #include "NickCommand.hpp"
-#include "OperCommand.hpp"
 #include "PassCommand.hpp"
 #include "PrivMsgCommand.hpp"
+#include "QuitCommand.hpp"
 #include "TopicCommand.hpp"
 #include "UserCommand.hpp"
 
@@ -31,30 +31,30 @@ static ACommand*	createUser(std::vector<std::string>& commands)
 	return new UserCommand(commands);
 }
 
-// static ACommand*	createInvite(std::vector<std::string>& commands)
-// {
-// 	return new InviteCommand(commands);
-// }
+static ACommand*	createInvite(std::vector<std::string>& commands)
+{
+	return new InviteCommand(commands);
+}
 
-// static ACommand*	createTopic(std::vector<std::string>& commands)
-// {
-// 	return new TopicCommand(commands);
-// }
+static ACommand*	createTopic(std::vector<std::string>& commands)
+{
+	return new TopicCommand(commands);
+}
 
-// static ACommand*	createMode(std::vector<std::string>& commands)
-// {
-// 	return new ModeCommand(commands);
-// }
+static ACommand*	createMode(std::vector<std::string>& commands)
+{
+	return new ModeCommand(commands);
+}
+
+static ACommand*	createQuit(std::vector<std::string>& commands)
+{
+	return new QuitCommand(commands);
+}
 
 static ACommand*	createKick(std::vector<std::string>& commands)
 {
 	return new KickCommand(commands);
 }
-
-// static ACommand*	createOper(std::vector<std::string>& commands)
-// {
-// 	return new OperCommand(commands);
-// }
 
 // static ACommand*	createList(std::vector<std::string>& commands)
 // {
@@ -72,13 +72,13 @@ CommandFactory::CommandFactory()
 	_registry["NICK"] = &createNick;
 	_registry["PASS"] = &createPass;
 	_registry["USER"] = &createUser;
-	// _registry["INVITE"] = &createInvite;
-	// _registry["TOPIC"] = &createTopic;
-	// _registry["MODE"] = &createMode;
 	_registry["KICK"] = &createKick;
-	// _registry["OPER"] = &createOper;
+	_registry["INVITE"] = &createInvite;
+	_registry["TOPIC"] = &createTopic;
+	_registry["MODE"] = &createMode;
 	// _registry["LIST"] = &createList;
 	_registry["JOIN"] = &createJoin;
+	_registry["QUIT"] = &createQuit;
 }
 
 ACommand*	CommandFactory::createCommand(std::vector<std::string>& params)

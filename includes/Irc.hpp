@@ -14,6 +14,7 @@ typedef enum e_modeEnum
 	restrictPassword = 2, // 'k'
 	restrictTopic = 3, // 't'
 	inviteOnly = 4, // 'i'
+	failure = 5
 }	t_modeEnum;
 
 typedef	std::map<int, Client*>			mapClients;
@@ -35,7 +36,17 @@ namespace ircMacro
 	const char	INVALID[] = "Invalid";
 
 	const char	modeCharArray[] =
-		{ 'l', 'o', 'k', 't', 'i' };
+		{ 'l', 'o', 'k', 't', 'i', '\0' };
+
+	typedef enum e_modeChar
+	{
+		modeUserLimit = 'l',
+		modeOperatorPrivileges = 'o',
+		modeRestrictPassword = 'k',
+		modeRestrictTopic = 't',
+		modeInviteOnly = 'i',
+		modeFailure = '\0'
+	} t_modeChar;
 
 	const char	specialCharArray[] =
 		{ '[', '\\', ']', '^', '_',

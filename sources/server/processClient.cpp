@@ -4,6 +4,7 @@
 #include "CommandFactory.hpp"
 #include "Parse.hpp"
 #include "Server.hpp"
+#include "QuitCommand.hpp"
 
 #include <iostream>
 
@@ -21,10 +22,10 @@ void	Server::executeClient(std::string rawCommands)
 	for (std::vector<std::vector<std::string> >::iterator it = commands.begin(); it != commands.end(); it++)
 	{
 		ACommand *cmd = factory.createCommand(*it);
-		if (cmd)
+		if (cmd && _client)
 		{
 		 	t_replyHandler	replyHandler = cmd->ExecuteCommand(*_client, _clients, _channelArray);
-			// BROADCAST
+
 			for (std::vector<t_outGoingMessages>::iterator it = replyHandler.messages.begin(); it != replyHandler.messages.end(); it++)
 			{
 				for (std::vector<int>::iterator fdIndex = it->targets.begin(); fdIndex != it->targets.end(); fdIndex++)
@@ -32,6 +33,11 @@ void	Server::executeClient(std::string rawCommands)
 					send(*fdIndex, it->reply.c_str(), it->reply.size(), 0);
 					std::cout << "[SEND] fd: " << *fdIndex << " | " << it->reply.length() << " bytes\n" << it->reply << std::endl;
 				}
+			}
+			if (dynamic_cast<QuitCommand*>(cmd))
+			{
+				_clients.erase(_client->getFd());
+				delete _client;
 			}
 			delete cmd;
 		}

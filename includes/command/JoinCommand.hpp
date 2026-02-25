@@ -9,7 +9,8 @@ class JoinCommand : public ACommand
 {
 	private:
 		chanParams	buildChannelParams(unsigned int& nbChan);
-		void	createChannel(mapChannels& ChannelArray, chanParams params);
+		bool	isValidChar(char c);
+		void	createChannel(mapChannels& ChannelArray, chanParams params, Client& ope);
 		void	joinChannel(mapChannels& ChannelArray, chanParams params,
 					Client& target, t_replyHandler& replyHandler);
 

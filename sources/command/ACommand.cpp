@@ -21,6 +21,33 @@ bool	ACommand::isValidChar(char c) const
 	return false;
 }
 
+std::vector<Client*>	ACommand::buildClientVec(mapClients& ClientArray) const
+{
+	std::vector<Client*>	res;
+
+	for (mapClients::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
+	{
+		res.push_back(it->second);
+	}
+
+	return res;
+}
+
+bool	ACommand::isOper(Client& target, Channel& source)
+{
+	std::vector<Client*>	channel = source.getOperators();
+
+	for (std::vector<Client*>::iterator it = channel.begin(); it != channel.end(); it++)
+	{
+		if (&target == *it)
+			return true;
+	}
+
+	return false;
+}
+
+
+
 Channel*	ACommand::getChannelByName(std::string chanName, mapChannels& ChannelArray) const
 {
 	for(mapChannels::iterator it = ChannelArray.begin(); it != ChannelArray.end(); it++)
@@ -31,23 +58,13 @@ Channel*	ACommand::getChannelByName(std::string chanName, mapChannels& ChannelAr
 	return NULL;
 }
 
-Client*	ACommand::findClientByNickName(std::string nickname, mapClients& ClientArray) const
+Client*	ACommand::findClientByNickName(std::string nickname, std::vector<Client*> ClientArray) const
 {
-	for (mapClients::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
+	for (std::vector<Client*>::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
 	{
-		if (it->second->getNickname() == nickname)
-			return it->second;
+		if ((*it)->getNickname() == nickname)
+			return *it;
 	}
 	return NULL;
 }
 
-
-bool	ACommand::channelExist(std::string channelName, mapChannels& channelArray)
-{
-	for (mapChannels::iterator channel = channelArray.begin(); channel != channelArray.end(); channel++)
-	{
-		if (channelName == channel->first)
-			return true;
-	}
-	return false;
-}

@@ -2,7 +2,7 @@
 #include "Client.hpp"
 #include <sstream>
 
-Channel::Channel(): _modeParams(5) {}
+Channel::Channel(): _modeParams(5), _limitNbUser(-1) {}
 
 Channel::~Channel() {}
 
@@ -77,9 +77,9 @@ std::string	Channel::getModeParams() const
 	return oss.str();
 }
 
-Client	*Channel::getOperator() const
+std::vector<Client*>	Channel::getOperators() const
 {
-	return _operator;
+	return _operators;
 }
 
 std::string	Channel::getKey() const
@@ -87,12 +87,17 @@ std::string	Channel::getKey() const
 	return _key;
 }
 
+ssize_t	Channel::getLimitNbUser() const
+{
+	return _limitNbUser;
+}
+
 void	Channel::setName(std::string& name)
 {
 	_name = name;
 }
 
-void	Channel::setTopic(std::string& topic)
+void	Channel::setTopic(std::string topic)
 {
 	_topic = topic;
 }
@@ -110,9 +115,21 @@ void	Channel::setModeParams(std::string& params, t_modeEnum index)
 	_modeParams[index] = params;
 }
 
-void	Channel::setOperator(Client	*ope)
+void	Channel::addOperator(Client* ope)
 {
-	_operator = ope;
+	_operators.push_back(ope);
+}
+
+void	Channel::removeOperator(Client* ope)
+{
+	std::vector<Client*>::iterator it = _operators.begin();
+	while (it != _operators.end())
+	{
+		if (*it == ope)
+			break ;
+		it++;
+	}
+	_operators.erase(it);
 }
 
 void	Channel::addClient(Client* client)
@@ -129,8 +146,13 @@ void	Channel::removeClient(Client* client)
 	}
 }
 
-void	Channel::setKey(std::string& key)
+void	Channel::setKey(std::string key)
 {
 	_key = key;
+}
+
+void	Channel::setLimitNbUser(ssize_t limit)
+{
+	_limitNbUser = limit;
 }
 

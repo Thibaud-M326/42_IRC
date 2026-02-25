@@ -17,13 +17,13 @@ int main()
 		std::cout << e.what() << std::endl;
 	}
 }
-//
+
 // #include "Parse.hpp"
 // #include "CommandFactory.hpp"
 //
 // int	main(void)
 // {
-// 	Parse parse("JOIN #chan1,#chan2 pass1,pass2");
+// 	Parse parse("MODE +d ");
 // 	std::vector<std::vector<std::string> > commands;
 // 	CommandFactory factory;
 //
@@ -32,8 +32,9 @@ int main()
 // 	parse.display_vec(commands);
 // 	ACommand*	cmd = factory.createCommand(commands[0]);
 // 	Client	cli;
+// 	cli.setFd(1);
 // 	mapChannels chan;
 // 	mapClients client;
-// 	cmd->ExecuteCommand(cli, client, chan);
+// 	t_replyHandler rep = cmd->ExecuteCommand(cli, client, chan);
 // 	delete cmd;
 // }

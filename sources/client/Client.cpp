@@ -99,12 +99,22 @@ mapChannels&	Client::getChannelList()
 	return _channelList;
 }
 
+bool	Client::getIsConnected() const
+{
+	return _isConnected;
+}
+
+void	Client::setIsConnected()
+{
+	_isConnected = true;
+}
+
 void	Client::setPrefix()
 {
 	if (!_username.empty() && !_nickname.empty())
 	{
 		std::ostringstream	oss;
-		oss << ":" << _nickname << "!" << _username << "@" << _ip_address << " ";
+		oss << _nickname << "!" << _username << "@" << _ip_address << " ";
 		_prefix = oss.str();
 	}
 }
@@ -146,11 +156,18 @@ void	Client::setIsRegistered()
 	_isRegistered = true;
 }
 
-void	Client::setMode(t_modeEnum index, bool value)
+void	Client::setMode(char mode, char ope)
 {
-	if (value)
+	size_t index = 0;
+
+	while (ircMacro::modeCharArray[index])
+	{
+		if (mode == ircMacro::modeCharArray[index])
+			break ;
+	}
+	if (ope == '+')
 		_mode.set(index);
-	else
+	else if (ope == '-')
 		_mode.reset(index);
 }
 

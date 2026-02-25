@@ -37,24 +37,25 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	(void)ChannelArray;
 	t_replyHandler	replyHandler;
 	
-	if (!target.getIsRegistered())
+	if (!target.getIsConnected() || target.getNickname().empty())
 	{
-		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
+		replyHandler.add(target.getFd(), ERR::NOTREGISTERED());
 		return replyHandler;
 	}
+
+	if (target.getIsRegistered())
+	{
+		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED());
+		return replyHandler;
+	}
+
 	if (!isValidParams())
 	{
-		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "USER"));
+		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS("USER"));
 		return replyHandler;
 	}
 
 	std::string	username(_commandArray[1]), realname(_commandArray[4]);
-
-	if (!target.getUsername().empty())
-	{
-		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED(target));
-		return replyHandler;
-	}
 
 	size_t	index = 0;
 
@@ -67,6 +68,8 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	target.setUsername(_commandArray[1]);
 	replyHandler.add(target.getFd(), RPL::USER(target, _commandArray[4], index));
+	target.setIsRegistered();
+	replyHandler.add(target.getFd(), RPL::WELCOME(target));
 
 	return replyHandler;
 }

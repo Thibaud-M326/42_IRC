@@ -1,8 +1,9 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-# include <string>
 # include <bitset>
+# include <cstdlib>
+# include <string>
 # include <vector>
 # include "Irc.hpp"
 
@@ -14,10 +15,11 @@ class Channel
 		std::string						_name;
 		std::string						_topic;
 		std::bitset<ircMacro::NB_MODE>	_mode;
-		Client*							_operator;
+		std::vector<Client*>			_operators;
 		std::vector<std::string>		_modeParams;
 		std::vector<Client*>			_clientList;
 		std::string						_key;
+		ssize_t							_limitNbUser;
 
 	public:
 		/* class prerequisites */
@@ -30,20 +32,23 @@ class Channel
 		std::string						getStrMode() const;
 		std::bitset<ircMacro::NB_MODE>	getMode() const;
 		std::string						getModeParams() const;
-		Client	   						*getOperator() const;
+		std::vector<Client*>			getOperators() const;
 		std::vector<Client*>			getClientList() const;
 		std::vector<int>				getClientsFd() const;
 		std::vector<int>				getClientsFdButSource(int sourceFd) const;
 		std::string						getKey() const;
+		ssize_t							getLimitNbUser() const;
 
 		/* setters */
 		void							setName(std::string& name);
-		void							setTopic(std::string& topic);
+		void							setTopic(std::string topic);
 		void							setMode(t_modeEnum index, bool value);
 		void							setModeParams(std::string& params, t_modeEnum index);
-		void							setOperator(Client *ope);
-		void							setKey(std::string& key);
+		void							setKey(std::string key);
+		void							setLimitNbUser(ssize_t limit);
 
+		void							addOperator(Client* ope);
+		void							removeOperator(Client* ope);
 		void							addClient(Client* client);
 		void							removeClient(Client* client);
 };
