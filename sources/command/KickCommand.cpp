@@ -61,12 +61,13 @@ std::vector<std::string>	KickCommand::splitByComma(std::string argsToSplit)
 
 bool	KickCommand::isOperator(Client& clientSource, Channel& channel)
 {
-	Client* channelOp;
+	std::vector<Client*> channelOp = channel.getOperators();
 
-	channelOp = channel.getOperator();
-
-	if (channelOp == &clientSource)
-		return true;
+	for (std::vector<Client*>::iterator	it = channelOp.begin(); it != channelOp.end(); it++)
+	{
+		if (*it == &clientSource)
+			return true;
+	}
 	return false;
 }
 
@@ -154,7 +155,7 @@ void	KickCommand::kickUsersFromChannel(Client& clientSource, mapClients& clientA
 		std::cout << "channel arg:" << *user << std::endl;
 		if (!isUserOnChannel(*user, *chan))
 		{
-			replyHandler.add(clientSource.getFd(), ERR::NOTONCHANNEL(clientSource, *chan));
+			replyHandler.add(clientSource.getFd(), ERR::NOTONCHANNEL(*chan));
 			continue;
 		}
 		clientToKick = getUserOnChannel(*user, *chan);
@@ -169,14 +170,14 @@ t_replyHandler	KickCommand::ExecuteCommand(Client& clientSource, mapClients& cli
 	//clientIsConnected
 	if (!clientSource.getIsRegistered())
 	{
-		replyHandler.add(clientSource.getFd(), ERR::NOTREGISTERED(clientSource));
+		replyHandler.add(clientSource.getFd(), ERR::NOTREGISTERED());
 		return replyHandler;
 	}
 
 	//argumentNumberAreValid
 	if (_commandArray.size() < 3 || _commandArray[1].size() == 0 || _commandArray[2].size() == 0)
 	{
-		replyHandler.add(clientSource.getFd(), ERR::NEEDMOREPARAMS(clientSource, "KICK"));
+		replyHandler.add(clientSource.getFd(), ERR::NEEDMOREPARAMS("KICK"));
 		return replyHandler;
 	}
 	
@@ -191,9 +192,10 @@ t_replyHandler	KickCommand::ExecuteCommand(Client& clientSource, mapClients& cli
 		return replyHandler;
 	}
 
-	if (!channelExist(_commandArray[1] ,channelArray))
+	Channel	*chanSource = getChannelByName(_commandArray[1], channelArray);
+	if (!chanSource)
 	{
-		replyHandler.add(clientSource.getFd(), ERR::NOSUCHCHANNEL(clientSource, _commandArray[1]));
+		replyHandler.add(clientSource.getFd(), ERR::NOSUCHCHANNEL(_commandArray[1]));
 		return replyHandler;
 	}
 
