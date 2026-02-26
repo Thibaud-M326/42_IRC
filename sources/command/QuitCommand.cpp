@@ -13,12 +13,20 @@ t_replyHandler	QuitCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		{
 			replyHandler.add(it->second->getFd(), RPL::QUIT(target, _commandArray[1]));
 		}
+		for (mapChannels::iterator it = ChannelArray.begin(); it != ChannelArray.end(); it++)
+		{
+			it->second->removeClient(&target);
+		}
 	}
 	else
 	{
 		for (mapClients::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
 		{
 			replyHandler.add(it->second->getFd(), RPL::QUIT(target, ""));
+		}
+		for (mapChannels::iterator it = ChannelArray.begin(); it != ChannelArray.end(); it++)
+		{
+			it->second->removeClient(&target);
 		}
 	}
 

@@ -210,6 +210,17 @@ namespace RPL
 			<< chan.getName() << " :End of /NAMES list" << ircMacro::CRLF;
 		return oss.str();
 	}
+	// :prefix PART <channel> [:reason]
+	inline std::string	PART(Client& target, Channel& chan, std::string reason)
+	{
+		std::ostringstream	oss;
+
+		oss << target.getPrefix() << " PART " << chan.getName();
+		if (!reason.empty())
+			oss << " :";
+		oss << reason;
+		return oss.str();
+	}
 }
 
 namespace ERR 
