@@ -85,19 +85,6 @@ bool	KickCommand::isOperatorOnCanal(Client& clientSource, Channel& channel)
 	return false;
 }
 
-bool	KickCommand::isUserOnChannel(std::string userName, Channel& channel)
-{
-	std::vector<Client*> clientList;
-
-	clientList = channel.getClientList();
-	for (std::vector<Client*>::iterator client = clientList.begin(); client != clientList.end(); client++)
-	{
-		if (userName == (*client)->getNickname())
-			return true;
-	}
-	return false;
-}
-
 Client* KickCommand::getUserOnChannel(std::string userName, Channel& channel)
 {
 	Client* clientOnChan;
@@ -117,7 +104,6 @@ Client* KickCommand::getUserOnChannel(std::string userName, Channel& channel)
 //parcourir la liste des channel du client et celle du channel
 //enlever le client au deux listes
 //ajouter au replyHandler
-
 void	KickCommand::kickUsersFromChannel(Client& clientSource, mapChannels& channelArray, t_replyHandler& replyHandler)
 {
 	Client*	clientToKick;
@@ -143,12 +129,13 @@ void	KickCommand::kickUsersFromChannel(Client& clientSource, mapChannels& channe
 	for (user = usersArg.begin(); user != usersArg.end(); user++)
 	{
 		std::cout << "channel arg:" << *user << std::endl;
-		if (!isUserOnChannel(*user, *chan))
+
+		clientToKick = getUserOnChannel(*user, *chan);
+		if (!clientToKick)
 		{
 			replyHandler.add(clientSource.getFd(), ERR::NOTONCHANNEL(clientSource, *chan));
 			continue;
 		}
-		clientToKick = getUserOnChannel(*user, *chan);
 		clientToKick->leaveChannel(chan);
 		replyHandler.add(chan->getClientsFd(), RPL::KICK(clientSource, chan->getName(), clientToKick->getNickname(), _comments));
 		chan->removeClient(clientToKick);

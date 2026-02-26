@@ -30,6 +30,7 @@ SRC =														\
 		$(SRC_DIR)/$(SERVER_DIR)/shutDown.cpp				\
 		$(SRC_DIR)/$(COMMAND_DIR)/JoinCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/KickCommand.cpp			\
+		$(SRC_DIR)/$(COMMAND_DIR)/ListCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/NickCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/PassCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/PartCommand.cpp			\
