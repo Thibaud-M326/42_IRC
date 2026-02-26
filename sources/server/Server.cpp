@@ -19,14 +19,9 @@ Server::Server(std::string port, std::string password)
 	_nfds(0),
 	_buffer(),
 	_client(NULL),
-	_clients()
-{
-}
+	_clients() {}
 
 Server::~Server()
 {
-	for (mapClients::iterator it = _clients.begin(); it != _clients.end(); it++)
-		delete it->second;
-	for (mapChannels::iterator it = _channelArray.begin(); it != _channelArray.end(); it++)
-		delete it->second;
 }
+

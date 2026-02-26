@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include <iostream>
+#include "Exception.hpp"
 #include "Irc.hpp"
 
 int main()
@@ -12,7 +13,7 @@ int main()
 		serv.init_epoll();
 		serv.run();
 	}
-	catch (std::exception &e)
+	catch (ExceptionPerror &e)
 	{
 		std::cout << e.what() << std::endl;
 	}

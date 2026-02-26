@@ -16,7 +16,7 @@ class Channel;
 class Server {
 
 	private:
-		std::string						 _port;
+		std::string						_port;
 		std::string						_password;
 
 		int								_serv_socket_fd;
@@ -48,6 +48,7 @@ class Server {
 		void	readClient(int event_index);
 		void	executeClient(std::string rawCommands);
 		void	findClient();
+		void	endSafe(const char* err, const char* file, const char* func, int line);
 
 	public:
 		Server(std::string port, std::string password);
@@ -56,6 +57,7 @@ class Server {
 		void	init_server_socket();
 		void	init_epoll();
 		void	run();
+		void	shutDown();
 };
 
 #endif

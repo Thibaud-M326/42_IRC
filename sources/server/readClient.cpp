@@ -34,9 +34,6 @@ void Server::readClient(int event_index)
 				executeClient(_client->getBuffer());
 		}
 		if (errno != EAGAIN)
-		{
-			close(_client_socket_fd);
-			throw ExceptionPerror(ERR_MSG);
-		}
+			endSafe(ERR_MSG);
 	}
 }

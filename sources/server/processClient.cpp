@@ -1,12 +1,11 @@
 #include <unistd.h>
 #include "Channel.hpp"
 #include "Client.hpp"
+#include "Exception.hpp"
 #include "CommandFactory.hpp"
 #include "Parse.hpp"
 #include "Server.hpp"
 #include "QuitCommand.hpp"
-
-#include <iostream>
 
 void	Server::executeClient(std::string rawCommands)
 {
@@ -21,6 +20,7 @@ void	Server::executeClient(std::string rawCommands)
 	parse.display_vec(commands);
 	for (std::vector<std::vector<std::string> >::iterator it = commands.begin(); it != commands.end(); it++)
 	{
+		//bot
 		ACommand *cmd = factory.createCommand(*it);
 		if (cmd && _client)
 		{
@@ -30,7 +30,8 @@ void	Server::executeClient(std::string rawCommands)
 			{
 				for (std::vector<int>::iterator fdIndex = it->targets.begin(); fdIndex != it->targets.end(); fdIndex++)
 				{
-					send(*fdIndex, it->reply.c_str(), it->reply.size(), 0);
+					if (send(*fdIndex, it->reply.c_str(), it->reply.size(), 0) == -1)
+						endSafe(ERR_MSG);
 					std::cout << "[SEND] fd: " << *fdIndex << " | " << it->reply.length() << " bytes\n" << it->reply << std::endl;
 				}
 			}
@@ -45,3 +46,4 @@ void	Server::executeClient(std::string rawCommands)
 	}
 	std::cout << "================ REQUEST END ================" << std::endl;
 }
+

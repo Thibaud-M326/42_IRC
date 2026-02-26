@@ -13,10 +13,10 @@ int	Server::set_nonblocking(int sockfd)
 	int flags = fcntl(sockfd, F_GETFL, 0);
 	
     if (flags == -1)
-		throw ExceptionPerror(ERR_MSG);
+		endSafe(ERR_MSG);
 
     if (fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) == -1)
-		throw ExceptionPerror(ERR_MSG);
+		endSafe(ERR_MSG);
 
     return 0;
 }
@@ -27,10 +27,7 @@ void	Server::addClientToEpoll()
 	_ev.data.fd = _client_socket_fd;
 
 	if (-1 == epoll_ctl(_epoll_fd, EPOLL_CTL_ADD, _client_socket_fd, &_ev))
-	{
-		close(_client_socket_fd);
-		throw ExceptionPerror(ERR_MSG);
-	}
+		endSafe(ERR_MSG);
 }
 
 void	Server::addClient()
@@ -54,7 +51,7 @@ void	Server::acceptConnection()
 			if (errno == EAGAIN)
 				break;
 			else
-				throw ExceptionPerror(ERR_MSG);
+				endSafe(ERR_MSG);
 		}
 
 		set_nonblocking(_client_socket_fd);

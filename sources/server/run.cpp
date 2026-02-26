@@ -1,13 +1,16 @@
 #include "Exception.hpp"
 #include "Server.hpp"
+#include "SignalHandler.hpp"
 
 void Server::run()
 {
-	while (1)
+	SignalHandler::initSignal();
+
+	while (SignalHandler::isRunning())
 	{
 		_nfds = epoll_wait(_epoll_fd, _events, MAX_EVENT, -1);
 		if (_nfds == -1)
-			throw ExceptionPerror(ERR_MSG);
+			endSafe(ERR_MSG);
 		
 		for (int i = 0; i < _nfds; i++)
 		{
@@ -17,4 +20,5 @@ void Server::run()
 				readClient(i);
 		}
 	}
+	shutDown();
 }
