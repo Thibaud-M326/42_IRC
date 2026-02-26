@@ -4,6 +4,9 @@
 #include "Client.hpp"
 #include "Exception.hpp"
 #include "Server.hpp"
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 int	Server::set_nonblocking(int sockfd)
 {
@@ -32,7 +35,7 @@ void	Server::addClientToEpoll()
 
 void	Server::addClient()
 {
-	int IpAdrress = _client_sock_addr.sin_addr.s_addr;
+	char *IpAdrress = inet_ntoa(_client_sock_addr.sin_addr);
 
 	Client *client = new Client(_client_socket_fd, IpAdrress);
 

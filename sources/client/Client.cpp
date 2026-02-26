@@ -5,21 +5,20 @@
 Client::Client():
 	_prefix(""),
 	_username(""),
-	_nickname(""),
-	_ip_address(0),
+	_nickname("*"),
+	_ip_address(""),
 	_fd(0),
 	_isRegistered(false),
-	_cbuffer("")
-{
-}
+	_cbuffer("") {}
 
-Client::Client(const int fd, int ip_address):
+Client::Client(const int fd, std::string ip_address):
 	_prefix(""),
 	_username(""),
-	_nickname(""),
+	_nickname("*"),
 	_ip_address(ip_address),
 	_fd(fd),
 	_isRegistered(false),
+	_isConnected(false),
 	_cbuffer("") {}
 
 Client::~Client()
@@ -41,7 +40,7 @@ std::string	Client::getNickname() const
 	return _nickname;
 }
 
-int	Client::getIpAddress() const
+std::string	Client::getIpAddress() const
 {
 	return _ip_address;
 }
@@ -114,7 +113,7 @@ void	Client::setPrefix()
 	if (!_username.empty() && !_nickname.empty())
 	{
 		std::ostringstream	oss;
-		oss << _nickname << "!" << _username << "@" << _ip_address << " ";
+		oss << ":" << _nickname << "!" << _username << "@" << _ip_address << " ";
 		_prefix = oss.str();
 	}
 }
@@ -131,7 +130,7 @@ void	Client::setNickname(std::string& nickname)
 	setPrefix();
 }
 
-void	Client::setIpAddress(int& ip_address)
+void	Client::setIpAddress(std::string ip_address)
 {
 	_ip_address = ip_address;
 }

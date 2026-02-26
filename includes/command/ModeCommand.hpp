@@ -11,12 +11,12 @@ class ModeCommand : public ACommand
 
 		char			isValidFlag(char mode);
 		char			verifFlag();
-		void			modeUserLimit(char& signMode, size_t& count, t_replyHandler& replyHandler);
-		void			modeOperatorPrivilege(char& signMode, size_t& coun, t_replyHandler& replyHandlert);
-		void			modeChannelKey(char& signMode, size_t& count, t_replyHandler& replyHandler);
+		void			modeUserLimit(Client& target, char& signMode, size_t& count, t_replyHandler& replyHandler);
+		void			modeOperatorPrivilege(Client& clientSource, char& signMode, size_t& coun, t_replyHandler& replyHandlert);
+		void			modeChannelKey(Client& target, char& signMode, size_t& count, t_replyHandler& replyHandler);
 		void			modeTopicRestriction(char& signMode, size_t& count);
 		void			modeInvitOnly(char& signMode, size_t& count);
-		void			handleMode(t_replyHandler& replyHandler);
+		void			handleMode(Client& target, t_replyHandler& replyHandler);
 
 	public:
 		ModeCommand(std::vector<std::string>& params);

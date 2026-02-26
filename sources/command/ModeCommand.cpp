@@ -9,7 +9,8 @@ char	ModeCommand::isValidFlag(char mode)
 	{
 		if (mode == ircMacro::modeCharArray[i]
 				|| mode == '-'
-				|| mode == '+')
+				|| mode == '+'
+				|| mode == '\0')
 			return mode;
 	}
 	return '\0';
@@ -26,7 +27,7 @@ char	ModeCommand::verifFlag()
 	return '\0';
 }
 
-void	ModeCommand::modeUserLimit(char& signMode, size_t& count, t_replyHandler& replyHandler)
+void	ModeCommand::modeUserLimit(Client& target, char& signMode, size_t& count, t_replyHandler& replyHandler)
 {
 	if (signMode == '+')
 	{
@@ -45,7 +46,7 @@ void	ModeCommand::modeUserLimit(char& signMode, size_t& count, t_replyHandler& r
 		}
 		else
 		{
-			replyHandler.add(_client.getFd(), ERR::NEEDMOREPARAMS("MODE (l)"));
+			replyHandler.add(_client.getFd(), ERR::NEEDMOREPARAMS(target, "MODE (l)"));
 		}
 	}
 	else
@@ -82,7 +83,7 @@ void	ModeCommand::modeTopicRestriction(char& signMode, size_t& count)
 	count++;
 }
 
-void	ModeCommand::modeOperatorPrivilege(char& signMode, size_t& count, t_replyHandler& replyHandler)
+void	ModeCommand::modeOperatorPrivilege(Client& clientSource, char& signMode, size_t& count, t_replyHandler& replyHandler)
 {
 
 	if (count + 3 < _commandArray.size())
@@ -90,12 +91,12 @@ void	ModeCommand::modeOperatorPrivilege(char& signMode, size_t& count, t_replyHa
 		Client	*target = findClientByNickName(_commandArray[count + 3], _channel->getClientList());
 		if (!target)
 		{
-			replyHandler.add(_client.getFd(), ERR::USERNOTINCHANNEL(*_channel, _commandArray[count + 3]));
+			replyHandler.add(_client.getFd(), ERR::USERNOTINCHANNEL(clientSource, *_channel, _commandArray[count + 3]));
 		}
 		else if (signMode == '+')
 		{
 			_channel->addOperator(target);
-			replyHandler.add(target->getFd(), RPL::YOUREOPER());
+			replyHandler.add(target->getFd(), RPL::YOUREOPER(clientSource));
 		}
 		else
 		{
@@ -104,12 +105,12 @@ void	ModeCommand::modeOperatorPrivilege(char& signMode, size_t& count, t_replyHa
 	}
 	else
 	{
-		replyHandler.add(_client.getFd(), ERR::NEEDMOREPARAMS("MODE (o)"));
+		replyHandler.add(_client.getFd(), ERR::NEEDMOREPARAMS(clientSource, "MODE (o)"));
 	}
 	count++;
 }
 
-void	ModeCommand::modeChannelKey(char& signMode, size_t& count, t_replyHandler& replyHandler)
+void	ModeCommand::modeChannelKey(Client& target, char& signMode, size_t& count, t_replyHandler& replyHandler)
 {
 	if (signMode == '+')
 	{
@@ -122,12 +123,12 @@ void	ModeCommand::modeChannelKey(char& signMode, size_t& count, t_replyHandler& 
 			}
 			else
 			{
-				replyHandler.add(_client.getFd(), ERR::KEYSET(*_channel));
+				replyHandler.add(_client.getFd(), ERR::KEYSET(target, *_channel));
 			}
 		}
 		else
 		{
-			replyHandler.add(_client.getFd(), ERR::NEEDMOREPARAMS("MODE (k)"));
+			replyHandler.add(_client.getFd(), ERR::NEEDMOREPARAMS(target, "MODE (k)"));
 		}
 	}
 	else
@@ -138,7 +139,7 @@ void	ModeCommand::modeChannelKey(char& signMode, size_t& count, t_replyHandler& 
 	count++;
 }
 
-void	ModeCommand::handleMode(t_replyHandler& replyHandler)
+void	ModeCommand::handleMode(Client& target, t_replyHandler& replyHandler)
 {
 	std::string modeString = _commandArray[2];
 	char		signMode = '\0';
@@ -155,17 +156,17 @@ void	ModeCommand::handleMode(t_replyHandler& replyHandler)
 		{
 			case ircMacro::modeUserLimit:
 			{
-				modeUserLimit(signMode, count, replyHandler);
+				modeUserLimit(target, signMode, count, replyHandler);
 				break ;
 			}
 			case ircMacro::modeOperatorPrivileges:
 			{
-				modeOperatorPrivilege(signMode, count, replyHandler);
+				modeOperatorPrivilege(target, signMode, count, replyHandler);
 				break ;
 			}
 			case ircMacro::modeRestrictPassword:
 			{
-				modeChannelKey(signMode, count, replyHandler);
+				modeChannelKey(target, signMode, count, replyHandler);
 				break ;
 			}
 			case ircMacro::modeRestrictTopic:
@@ -193,20 +194,20 @@ t_replyHandler	ModeCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	if (!target.getIsRegistered())
 	{
-		replyHandler.add(target.getFd(), ERR::NOTREGISTERED());
+		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
 		return replyHandler;
 	}
 
 	if (_commandArray.size() == 1)
 	{
-		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS("MODE"));
+		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "MODE"));
 		return replyHandler;
 	}
 
 	_channel = getChannelByName(_commandArray[1], ChannelArray);
 	if (!_channel)
 	{
-		replyHandler.add(target.getFd(), ERR::NOSUCHCHANNEL(_commandArray[1]));
+		replyHandler.add(target.getFd(), ERR::NOSUCHCHANNEL(target, _commandArray[1]));
 		return replyHandler;
 	}
 
@@ -214,7 +215,13 @@ t_replyHandler	ModeCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	if (!tmp)
 	{
-		replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(*_channel));
+		replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(target, *_channel));
+		return replyHandler;
+	}
+
+	if (_commandArray.size() == 2)
+	{
+		replyHandler.add(_channel->getClientsFd(), RPL::CHANNELMODEIS(target, *_channel));
 		return replyHandler;
 	}
 
@@ -222,19 +229,22 @@ t_replyHandler	ModeCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	
 	if (!isOper(target, *_channel))
 	{
-		replyHandler.add(target.getFd(), ERR::CHANOPRIVSNEEDED(*_channel));
+		replyHandler.add(target.getFd(), ERR::CHANOPRIVSNEEDED(target, *_channel));
 		return replyHandler;
 	}
 
-	char c = verifFlag();
-	if (!c)
+	if (_commandArray.size() > 2)
 	{
-		replyHandler.add(target.getFd(), ERR::UNKNOWNMODE(*_channel, c));
-		std::cout << "NO MODE" <<std::endl;
-		return replyHandler;
+		char c = verifFlag();
+		if (!c)
+		{
+			replyHandler.add(target.getFd(), ERR::UNKNOWNMODE(target, *_channel, c));
+			std::cout << "NO MODE" <<std::endl;
+			return replyHandler;
+		}
 	}
 
-	replyHandler.add(_channel->getClientsFd(), RPL::CHANNELMODEIS(*_channel));
+	replyHandler.add(_channel->getClientsFd(), RPL::CHANNELMODEIS(target, *_channel));
 
 	return replyHandler;
 }

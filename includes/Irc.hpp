@@ -22,6 +22,7 @@ typedef	std::map<std::string, Channel*>	mapChannels;
 
 namespace ircMacro
 {
+	const char	NAME_SERVER[] = ":ircserv";
 	const char	CRLF[] = "\r\n";
 	const char	BOLD_GREEN[] = "\e[1;32m";
 	const char	BOLD_RED[] = "\e[1;31m";

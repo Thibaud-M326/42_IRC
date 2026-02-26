@@ -13,7 +13,7 @@ class Client
 		std::string						_prefix;
 		std::string						_username;
 		std::string						_nickname;
-		int								_ip_address;
+		std::string						_ip_address;
 		int								_fd;
 		bool							_isRegistered;
 		bool							_isConnected;
@@ -26,13 +26,13 @@ class Client
 	public:
 		/* class prerequisites */
 		Client();
-		Client(const int fd, const int ip_address);
+		Client(const int fd, std::string ip_address);
 		~Client();
 
 		/* getters */
 		bool							getIsRegistered() const;
 		bool							getIsConnected() const;
-		int								getIpAddress() const;
+		std::string						getIpAddress() const;
 		int								getFd() const;
 		std::string						getPrefix() const;
 		std::string						getUsername() const;
@@ -47,7 +47,7 @@ class Client
 		void							setPrefix();
 		void							setUsername(std::string& Username);
 		void							setNickname(std::string& Nickname);
-		void							setIpAddress(int& Ip_address);
+		void							setIpAddress(std::string Ip_address);
 		void							setFd(int Fd);
 		void							setBuffer(std::string buffer);
 		void							setIsRegistered();

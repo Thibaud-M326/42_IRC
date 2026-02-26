@@ -37,6 +37,7 @@ void	Server::executeClient(std::string rawCommands)
 			if (dynamic_cast<QuitCommand*>(cmd))
 			{
 				_clients.erase(_client->getFd());
+				close(_client->getFd());
 				delete _client;
 			}
 			delete cmd;

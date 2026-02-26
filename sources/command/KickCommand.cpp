@@ -117,19 +117,9 @@ Client* KickCommand::getUserOnChannel(std::string userName, Channel& channel)
 //parcourir la liste des channel du client et celle du channel
 //enlever le client au deux listes
 //ajouter au replyHandler
-void	KickCommand::kickClient(Client& clientToKick, Channel& chan, t_replyHandler& replyHandler)
+
+void	KickCommand::kickUsersFromChannel(Client& clientSource, mapChannels& channelArray, t_replyHandler& replyHandler)
 {
-	clientToKick.leaveChannel(&chan);
-
-	chan.removeClient(&clientToKick);
-
-	replyHandler.add(chan.getClientsFd(), RPL::KICK(chan.getName(), clientToKick.getNickname(), _comments));
-	return;
-}
-
-void	KickCommand::kickUsersFromChannel(Client& clientSource, mapClients& clientArray, mapChannels& channelArray, t_replyHandler& replyHandler)
-{
-	(void)clientArray;
 	Client*	clientToKick;
 	Channel* chan;
 	std::vector<std::string> usersArg;
@@ -137,17 +127,17 @@ void	KickCommand::kickUsersFromChannel(Client& clientSource, mapClients& clientA
 	usersArg = splitByComma(_commandArray[2]);
 	chan = getChannelByName(_commandArray[1], channelArray);
 
-	// if (!isOperator(clientSource, *chan))
-	// {
-	// 	replyHandler.add(clientSource.getFd(), ERR::CHANOPRIVSNEEDED(clientSource, chan->getName()));
-	// 	return;
-	// }
+	if (!isOperator(clientSource, *chan))
+	{
+		replyHandler.add(clientSource.getFd(), ERR::CHANOPRIVSNEEDED(clientSource, *chan));
+		return;
+	}
 
-	// if (!isOperatorOnCanal(clientSource, *chan))
-	// {
-	// 	replyHandler.add(clientSource.getFd(), ERR::NOTONCHANNEL(clientSource, *chan));
-	// 	return;
-	// }
+	if (!isOperatorOnCanal(clientSource, *chan))
+	{
+		replyHandler.add(clientSource.getFd(), ERR::NOTONCHANNEL(clientSource, *chan));
+		return;
+	}
 
 	std::vector<std::string>::iterator user;
 	for (user = usersArg.begin(); user != usersArg.end(); user++)
@@ -155,29 +145,32 @@ void	KickCommand::kickUsersFromChannel(Client& clientSource, mapClients& clientA
 		std::cout << "channel arg:" << *user << std::endl;
 		if (!isUserOnChannel(*user, *chan))
 		{
-			replyHandler.add(clientSource.getFd(), ERR::NOTONCHANNEL(*chan));
+			replyHandler.add(clientSource.getFd(), ERR::NOTONCHANNEL(clientSource, *chan));
 			continue;
 		}
 		clientToKick = getUserOnChannel(*user, *chan);
-		kickClient(*clientToKick, *chan, replyHandler);
+		clientToKick->leaveChannel(chan);
+		chan->removeClient(clientToKick);
+		replyHandler.add(chan->getClientsFd(), RPL::KICK(clientSource, chan->getName(), clientToKick->getNickname(), _comments));
 	}
 }
 
 t_replyHandler	KickCommand::ExecuteCommand(Client& clientSource, mapClients& clientArray, mapChannels& channelArray)
 {
+	(void)clientArray;
 	t_replyHandler	replyHandler;
 
 	//clientIsConnected
 	if (!clientSource.getIsRegistered())
 	{
-		replyHandler.add(clientSource.getFd(), ERR::NOTREGISTERED());
+		replyHandler.add(clientSource.getFd(), ERR::NOTREGISTERED(clientSource));
 		return replyHandler;
 	}
 
 	//argumentNumberAreValid
 	if (_commandArray.size() < 3 || _commandArray[1].size() == 0 || _commandArray[2].size() == 0)
 	{
-		replyHandler.add(clientSource.getFd(), ERR::NEEDMOREPARAMS("KICK"));
+		replyHandler.add(clientSource.getFd(), ERR::NEEDMOREPARAMS(clientSource, "KICK"));
 		return replyHandler;
 	}
 	
@@ -195,11 +188,11 @@ t_replyHandler	KickCommand::ExecuteCommand(Client& clientSource, mapClients& cli
 	Channel	*chanSource = getChannelByName(_commandArray[1], channelArray);
 	if (!chanSource)
 	{
-		replyHandler.add(clientSource.getFd(), ERR::NOSUCHCHANNEL(_commandArray[1]));
+		replyHandler.add(clientSource.getFd(), ERR::NOSUCHCHANNEL(clientSource, _commandArray[1]));
 		return replyHandler;
 	}
 
-	kickUsersFromChannel(clientSource, clientArray, channelArray, replyHandler);
+	kickUsersFromChannel(clientSource, channelArray, replyHandler);
 
 	return replyHandler;
 }

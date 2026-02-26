@@ -2,7 +2,12 @@
 #include "Client.hpp"
 #include <sstream>
 
-Channel::Channel(): _modeParams(5), _limitNbUser(-1) {}
+Channel::Channel():
+	_name(""),
+	_topic(""),
+	_key(""),
+	_modeParams(5),
+	_limitNbUser(-1) {}
 
 Channel::~Channel() {}
 
@@ -90,6 +95,25 @@ std::string	Channel::getKey() const
 ssize_t	Channel::getLimitNbUser() const
 {
 	return _limitNbUser;
+}
+
+std::string	Channel::getClientsStr() const
+{
+	std::ostringstream	oss;
+
+	for (size_t i = 0; i < _clientList.size(); i++)
+	{
+		for (size_t j = 0; j < _operators.size(); j++)
+		{
+			if (_clientList[i] == _operators[j])
+				oss << "@";
+		}
+		oss << _clientList[i]->getNickname();
+
+		if (i != _clientList.size() - 1)
+			oss << " ";
+	}
+	return oss.str();
 }
 
 void	Channel::setName(std::string& name)

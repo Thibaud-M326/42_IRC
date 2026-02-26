@@ -13,13 +13,13 @@ bool	NickCommand::isValidNickname(Client& target, mapClients& ClientArray, t_rep
 {
 	if (_commandArray.size() == 1 || _commandArray[1].size() == 0)
 	{
-		replyHandler.add(target.getFd(), ERR::NONICKNAMEGIVEN());
+		replyHandler.add(target.getFd(), ERR::NONICKNAMEGIVEN(target));
 		return false;
 	}
 	
 	if (_commandArray.size() != 2 || _commandArray[1].size() > 9)
 	{
-		replyHandler.add(target.getFd(), ERR::ERRONEUSNICKNAME(_commandArray[1]));
+		replyHandler.add(target.getFd(), ERR::ERRONEUSNICKNAME(target, _commandArray[1]));
 		return false;
 	}
 
@@ -29,7 +29,7 @@ bool	NickCommand::isValidNickname(Client& target, mapClients& ClientArray, t_rep
 	{
 		if (nickname == it->second->getNickname())
 		{
-			replyHandler.add(target.getFd(), ERR::NICKNAMEINUSE(nickname));
+			replyHandler.add(target.getFd(), ERR::NICKNAMEINUSE(target, nickname));
 			return false;
 		}
 	}
@@ -42,7 +42,7 @@ bool	NickCommand::isValidNickname(Client& target, mapClients& ClientArray, t_rep
 					&& !isSpecialChar(nickname[i])
 					&& nickname[i] != '-'))
 		{
-			replyHandler.add(target.getFd(), ERR::ERRONEUSNICKNAME(nickname));
+			replyHandler.add(target.getFd(), ERR::ERRONEUSNICKNAME(target, nickname));
 			return false;
 		}
 	}
@@ -56,7 +56,7 @@ t_replyHandler	NickCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	if (!target.getIsConnected())
 	{
-		replyHandler.add(target.getFd(), ERR::NOTREGISTERED());
+		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
 		return replyHandler;
 	}
 

@@ -103,25 +103,32 @@ void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
 		{
 			if (chanToJoin->second->getMode()[inviteOnly])
 			{
-				replyHandler.add(target.getFd(), ERR::INVITEONLYCHAN(*chanToJoin->second));
+				replyHandler.add(target.getFd(), ERR::INVITEONLYCHAN(target, *chanToJoin->second));
 			}
 			else if (static_cast<ssize_t>(chanToJoin->second->getClientList().size()) == chanToJoin->second->getLimitNbUser())
 			{
-				replyHandler.add(target.getFd(), ERR::CHANNELISFULL(*chanToJoin->second));
+				replyHandler.add(target.getFd(), ERR::CHANNELISFULL(target, *chanToJoin->second));
 			}
 			else if (chanToJoin->second->getKey() != params[index].second)
 			{
-				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(*chanToJoin->second));
+				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(target, *chanToJoin->second));
 			}
 			else if (it->second == chanToJoin->second->getKey())
 			{
-				replyHandler.add(chanToJoin->second->getClientsFd(), RPL::HASJOIN(target, chanToJoin->first));
 				target.joinChannel(chanToJoin->first, chanToJoin->second);
 				chanToJoin->second->addClient(&target);
-				replyHandler.add(target.getFd(), RPL::JOIN(chanToJoin->first, chanToJoin->second->getKey()));
+				replyHandler.add(target.getFd(), RPL::JOIN(target, chanToJoin->first, chanToJoin->second->getKey()));
+
+				if (chanToJoin->second->getTopic().empty())
+					replyHandler.add(target.getFd(), RPL::NOTOPIC(target, *chanToJoin->second));
+				else
+					replyHandler.add(target.getFd(), RPL::TOPIC(target, *chanToJoin->second));
+
+				replyHandler.add(target.getFd(), RPL::NAMREPLY(target, *chanToJoin->second));
+				replyHandler.add(target.getFd(), RPL::ENDOFNAMES(target, *chanToJoin->second));
 			}
 			else
-				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(*chanToJoin->second));
+				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(target, *chanToJoin->second));
 		}
 		index++;
 	}
@@ -135,34 +142,33 @@ t_replyHandler	JoinCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	if (!target.getIsRegistered())
 	{
-		replyHandler.add(target.getFd(), ERR::NOTREGISTERED());
+		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
 		return replyHandler;
 	}
 
 	chanParams	params = buildChannelParams(nbChan);
 
 	mapChannels	tmpChannelList(target.getChannelList());
-	if (params.begin()->second == "0")
+	if (_commandArray[1] == "0")
 	{
 		for (mapChannels::iterator it = tmpChannelList.begin(); it != tmpChannelList.end(); it++)
 		{
 			it->second->removeClient(&target);
-			replyHandler.add(it->second->getClientsFd(), RPL::JOINQUIT(target, it->first));
+			replyHandler.add(it->second->getClientsFd(), RPL::JOIN0(target, *it->second));
 		}
 		target.clearChannel();
-		replyHandler.add(target.getFd(), RPL::JOIN0());
 		return replyHandler;
 	}
 
 	if (params.empty())
 	{
-		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS("JOIN"));
+		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "JOIN"));
 		return replyHandler;
 	}
 	else if (!params.empty() && nbChan == 0)
 	{
 		for (chanParams::iterator it = params.begin(); it != params.end(); it++)
-			replyHandler.add(target.getFd(), ERR::NOSUCHCHANNEL(it->second));
+			replyHandler.add(target.getFd(), ERR::NOSUCHCHANNEL(target, it->second));
 		return replyHandler;
 	}
 

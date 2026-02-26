@@ -14,11 +14,11 @@ class Channel
 	private:
 		std::string						_name;
 		std::string						_topic;
+		std::string						_key;
 		std::bitset<ircMacro::NB_MODE>	_mode;
 		std::vector<Client*>			_operators;
 		std::vector<std::string>		_modeParams;
 		std::vector<Client*>			_clientList;
-		std::string						_key;
 		ssize_t							_limitNbUser;
 
 	public:
@@ -38,6 +38,7 @@ class Channel
 		std::vector<int>				getClientsFdButSource(int sourceFd) const;
 		std::string						getKey() const;
 		ssize_t							getLimitNbUser() const;
+		std::string						getClientsStr() const;
 
 		/* setters */
 		void							setName(std::string& name);

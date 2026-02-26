@@ -39,35 +39,31 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	
 	if (!target.getIsConnected() || target.getNickname().empty())
 	{
-		replyHandler.add(target.getFd(), ERR::NOTREGISTERED());
+		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
 		return replyHandler;
 	}
 
 	if (target.getIsRegistered())
 	{
-		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED());
+		replyHandler.add(target.getFd(), ERR::ALREADYREGISTRED(target));
 		return replyHandler;
 	}
 
 	if (!isValidParams())
 	{
-		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS("USER"));
+		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "USER"));
 		return replyHandler;
 	}
 
 	std::string	username(_commandArray[1]), realname(_commandArray[4]);
 
-	size_t	index = 0;
-
 	for (std::map<int, Client*>::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
 	{
 		if (it->second == &target)
 			break ;
-		index++;
 	}
 
 	target.setUsername(_commandArray[1]);
-	replyHandler.add(target.getFd(), RPL::USER(target, _commandArray[4], index));
 	target.setIsRegistered();
 	replyHandler.add(target.getFd(), RPL::WELCOME(target));
 
