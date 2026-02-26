@@ -107,7 +107,7 @@ namespace RPL
 
 		oss << ircMacro::NAME_SERVER << " 324 " << target.getNickname() <<  " " << chan.getName();
 		if (!chan.getStrMode().empty())
-			oss << " " << chan.getStrMode();
+			oss << " " << chan.getStrMode() << ircMacro::CRLF;
 		if (!chan.getModeParams().empty())
 			oss << " " << chan.getModeParams() << ircMacro::CRLF;
 		return oss.str();
@@ -145,11 +145,13 @@ namespace RPL
 		return oss.str();
 	}
 
-	inline std::string	LIST(Client& target, Channel& chan, size_t countUser)
+	inline std::string	LIST(Channel& chan, Client& target, size_t count)
 	{
 		std::ostringstream	oss;
 
-		oss << ircMacro::NAME_SERVER << " 322 " << target.getNickname() << " " << chan.getName() << " " << countUser << " " << chan.getTopic() << ircMacro::CRLF;
+		oss << ircMacro::NAME_SERVER << " 322 " << target.getNickname()
+			<< " " << chan.getName() << " " << count << " :"
+			<< chan.getTopic() << ircMacro::CRLF;
 		return oss.str();
 	}
 
@@ -216,9 +218,10 @@ namespace RPL
 		std::ostringstream	oss;
 
 		oss << target.getPrefix() << " PART " << chan.getName();
-		if (!reason.empty())
-			oss << " :";
-		oss << reason;
+		if (reason.empty())
+			oss << " :Leaving" << ircMacro::CRLF;
+		else 
+			oss << " " << reason << ircMacro::CRLF;
 		return oss.str();
 	}
 }

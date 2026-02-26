@@ -38,27 +38,27 @@ t_replyHandler	PartCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	std::string	reason = "";
 
-	if (_commandArray.size() == 4)
+	if (_commandArray.size() == 3)
 	{
-		if (_commandArray[3][0] == ':')
-			reason = _commandArray[3].substr(1);
+		if (_commandArray[2][0] == ':')
+			reason = _commandArray[2].substr(1);
 		else
-			reason = _commandArray[3].substr();
+			reason = _commandArray[2].substr();
 	}
 
-	for (size_t i = 0; i < _commandArray[2].size(); i++)
+	for (size_t i = 0; i < _commandArray[1].size(); i++)
 	{
-		size_t		endChan = _commandArray[2].find(",");
+		size_t		endChan = _commandArray[1].find(",");
 		std::string	str;
 
 		if (endChan == std::string::npos)
 		{
-			str = _commandArray[2].substr(i);
-			i = _commandArray[2].size();
+			str = _commandArray[1].substr(i);
+			i = _commandArray[1].size();
 		}
 		else
 		{
-			str = _commandArray[2].substr(i, endChan - 1);
+			str = _commandArray[1].substr(i, endChan - 1);
 			i = endChan;
 		}
 		Channel	*chanToPart = getChannelByName(str, ChannelArray);
@@ -75,6 +75,13 @@ t_replyHandler	PartCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		}
 		replyHandler.add(chanToPart->getClientsFd(), RPL::PART(target, *chanToPart, reason));
 		chanToPart->removeClient(tmp);
+		tmp->leaveChannel(chanToPart);
+
+		mapChannels	map = target.getChannelList();
+		for (mapChannels::iterator i = map.begin(); i != map.end(); i++)
+		{
+			std::cout << "===========\nPART\nCHANNEL CLIENT == |" << i->first << "|\n===========\n";
+		}
 	}
 
 	return replyHandler;

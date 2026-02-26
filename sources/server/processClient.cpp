@@ -31,7 +31,10 @@ void	Server::executeClient(std::string rawCommands)
 				for (std::vector<int>::iterator fdIndex = it->targets.begin(); fdIndex != it->targets.end(); fdIndex++)
 				{
 					if (send(*fdIndex, it->reply.c_str(), it->reply.size(), 0) == -1)
+					{
+						delete cmd;
 						endSafe(ERR_MSG);
+					}
 					std::cout << "[SEND] fd: " << *fdIndex << " | " << it->reply.length() << " bytes\n" << it->reply << std::endl;
 				}
 			}

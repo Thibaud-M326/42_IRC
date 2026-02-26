@@ -29,14 +29,14 @@ std::bitset<ircMacro::NB_MODE>	Channel::getMode() const
 std::string	Channel::getStrMode() const
 {
 	if (!_mode.count())
-		return "";
+		return "+";
 
 	std::ostringstream	oss;
 
 	oss << '+';
 	for (size_t i = _mode.size() -1; i > 0; i--)
 	{
-		if (_mode[i])
+		if (_mode[i] && i != operatorPrivileges)
 			oss << ircMacro::modeCharArray[i];
 	}
 	return oss.str();
@@ -163,10 +163,12 @@ void	Channel::addClient(Client* client)
 
 void	Channel::removeClient(Client* client)
 {
-	for (std::vector<Client*>::iterator it = _clientList.begin(); it != _clientList.end(); it++)
+	for (std::vector<Client*>::iterator it = _clientList.begin(); it != _clientList.end(); )
 	{
 		if (*it == client)
-			_clientList.erase(it);
+			it = _clientList.erase(it);
+		else
+			it++;
 	}
 }
 

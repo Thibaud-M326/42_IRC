@@ -119,7 +119,7 @@ void	ModeCommand::modeChannelKey(Client& target, char& signMode, size_t& count, 
 			if (!_channel->getKey().empty())
 			{
 				_channel->setKey(_commandArray[count + 3]);
-				_channel->setMode(operatorPrivileges, true);
+				_channel->setMode(restrictPassword, true);
 			}
 			else
 			{
@@ -134,7 +134,7 @@ void	ModeCommand::modeChannelKey(Client& target, char& signMode, size_t& count, 
 	else
 	{
 		_channel->setKey("");
-		_channel->setMode(operatorPrivileges, false);
+		_channel->setMode(restrictPassword, false);
 	}
 	count++;
 }

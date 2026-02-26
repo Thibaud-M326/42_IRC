@@ -17,6 +17,7 @@ class Client
 		int								_fd;
 		bool							_isRegistered;
 		bool							_isConnected;
+		bool							_isNicknameSet;
 		std::bitset<ircMacro::NB_MODE>	_mode;
 		std::vector<std::string>		_modeParams;
 		mapChannels						_channelList;
@@ -32,6 +33,7 @@ class Client
 		/* getters */
 		bool							getIsRegistered() const;
 		bool							getIsConnected() const;
+		bool							getISNicknameSet() const;
 		std::string						getIpAddress() const;
 		int								getFd() const;
 		std::string						getPrefix() const;

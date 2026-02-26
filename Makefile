@@ -32,12 +32,14 @@ SRC =														\
 		$(SRC_DIR)/$(COMMAND_DIR)/KickCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/NickCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/PassCommand.cpp			\
+		$(SRC_DIR)/$(COMMAND_DIR)/PartCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/PrivMsgCommand.cpp		\
 		$(SRC_DIR)/$(COMMAND_DIR)/UserCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/ACommand.cpp				\
 		$(SRC_DIR)/$(COMMAND_DIR)/CommandFactory.cpp		\
 		$(SRC_DIR)/$(COMMAND_DIR)/ModeCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/TopicCommand.cpp			\
+		$(SRC_DIR)/$(COMMAND_DIR)/ListCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/InviteCommand.cpp			\
 		$(SRC_DIR)/$(COMMAND_DIR)/QuitCommand.cpp			\
 		$(SRC_DIR)/$(CHANNEL_DIR)/Channel.cpp				\

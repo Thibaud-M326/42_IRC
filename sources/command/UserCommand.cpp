@@ -37,7 +37,7 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	(void)ChannelArray;
 	t_replyHandler	replyHandler;
 	
-	if (!target.getIsConnected() || target.getNickname().empty())
+	if (!target.getIsConnected() || !target.getISNicknameSet())
 	{
 		replyHandler.add(target.getFd(), ERR::NOTREGISTERED(target));
 		return replyHandler;

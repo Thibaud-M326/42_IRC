@@ -9,6 +9,8 @@ Client::Client():
 	_ip_address(""),
 	_fd(0),
 	_isRegistered(false),
+	_isConnected(false),
+	_isNicknameSet(false),
 	_cbuffer("") {}
 
 Client::Client(const int fd, std::string ip_address):
@@ -19,6 +21,7 @@ Client::Client(const int fd, std::string ip_address):
 	_fd(fd),
 	_isRegistered(false),
 	_isConnected(false),
+	_isNicknameSet(false),
 	_cbuffer("") {}
 
 Client::~Client()
@@ -103,6 +106,11 @@ bool	Client::getIsConnected() const
 	return _isConnected;
 }
 
+bool	Client::getISNicknameSet() const
+{
+	return _isNicknameSet;
+}
+
 void	Client::setIsConnected()
 {
 	_isConnected = true;
@@ -126,7 +134,10 @@ void	Client::setUsername(std::string& username)
 
 void	Client::setNickname(std::string& nickname)
 {
+	if (nickname.empty())
+		_nickname = "*";
 	_nickname = nickname;
+	_isNicknameSet = true;
 	setPrefix();
 }
 
@@ -177,10 +188,15 @@ void	Client::setModeParams(std::string& params, t_modeEnum index)
 
 void	Client::leaveChannel(Channel* channel)
 {
-	for (mapChannels::iterator it = _channelList.begin(); it != _channelList.end(); it++)
+	for (mapChannels::iterator it = _channelList.begin(); it != _channelList.end(); )
 	{
 		if (it->second == channel)
-			_channelList.erase(it);
+		{
+			mapChannels::iterator	tmp = it++;
+			_channelList.erase(tmp);
+		}
+		else
+			it++;
 	}
 }
 

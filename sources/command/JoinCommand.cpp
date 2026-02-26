@@ -117,7 +117,7 @@ void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
 			{
 				target.joinChannel(chanToJoin->first, chanToJoin->second);
 				chanToJoin->second->addClient(&target);
-				replyHandler.add(target.getFd(), RPL::JOIN(target, chanToJoin->first, chanToJoin->second->getKey()));
+				replyHandler.add(chanToJoin->second->getClientsFd(), RPL::JOIN(target, chanToJoin->first, chanToJoin->second->getKey()));
 
 				if (chanToJoin->second->getTopic().empty())
 					replyHandler.add(target.getFd(), RPL::NOTOPIC(target, *chanToJoin->second));
@@ -131,6 +131,8 @@ void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
 				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(target, *chanToJoin->second));
 		}
 		index++;
+		for (size_t i = 0; i < chanToJoin->second->getOperators().size(); i++)
+			std::cout << chanToJoin->second->getOperators()[i]->getNickname() << std::endl;
 	}
 }
 

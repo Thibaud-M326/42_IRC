@@ -6,6 +6,7 @@
 #include "ModeCommand.hpp"
 #include "NickCommand.hpp"
 #include "PassCommand.hpp"
+#include "PartCommand.hpp"
 #include "PrivMsgCommand.hpp"
 #include "QuitCommand.hpp"
 #include "TopicCommand.hpp"
@@ -56,14 +57,19 @@ static ACommand*	createKick(std::vector<std::string>& commands)
 	return new KickCommand(commands);
 }
 
-// static ACommand*	createList(std::vector<std::string>& commands)
-// {
-// 	return new ListCommand(commands);
-// }
+static ACommand*	createList(std::vector<std::string>& commands)
+{
+	return new ListCommand(commands);
+}
 
 static ACommand*	createJoin(std::vector<std::string>& commands)
 {
 	return new JoinCommand(commands);
+}
+
+static ACommand*	createPart(std::vector<std::string>& commands)
+{
+	return new PartCommand(commands);
 }
 
 CommandFactory::CommandFactory()
@@ -76,7 +82,8 @@ CommandFactory::CommandFactory()
 	_registry["INVITE"] = &createInvite;
 	_registry["TOPIC"] = &createTopic;
 	_registry["MODE"] = &createMode;
-	// _registry["LIST"] = &createList;
+	_registry["PART"] = &createPart;
+	_registry["LIST"] = &createList;
 	_registry["JOIN"] = &createJoin;
 	_registry["QUIT"] = &createQuit;
 }
@@ -92,3 +99,4 @@ ACommand*	CommandFactory::createCommand(std::vector<std::string>& params)
 	}
 	return NULL;
 }
+
