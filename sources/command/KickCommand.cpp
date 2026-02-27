@@ -151,6 +151,7 @@ void	KickCommand::kickUsersFromChannel(Client& clientSource, mapChannels& channe
 		clientToKick = getUserOnChannel(*user, *chan);
 		clientToKick->leaveChannel(chan);
 		replyHandler.add(chan->getClientsFd(), RPL::KICK(clientSource, chan->getName(), clientToKick->getNickname(), _comments));
+		chan->removeOperator(clientToKick);
 		chan->removeClient(clientToKick);
 	}
 }

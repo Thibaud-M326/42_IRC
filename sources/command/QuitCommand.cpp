@@ -18,6 +18,7 @@ t_replyHandler	QuitCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		}
 		for (mapChannels::iterator it = channelList.begin(); it != channelList.end(); ++it)
 		{
+			it->second->removeOperator(&target);
 			it->second->removeClient(&target);
 		}
 	}
@@ -31,6 +32,7 @@ t_replyHandler	QuitCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		}
 		for (mapChannels::iterator it = channelList.begin(); it != channelList.end(); ++it)
 		{
+			it->second->removeOperator(&target);
 			it->second->removeClient(&target);
 		}
 	}

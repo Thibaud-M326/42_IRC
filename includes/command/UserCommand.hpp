@@ -7,6 +7,7 @@ class UserCommand : public ACommand
 {
 	private:
 		bool						isValidParams();
+		std::string					getDate();
 
 	public:
 		UserCommand(std::vector<std::string>& params);

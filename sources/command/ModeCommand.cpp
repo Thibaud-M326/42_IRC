@@ -85,7 +85,7 @@ void	ModeCommand::modeTopicRestriction(char& signMode, size_t& count)
 
 void	ModeCommand::modeOperatorPrivilege(Client& clientSource, char& signMode, size_t& count, t_replyHandler& replyHandler)
 {
-
+	std::cout << count << "|" << _commandArray.size() << "|\n";
 	if (count + 3 < _commandArray.size())
 	{
 		Client	*target = findClientByNickName(_commandArray[count + 3], _channel->getClientList());
@@ -96,7 +96,7 @@ void	ModeCommand::modeOperatorPrivilege(Client& clientSource, char& signMode, si
 		else if (signMode == '+')
 		{
 			_channel->addOperator(target);
-			replyHandler.add(target->getFd(), RPL::YOUREOPER(clientSource));
+			replyHandler.add(target->getFd(), RPL::MODE(clientSource, *_channel, target->getNickname()));
 		}
 		else
 		{
@@ -143,7 +143,7 @@ void	ModeCommand::handleMode(Client& target, t_replyHandler& replyHandler)
 {
 	std::string modeString = _commandArray[2];
 	char		signMode = '\0';
-	size_t		count = 1;
+	size_t		count = 0;
 
 	for (size_t i = 0; i < modeString.size(); i++)
 	{
@@ -152,6 +152,7 @@ void	ModeCommand::handleMode(Client& target, t_replyHandler& replyHandler)
 			signMode = modeString[i];
 			i++;
 		}
+		std::cout << "AAAAAAAAAAAAAA\n";
 		switch (modeString[i])
 		{
 			case ircMacro::modeUserLimit:
@@ -221,7 +222,8 @@ t_replyHandler	ModeCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	if (_commandArray.size() == 2)
 	{
-		replyHandler.add(_channel->getClientsFd(), RPL::CHANNELMODEIS(target, *_channel));
+		for (size_t i = 0; i < _channel->getClientList().size(); i++)
+			replyHandler.add(_channel->getClientList()[i]->getFd(), RPL::CHANNELMODEIS(*_channel->getClientList()[i], *_channel));
 		return replyHandler;
 	}
 
@@ -244,7 +246,10 @@ t_replyHandler	ModeCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		}
 	}
 
-	replyHandler.add(_channel->getClientsFd(), RPL::CHANNELMODEIS(target, *_channel));
+	handleMode(target, replyHandler);
+
+	for (size_t i = 0; i < _channel->getClientList().size(); i++)
+		replyHandler.add(_channel->getClientList()[i]->getFd(), RPL::CHANNELMODEIS(*_channel->getClientList()[i], *_channel));
 
 	return replyHandler;
 }

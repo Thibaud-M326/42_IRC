@@ -53,11 +53,41 @@ namespace RPL
 		return (target.getPrefix() + "USER " + target.getUsername() + " " + oss.str() + " * " + realName + ircMacro::CRLF);
 	}
 
+
 	inline std::string	WELCOME(Client& target)
 	{
 		std::ostringstream	oss;
 
 		oss << ircMacro::NAME_SERVER << " 001 " << target.getNickname() << " :Welcome to the Internet Relay Network " << &target.getPrefix()[1] << ircMacro::CRLF;
+		return oss.str();
+	}
+
+	inline std::string	YOURHOST(Client& target)
+	{
+		std::ostringstream	oss;
+
+		oss << ircMacro::NAME_SERVER << " 002 " << target.getNickname()
+			<< " Your host is " << &ircMacro::NAME_SERVER[1]
+			<< ", running version " << ircMacro::VERSION << ircMacro::CRLF;
+		return oss.str();
+	}
+
+	inline std::string	CREATED(Client& target, std::string date)
+	{
+		std::ostringstream	oss;
+
+		oss << ircMacro::NAME_SERVER << " 003 " << target.getNickname()
+			<< " This server was created " << date << " " << ircMacro::NAME_SERVER;
+		return oss.str();
+	}
+
+	inline std::string	MYINFO(Client& target)
+	{
+		std::ostringstream	oss;
+
+		oss << ircMacro::NAME_SERVER << " 004 " << target.getNickname()
+			<< " " << ircMacro::VERSION << " +" << ircMacro::modeCharArray
+			<< ircMacro::CRLF;
 		return oss.str();
 	}
 
@@ -98,6 +128,15 @@ namespace RPL
 		std::ostringstream	oss;
 
 		oss << ircMacro::NAME_SERVER << " 221 " << target.getNickname() << " " <<  mode << ircMacro::CRLF;
+		return oss.str();
+	}
+
+	inline std::string	MODE(Client& source, Channel& chan, std::string target)
+	{
+		std::ostringstream	oss;
+
+		oss << source.getPrefix() << " MODE " << chan.getName()
+			<< " +o " << target << ircMacro::CRLF;
 		return oss.str();
 	}
 

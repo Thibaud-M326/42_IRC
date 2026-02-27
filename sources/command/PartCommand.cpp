@@ -19,6 +19,21 @@ PartCommand::PartCommand(std::vector<std::string>& params): ACommand(params) {}
 //         ERR_NEEDMOREPARAMS              ERR_NOSUCHCHANNEL
 //         ERR_NOTONCHANNEL
 
+void	PartCommand::eraseChannel(Channel* chan, mapChannels& ChannelArray)
+{
+	for (mapChannels::iterator it = ChannelArray.begin(); it != ChannelArray.end(); )
+	{
+
+		if (it->second == chan)
+		{
+			mapChannels::iterator	tmp = it++;
+			ChannelArray.erase(tmp);
+		}
+		else
+			it++;
+	}
+}
+
 t_replyHandler	PartCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
 {
 	(void)ClientArray;
@@ -74,13 +89,12 @@ t_replyHandler	PartCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 			continue ;
 		}
 		replyHandler.add(chanToPart->getClientsFd(), RPL::PART(target, *chanToPart, reason));
+		chanToPart->removeOperator(tmp);
 		chanToPart->removeClient(tmp);
 		tmp->leaveChannel(chanToPart);
-
-		mapChannels	map = target.getChannelList();
-		for (mapChannels::iterator i = map.begin(); i != map.end(); i++)
+		if (chanToPart->getClientList().size() == 0)
 		{
-			std::cout << "===========\nPART\nCHANNEL CLIENT == |" << i->first << "|\n===========\n";
+			eraseChannel(chanToPart, ChannelArray);
 		}
 	}
 

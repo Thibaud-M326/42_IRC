@@ -10,7 +10,7 @@ void Server::readClient(int event_index)
 
 	_client_socket_fd = _events[event_index].data.fd;
 
-	while(0 < (readSize = read(_client_socket_fd, _buffer, sizeof(_buffer))))
+	while(0 < (readSize = recv(_client_socket_fd, _buffer, sizeof(_buffer), 0)))
 	{
 		findClient();
 		_client->appendRawData(_buffer);
@@ -37,3 +37,4 @@ void Server::readClient(int event_index)
 			endSafe(ERR_MSG);
 	}
 }
+

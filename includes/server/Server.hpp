@@ -7,7 +7,7 @@
 # include <map>
 
 # define MAX_EVENT 10
-# define PORT 6668
+# define PORT 6667
 # define READ_BUFFER_SIZE 1024
 
 class Client;

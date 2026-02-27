@@ -147,13 +147,15 @@ void	Channel::addOperator(Client* ope)
 void	Channel::removeOperator(Client* ope)
 {
 	std::vector<Client*>::iterator it = _operators.begin();
+
 	while (it != _operators.end())
 	{
 		if (*it == ope)
 			break ;
 		it++;
 	}
-	_operators.erase(it);
+	if (*it == ope)
+		_operators.erase(it);
 }
 
 void	Channel::addClient(Client* client)

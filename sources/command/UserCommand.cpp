@@ -1,5 +1,6 @@
 #include "Reply.hpp"
 #include "UserCommand.hpp"
+#include <ctime>
 
 // -USER - is used at the beginning of connection to specify the username, hostname and realname of a new user.
 //    The `<mode>` parameter should be a numeric, and can be used to
@@ -18,6 +19,18 @@
 
 
 UserCommand::UserCommand(std::vector<std::string>& params): ACommand(params) {}
+
+std::string	UserCommand::getDate()
+{
+	std::ostringstream	oss;
+    std::time_t now = std::time(NULL);
+    std::tm* local = std::localtime(&now);
+
+	oss << (local->tm_year + 1900) << "-"
+		<< (local->tm_mon + 1) << "-"
+		<< local->tm_mday;
+	return oss.str();
+}
 
 bool	UserCommand::isValidParams()
 {
@@ -66,6 +79,9 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	target.setUsername(_commandArray[1]);
 	target.setIsRegistered();
 	replyHandler.add(target.getFd(), RPL::WELCOME(target));
+	replyHandler.add(target.getFd(), RPL::YOURHOST(target));
+	replyHandler.add(target.getFd(), RPL::CREATED(target, getDate()));
+	replyHandler.add(target.getFd(), RPL::MYINFO(target));
 
 	return replyHandler;
 }
