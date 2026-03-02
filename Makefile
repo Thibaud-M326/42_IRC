@@ -56,7 +56,8 @@ SRCS =	main.cpp \
 		QuitCommand.cpp \
 		TopicCommand.cpp \
 		UserCommand.cpp \
-		SignalHandler.cpp
+		SignalHandler.cpp \
+		verifArgs.cpp
 
 INC_DIRS = -I$(INC_DIR) \
            $(addprefix -I$(INC_DIR)/,$(SUBDIR))

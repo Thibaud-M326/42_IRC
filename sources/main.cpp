@@ -2,40 +2,41 @@
 #include <iostream>
 #include "Exception.hpp"
 #include "Irc.hpp"
+#include "Parse.hpp"
+#include <vector>
 
-int main()
+namespace ircMacro
 {
-	try 
+	std::string	PASSWORD;
+	int			PORT = 6667;
+}
+
+int main(int ac, char *av[])
+{
+	if (ac == 2 && (!std::strcmp(av[1], "--help")
+				|| !std::strcmp(av[1], "-h")))
+	{
+		std::cout << ircMacro::help() << std::endl;
+		return 0;
+	}
+	if (ac != 3 || !verifArgs(av[1], av[2]))
+	{
+		std::cerr << ircMacro::BOLD_RED << ircMacro::USAGE << ircMacro::STOP_COLOR << std::endl;
+		return 1;
+	}
+	try
 	{
 		Server serv(ircMacro::PORT, ircMacro::PASSWORD);
 
 		serv.init_server_socket();
 		serv.init_epoll();
+		ircMacro::displayAsciiServ();
 		serv.run();
 	}
 	catch (ExceptionPerror &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cerr << ircMacro::BOLD_RED << e.what() << ircMacro::STOP_COLOR << std::endl;
 	}
+	return 0;
 }
 
-// #include "Parse.hpp"
-// #include "CommandFactory.hpp"
-//
-// int	main(void)
-// {
-// 	Parse parse("MODE +d ");
-// 	std::vector<std::vector<std::string> > commands;
-// 	CommandFactory factory;
-//
-//
-// 	commands = parse.parseCommand();
-// 	parse.display_vec(commands);
-// 	ACommand*	cmd = factory.createCommand(commands[0]);
-// 	Client	cli;
-// 	cli.setFd(1);
-// 	mapChannels chan;
-// 	mapClients client;
-// 	t_replyHandler rep = cmd->ExecuteCommand(cli, client, chan);
-// 	delete cmd;
-// }

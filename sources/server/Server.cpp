@@ -3,7 +3,7 @@
 #include "Channel.hpp"
 #include "Server.hpp"
 
-Server::Server(std::string port, std::string password)
+Server::Server(int port, std::string password)
 :
 	_port(port),
 	_password(password),

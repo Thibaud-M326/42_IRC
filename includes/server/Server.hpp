@@ -15,7 +15,7 @@ class Channel;
 class Server {
 
 	private:
-		std::string						_port;
+		int								_port;
 		std::string						_password;
 
 		int								_serv_socket_fd;
@@ -50,7 +50,7 @@ class Server {
 		void	endSafe(const char* err, const char* file, const char* func, int line);
 
 	public:
-		Server(std::string port, std::string password);
+		Server(int port, std::string password);
 		~Server();
 
 		void	init_server_socket();

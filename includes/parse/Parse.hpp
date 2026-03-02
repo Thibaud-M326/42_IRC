@@ -17,4 +17,6 @@ class Parse {
 		void	display_vec(std::vector<std::vector<std::string> > val);
 };
 
+bool	verifArgs(std::string port, std::string password);
+
 #endif

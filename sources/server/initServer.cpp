@@ -6,7 +6,7 @@
 void Server::init_server_socket()
 {
 	_serv_sock_addr.sin_family = AF_INET;
-	_serv_sock_addr.sin_port = htons(std::atoi(ircMacro::PORT));
+	_serv_sock_addr.sin_port = htons(ircMacro::PORT);
 	_serv_sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	_serv_socket_fd = socket(AF_INET, SOCK_STREAM, 0);
