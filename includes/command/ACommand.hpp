@@ -1,8 +1,6 @@
 #ifndef ACOMMAND_HPP
 # define ACOMMAND_HPP
 
-# include <vector>
-# include "Irc.hpp"
 # include "Reply.hpp"
 
 class Client;

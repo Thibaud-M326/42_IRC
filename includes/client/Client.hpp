@@ -18,8 +18,6 @@ class Client
 		bool							_isRegistered;
 		bool							_isConnected;
 		bool							_isNicknameSet;
-		std::bitset<ircMacro::NB_MODE>	_mode;
-		std::vector<std::string>		_modeParams;
 		mapChannels						_channelList;
 
 		std::string						_cbuffer;
@@ -40,9 +38,6 @@ class Client
 		std::string						getUsername() const;
 		std::string						getNickname() const;
 		std::string 					getBuffer() const;
-		std::bitset<ircMacro::NB_MODE>	getMode() const;
-		std::string						getStrMode() const;
-		std::string 					getModeParams() const;
 		mapChannels&					getChannelList();
 
 		/* setters */
@@ -54,8 +49,6 @@ class Client
 		void							setBuffer(std::string buffer);
 		void							setIsRegistered();
 		void							setIsConnected();
-		void							setMode(char mode, char ope);
-		void							setModeParams(std::string& params, t_modeEnum index);
 	
 		void							leaveChannel(Channel *Channel);
 		void							joinChannel(const std::string& chanName, Channel *Channel);

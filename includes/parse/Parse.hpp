@@ -1,8 +1,8 @@
 #ifndef PARSE_HPP
 #define PARSE_HPP
 
-# include <vector>
 # include <string>
+# include <vector>
 
 class Parse {
 

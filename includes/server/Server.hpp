@@ -1,13 +1,9 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include <string>
 # include <sys/epoll.h>
 # include <netinet/in.h>
-# include <map>
-
-# define MAX_EVENT 10
-# define READ_BUFFER_SIZE 1024
+# include "Irc.hpp"
 
 class Client;
 class Channel;
@@ -23,7 +19,7 @@ class Server {
 		socklen_t						_serv_sock_addr_len;
 
 		int								_epoll_fd;
-		epoll_event						_events[MAX_EVENT];
+		epoll_event						_events[ircMacro::MAX_EVENT];
 		epoll_event						_ev;
 
 		int								_client_socket_fd;
@@ -31,7 +27,7 @@ class Server {
 		socklen_t						_client_sock_addr_len;
 
 		int								_nfds;
-		char							_buffer[READ_BUFFER_SIZE];
+		char							_buffer[ircMacro::READ_BUFFER_SIZE];
 
 		Client							*_client;
 		std::map<int, Client*>			_clients;

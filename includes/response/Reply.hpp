@@ -1,12 +1,9 @@
 #ifndef REPLY_HPP
 # define REPLY_HPP
 
-# include "Client.hpp"
-# include "Channel.hpp"
-# include "Irc.hpp"
 # include <sstream>
-
-#include <iostream>
+# include "Channel.hpp"
+# include "Client.hpp"
 
 typedef struct s_outGoingMessages
 {
@@ -72,12 +69,12 @@ namespace RPL
 		return oss.str();
 	}
 
-	inline std::string	CREATED(Client& target, std::string date)
+	inline std::string	CREATED(Client& target)
 	{
 		std::ostringstream	oss;
 
 		oss << ircMacro::NAME_SERVER << " 003 " << target.getNickname()
-			<< " This server was created " << date << " " << ircMacro::NAME_SERVER;
+			<< " This server was created " << ircMacro::DATE << " " << ircMacro::NAME_SERVER;
 		return oss.str();
 	}
 

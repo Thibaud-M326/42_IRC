@@ -1,36 +1,7 @@
-#include "Reply.hpp"
 #include "UserCommand.hpp"
 #include <ctime>
 
-// -USER - is used at the beginning of connection to specify the username, hostname and realname of a new user.
-//    The `<mode>` parameter should be a numeric, and can be used to
-//    automatically set user modes when registering with the server.  This
-//    parameter is a bitmask, with only 2 bits having any signification: if
-//    the bit 2 is set, the user mode 'w' will be set and if the bit 3 is
-//    set, the user mode 'i' will be set.  (See Section 3.1.5 "User
-//    Modes").
-// 
-//    The `<realname>` may contain space characters.
-// 
-//    Parameters: <user> <realname>
-//   Numeric Replies:
-//
-//           ERR_NEEDMOREPARAMS              ERR_ALREADYREGISTRED
-
-
 UserCommand::UserCommand(std::vector<std::string>& params): ACommand(params) {}
-
-std::string	UserCommand::getDate()
-{
-	std::ostringstream	oss;
-    std::time_t now = std::time(NULL);
-    std::tm* local = std::localtime(&now);
-
-	oss << (local->tm_year + 1900) << "-"
-		<< (local->tm_mon + 1) << "-"
-		<< local->tm_mday;
-	return oss.str();
-}
 
 bool	UserCommand::isValidParams()
 {
@@ -80,7 +51,7 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	target.setIsRegistered();
 	replyHandler.add(target.getFd(), RPL::WELCOME(target));
 	replyHandler.add(target.getFd(), RPL::YOURHOST(target));
-	replyHandler.add(target.getFd(), RPL::CREATED(target, getDate()));
+	replyHandler.add(target.getFd(), RPL::CREATED(target));
 	replyHandler.add(target.getFd(), RPL::MYINFO(target));
 
 	return replyHandler;

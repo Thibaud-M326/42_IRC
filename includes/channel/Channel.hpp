@@ -3,7 +3,6 @@
 
 # include <bitset>
 # include <cstdlib>
-# include <string>
 # include <vector>
 # include "Irc.hpp"
 

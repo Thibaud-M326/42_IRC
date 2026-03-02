@@ -1,5 +1,4 @@
 #include "ModeCommand.hpp"
-#include "Irc.hpp"
 
 ModeCommand::ModeCommand(std::vector<std::string>& params): ACommand(params) {}
 

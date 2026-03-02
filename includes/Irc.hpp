@@ -1,9 +1,9 @@
 #ifndef IRC_HPP
 # define IRC_HPP
 
-# include <map>
-# include <string>
+# include <ctime>
 # include <iostream>
+# include <map>
 # include <sstream>
 
 class Client;
@@ -32,6 +32,7 @@ namespace ircMacro
 	const char			BOLD_CYAN[] = "\e[1;36m";
 	const char			STOP_COLOR[] = "\e[0m";
 
+	extern std::string	DATE;
 	extern std::string	PASSWORD;
 	extern int			PORT;
 
@@ -51,6 +52,8 @@ namespace ircMacro
 		return oss.str();
 	};
 
+	const int			MAX_EVENT = 10;
+	const int			READ_BUFFER_SIZE = 1024;
 	const int			NB_PORT_MAX = 65535;
 	const int			NB_CHAR_PASS_MAX = 32;
 	const int			NB_CHAR_PASS_MIN = 4;

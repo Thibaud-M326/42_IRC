@@ -1,25 +1,6 @@
 #include "PrivMsgCommand.hpp"
-#include <vector>
-#include <algorithm>
-
-
-#include <iostream>
 
 PrivMsgCommand::PrivMsgCommand(std::vector<std::string>& params): ACommand(params) {}
-
-
-//       Command: PRIVMSG
-//    Parameters: <msgtarget> <text to be sent>
-
-//optionel :
-
-// ERR_CANNOTSENDTOCHAN
-
-// ERR_NORECIPIENT :OK
-
-// ERR_NOTEXTTOSEND :OK
-
-// ERR_NOSUCHNICK : OK
 
 bool	PrivMsgCommand::isValidPrivMsg(Client& clientSource, t_replyHandler& replyHandler)
 {

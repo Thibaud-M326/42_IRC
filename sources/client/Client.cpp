@@ -1,6 +1,4 @@
 #include "Client.hpp"
-#include <sstream>
-#include <iostream>
 
 Client::Client():
 	_prefix(""),
@@ -61,39 +59,6 @@ std::string	Client::getBuffer() const
 bool	Client::getIsRegistered() const
 {
 	return _isRegistered;
-}
-
-std::bitset<ircMacro::NB_MODE>	Client::getMode() const
-{
-	return _mode;
-}
-
-std::string	Client::getStrMode() const
-{
-	if (!_mode.count())
-		return "";
-
-	std::ostringstream	oss;
-
-	oss << '+';
-	for (size_t i = _mode.size() -1; i > 0; i--)
-	{
-		if (_mode[i])
-			oss << ircMacro::modeCharArray[i];
-	}
-	return oss.str();
-}
-
-std::string	Client::getModeParams() const
-{
-	std::ostringstream	oss;
-	for (size_t i = 0; i < _modeParams.size(); i++)
-	{
-		oss << _modeParams[i];
-		if (!_modeParams[i].empty() && i != _modeParams.size() - 1)
-			oss << ' ';
-	}
-	return oss.str();
 }
 
 mapChannels&	Client::getChannelList()
@@ -164,26 +129,6 @@ void	Client::appendRawData(const char* readBuf)
 void	Client::setIsRegistered()
 {
 	_isRegistered = true;
-}
-
-void	Client::setMode(char mode, char ope)
-{
-	size_t index = 0;
-
-	while (ircMacro::modeCharArray[index])
-	{
-		if (mode == ircMacro::modeCharArray[index])
-			break ;
-	}
-	if (ope == '+')
-		_mode.set(index);
-	else if (ope == '-')
-		_mode.reset(index);
-}
-
-void	Client::setModeParams(std::string& params, t_modeEnum index)
-{
-	_modeParams[index] = params;
 }
 
 void	Client::leaveChannel(Channel* channel)

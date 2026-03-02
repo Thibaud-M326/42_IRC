@@ -1,12 +1,26 @@
-#include "Server.hpp"
 #include <iostream>
+#include <vector>
 #include "Exception.hpp"
 #include "Irc.hpp"
 #include "Parse.hpp"
-#include <vector>
+#include "Server.hpp"
+
+
+std::string	getDate()
+{
+	std::ostringstream	oss;
+	std::time_t now = std::time(NULL);
+	std::tm* local = std::localtime(&now);
+
+	oss << (local->tm_year + 1900) << "-"
+		<< (local->tm_mon + 1) << "-"
+		<< local->tm_mday;
+	return oss.str().c_str();
+}
 
 namespace ircMacro
 {
+	std::string	DATE = getDate();
 	std::string	PASSWORD;
 	int			PORT = 6667;
 }

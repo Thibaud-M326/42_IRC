@@ -1,6 +1,5 @@
 #include "Channel.hpp"
 #include "Client.hpp"
-#include <sstream>
 
 Channel::Channel():
 	_name(""),

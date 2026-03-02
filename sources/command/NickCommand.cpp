@@ -1,11 +1,4 @@
 #include "NickCommand.hpp"
-#include "Reply.hpp"
-
-// Parameters: <nickname>
-// Numeric Replies:
-// 
-//     ERR_NONICKNAMEGIVEN = no nickname given             ERR_ERRONEUSNICKNAME = nickname errone avec des char qui ne sont pas valides
-//     ERR_NICKNAMEINUSE = nick in use.
 
 NickCommand::NickCommand(std::vector<std::string>& params): ACommand(params) {}
 

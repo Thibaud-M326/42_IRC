@@ -8,7 +8,7 @@ void Server::run()
 
 	while (SignalHandler::isRunning())
 	{
-		_nfds = epoll_wait(_epoll_fd, _events, MAX_EVENT, -1);
+		_nfds = epoll_wait(_epoll_fd, _events, ircMacro::MAX_EVENT, -1);
 		if (_nfds == -1)
 			endSafe(ERR_MSG);
 		
