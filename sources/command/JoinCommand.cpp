@@ -135,7 +135,7 @@ t_replyHandler	JoinCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		for (mapChannels::iterator it = tmpChannelList.begin(); it != tmpChannelList.end(); it++)
 		{
 			it->second->removeClient(&target);
-			replyHandler.add(it->second->getClientsFd(), RPL::JOIN0(target, *it->second));
+			replyHandler.add(it->second->getClientsFd(), RPL::PART(target, *it->second, ""));
 		}
 		target.clearChannel();
 		return replyHandler;

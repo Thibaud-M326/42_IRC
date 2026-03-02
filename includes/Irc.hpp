@@ -36,6 +36,22 @@ namespace ircMacro
 	extern std::string	PASSWORD;
 	extern int			PORT;
 
+	inline void	displayAsciiServ()
+	{
+		std::cout << ircMacro::BOLD_GREEN << " ______ _______   _____ _____   _____ \n"
+			<< "|  ____|__   __| |_   _|  __ \\ / ____|\n"
+			<< "| |__     | |      | | | |__) | |\n"
+			<< "|  __|    | |      | | |  _  /| |\n"
+			<< "| |       | |     _| |_| | \\ \\| |____\n"
+			<< "|_|       |_|    |_____|_|  \\_\\\\_____|\n\n" << ircMacro::BOLD_BLUE
+			<< "======================================\n" << ircMacro::BOLD_YELLOW
+			<< "	FT_IRC - 42 Network\n" << ircMacro::BOLD_BLUE
+			<< "======================================\n"
+			<< "Listening on : " << ircMacro::BOLD_YELLOW << ircMacro::PORT
+			<< ircMacro::BOLD_BLUE << "\nStatus       : " << ircMacro::BOLD_YELLOW << "ONLINE\n"
+			<< ircMacro::BOLD_BLUE << "\nProtocol     : " << ircMacro::BOLD_YELLOW << "IRC" << std::endl;
+	}
+
 	const char			USAGE[] = "Usage: ircserv [PORT] [PASSWORD]\nTry 'ircserv --help' for more information.";
 
 	inline const std::string help()
@@ -52,20 +68,21 @@ namespace ircMacro
 		return oss.str();
 	};
 
+	const char			CRLF[] = "\r\n";
 	const int			MAX_EVENT = 10;
-	const int			READ_BUFFER_SIZE = 1024;
-	const int			NB_PORT_MAX = 65535;
+	const char			NAME_SERVER[] = ":ircserv";
 	const int			NB_CHAR_PASS_MAX = 32;
 	const int			NB_CHAR_PASS_MIN = 4;
-	const char			NAME_SERVER[] = ":ircserv";
-	const char			VERSION[] = "1.0";
-	const char			CRLF[] = "\r\n";
-	const bool			SUCCESS = 0;
 	const int			NB_MODE = 5;
-	const char			INVALID[] = "Invalid";
+	const int			NB_PORT_MAX = 65535;
+	const int			READ_BUFFER_SIZE = 1024;
+	const char			VERSION[] = "1.0";
+
+	const char chanCharArray[] =
+		{ '&', '#', '!', '+', '\0'};
 
 	const char	modeCharArray[] =
-		{ 'l', 'o', 'k', 't', 'i', '\0' };
+	{ 'l', 'o', 'k', 't', 'i', '\0' };
 
 	typedef enum e_modeChar
 	{
@@ -78,26 +95,9 @@ namespace ircMacro
 	} t_modeChar;
 
 	const char	specialCharArray[] =
-		{ '[', '\\', ']', '^', '_',
-			'`', '{', '|', '}', '\0' };
-	const char chanCharArray[] =
-		{ '&', '#', '!', '+', '\0'};
-
-	inline void	displayAsciiServ()
-	{
-		std::cout << ircMacro::BOLD_GREEN << " ______ _______   _____ _____   _____ \n"
-			<< "|  ____|__   __| |_   _|  __ \\ / ____|\n"
-			<< "| |__     | |      | | | |__) | |\n"
-			<< "|  __|    | |      | | |  _  /| |\n"
-			<< "| |       | |     _| |_| | \\ \\| |____\n"
-			<< "|_|       |_|    |_____|_|  \\_\\\\_____|\n\n" << ircMacro::BOLD_BLUE
-			<< "======================================\n" << ircMacro::BOLD_YELLOW
-			<< "	FT_IRC - 42 Network\n" << ircMacro::BOLD_BLUE
-			<< "======================================\n"
-			<< "Listening on : " << ircMacro::BOLD_YELLOW << ircMacro::PORT
-			<< ircMacro::BOLD_BLUE << "\nStatus       : " << ircMacro::BOLD_YELLOW << "ONLINE\n"
-			<< ircMacro::BOLD_BLUE << "\nProtocol     : " << ircMacro::BOLD_YELLOW << "IRC" << std::endl;
-	}
+	{ '[', '\\', ']', '^', '_',
+		'`', '{', '|', '}', '\0' };
 }
 
 #endif
+
