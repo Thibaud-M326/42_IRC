@@ -2,6 +2,20 @@
 
 InviteCommand::InviteCommand(std::vector<std::string>& params): ACommand(params) {}
 
+void	InviteCommand::addToChannel(Client& target, Channel& channel, t_replyHandler& replyHandler)
+{
+	channel.addClient(&target);
+	target.joinChannel(channel.getName(), &channel);
+	replyHandler.add(channel.getClientsFd(), RPL::INVITING(target, channel, _commandArray[1]));
+	replyHandler.add(channel.getClientsFd(), RPL::JOIN(target, channel.getName(), channel.getKey()));
+	if (channel.getTopic().empty())
+		replyHandler.add(target.getFd(), RPL::NOTOPIC(target, channel));
+	else
+		replyHandler.add(target.getFd(), RPL::TOPIC(target, channel));
+	replyHandler.add(     target.getFd(), RPL::NAMREPLY(target, channel));
+	replyHandler.add(     target.getFd(), RPL::ENDOFNAMES(target, channel));
+}
+
 t_replyHandler	InviteCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
 {
 	t_replyHandler	replyHandler;
@@ -14,7 +28,7 @@ t_replyHandler	InviteCommand::ExecuteCommand(Client& target, mapClients& ClientA
 
 	if (_commandArray.size() != 3)
 	{
-		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "TOPIC"));
+		replyHandler.add(target.getFd(), ERR::NEEDMOREPARAMS(target, "INVITE"));
 		return replyHandler;
 	}
 
@@ -50,20 +64,12 @@ t_replyHandler	InviteCommand::ExecuteCommand(Client& target, mapClients& ClientA
 	if (channel->getMode()[inviteOnly])
 	{
 		if (isOper(target, *channel))
-		{
-			channel->addClient(tmp);
-			tmp->joinChannel(channel->getName(), channel);
-			replyHandler.add(channel->getClientsFd(), RPL::INVITING(*tmp, *channel, _commandArray[1]));
-		}
+			addToChannel(*tmp, *channel, replyHandler);
 		else
 			replyHandler.add(target.getFd(), ERR::CHANOPRIVSNEEDED(target, *channel));
 	}
 	else
-	{
-		channel->addClient(tmp);
-		tmp->joinChannel(channel->getName(), channel);
-		replyHandler.add(channel->getClientsFd(), RPL::INVITING(*tmp, *channel, _commandArray[1]));
-	}
+		addToChannel(*tmp, *channel, replyHandler);
 
 	return replyHandler;
 }

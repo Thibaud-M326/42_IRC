@@ -30,12 +30,12 @@ int main(int ac, char *av[])
 	if (ac == 2 && (!std::strcmp(av[1], "--help")
 				|| !std::strcmp(av[1], "-h")))
 	{
-		std::cout << ircMacro::help() << std::endl;
+		ircDisplay::help();
 		return 0;
 	}
 	if (ac != 3 || !verifArgs(av[1], av[2]))
 	{
-		std::cerr << ircMacro::BOLD_RED << ircMacro::USAGE << ircMacro::STOP_COLOR << std::endl;
+		ircDisplay::usage();
 		return 1;
 	}
 	try
@@ -44,12 +44,12 @@ int main(int ac, char *av[])
 
 		serv.init_server_socket();
 		serv.init_epoll();
-		ircMacro::displayAsciiServ();
+		ircDisplay::displayAsciiServ();
 		serv.run();
 	}
 	catch (ExceptionPerror &e)
 	{
-		std::cerr << ircMacro::BOLD_RED << e.what() << ircMacro::STOP_COLOR << std::endl;
+		std::cerr << ircDisplay::BOLD_RED << e.what() << ircDisplay::STOP_COLOR << std::endl;
 	}
 	return 0;
 }

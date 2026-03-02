@@ -26,7 +26,7 @@ void Server::init_server_socket()
 	if (-1 == listen(_serv_socket_fd, 1))
 		endSafe(ERR_MSG);
 
-	std::cout << "[INIT] Server socket created and listening on port " << ircMacro::PORT << std::endl;
+	ircDisplay::initServ();
 }
 
 void Server::init_epoll()
@@ -41,6 +41,6 @@ void Server::init_epoll()
 	if (-1 == epoll_ctl(_epoll_fd, EPOLL_CTL_ADD, _serv_socket_fd, &_ev))
 		endSafe(ERR_MSG);
 	
-	std::cout << "[EPOLL] Epoll initialized (fd: " << _epoll_fd << ")" << std::endl;
+	ircDisplay::epollInit(_epoll_fd);
 }
 

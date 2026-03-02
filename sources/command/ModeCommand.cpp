@@ -84,7 +84,6 @@ void	ModeCommand::modeTopicRestriction(char& signMode, size_t& count)
 
 void	ModeCommand::modeOperatorPrivilege(Client& clientSource, char& signMode, size_t& count, t_replyHandler& replyHandler)
 {
-	std::cout << count << "|" << _commandArray.size() << "|\n";
 	if (count + 3 < _commandArray.size())
 	{
 		Client	*target = findClientByNickName(_commandArray[count + 3], _channel->getClientList());
@@ -95,7 +94,7 @@ void	ModeCommand::modeOperatorPrivilege(Client& clientSource, char& signMode, si
 		else if (signMode == '+')
 		{
 			_channel->addOperator(target);
-			replyHandler.add(target->getFd(), RPL::MODE(clientSource, *_channel, target->getNickname()));
+			replyHandler.add(_channel->getClientsFd(), RPL::MODE(clientSource, *_channel, target->getNickname()));
 		}
 		else
 		{
@@ -151,7 +150,6 @@ void	ModeCommand::handleMode(Client& target, t_replyHandler& replyHandler)
 			signMode = modeString[i];
 			i++;
 		}
-		std::cout << "AAAAAAAAAAAAAA\n";
 		switch (modeString[i])
 		{
 			case ircMacro::modeUserLimit:
@@ -221,8 +219,7 @@ t_replyHandler	ModeCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	if (_commandArray.size() == 2)
 	{
-		for (size_t i = 0; i < _channel->getClientList().size(); i++)
-			replyHandler.add(_channel->getClientList()[i]->getFd(), RPL::CHANNELMODEIS(*_channel->getClientList()[i], *_channel));
+		replyHandler.add(target.getFd(), RPL::CHANNELMODEIS(target, *_channel));
 		return replyHandler;
 	}
 
@@ -240,7 +237,6 @@ t_replyHandler	ModeCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		if (!c)
 		{
 			replyHandler.add(target.getFd(), ERR::UNKNOWNMODE(target, *_channel, c));
-			std::cout << "NO MODE" <<std::endl;
 			return replyHandler;
 		}
 	}

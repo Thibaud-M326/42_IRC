@@ -56,14 +56,19 @@ void	Parse::display_vec(std::vector<std::vector<std::string> > val)
 	for (size_t i = 0; i < val.size(); i++)
 	{
 		if (val.size() == 1 || i == val.size() / 2)
-			std::cout << ircMacro::BOLD_BLUE << "VEC --->" << ircMacro::BOLD_CYAN << "|Sub Vector --->" << ircMacro::STOP_COLOR;
-
+		{
+			std::cout << ircDisplay::BOLD_BLUE << "VEC --->"
+				<< ircDisplay::BOLD_CYAN << "|Sub Vector --->"
+				<< ircDisplay::STOP_COLOR;
+		}
 		else
-			std::cout << std::setw(15) << ircMacro::BOLD_CYAN << "|Sub Vector --->";
+			std::cout << std::setw(15)
+				<< ircDisplay::BOLD_CYAN << "|Sub Vector --->";
 
 		for (size_t j = 0; j < val[i].size(); j++)
 		{
-			std::cout << ircMacro::BOLD_YELLOW << "[" << val[i][j] << "]" << ircMacro::STOP_COLOR;
+			std::cout << ircDisplay::BOLD_YELLOW
+				<< "[" << val[i][j] << "]" << ircDisplay::STOP_COLOR;
 		}
 		std::cout << '\n';
 	}

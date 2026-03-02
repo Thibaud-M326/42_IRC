@@ -69,7 +69,7 @@ namespace RPL
 			<< target.getNickname()
 			<< " This server was created "
 			<< ircMacro::DATE
-			<< " " << ircMacro::NAME_SERVER
+			<< " " << &ircMacro::NAME_SERVER[1]
 			<< ircMacro::CRLF;
 		return oss.str();
 	}

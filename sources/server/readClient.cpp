@@ -19,7 +19,7 @@ void Server::readClient(int event_index)
 
 	if (readSize == 0)
 	{
-		std::cout << "[READ] Client disconnected (fd: " << _client_socket_fd << ")" << std::endl;
+		ircDisplay::readClientDisco(_client_socket_fd);
 		_clients.erase(_client_socket_fd);
 		close(_client_socket_fd);
 	}

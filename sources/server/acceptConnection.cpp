@@ -57,6 +57,6 @@ void	Server::acceptConnection()
 		addClientToEpoll();
 		addClient();
 
-		std::cout << "[ACCEPT] Client connected (fd: " << _client_socket_fd << ")" << std::endl;
+		ircDisplay::accept(_client_socket_fd);
 	}
 }

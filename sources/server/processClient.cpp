@@ -20,7 +20,6 @@ void	Server::executeClient(std::string rawCommands)
 	parse.display_vec(commands);
 	for (std::vector<std::vector<std::string> >::iterator it = commands.begin(); it != commands.end(); it++)
 	{
-		//bot
 		ACommand *cmd = factory.createCommand(*it);
 		if (cmd && _client)
 		{
@@ -30,12 +29,15 @@ void	Server::executeClient(std::string rawCommands)
 			{
 				for (std::vector<int>::iterator fdIndex = it->targets.begin(); fdIndex != it->targets.end(); fdIndex++)
 				{
-					if (send(*fdIndex, it->reply.c_str(), it->reply.size(), 0) == -1)
+					if (it->reply.size() <= ircMacro::MAX_BYTES_REPLY)
 					{
-						delete cmd;
-						endSafe(ERR_MSG);
+						if (send(*fdIndex, it->reply.c_str(), it->reply.size(), 0) == -1)
+						{
+							delete cmd;
+							endSafe(ERR_MSG);
+						}
+						ircDisplay::send(*fdIndex, it->reply.size(), it->reply);
 					}
-					std::cout << "[SEND] fd: " << *fdIndex << " | " << it->reply.length() << " bytes\n" << it->reply << std::endl;
 				}
 			}
 			if (dynamic_cast<QuitCommand*>(cmd))
@@ -47,6 +49,6 @@ void	Server::executeClient(std::string rawCommands)
 			delete cmd;
 		}
 	}
-	std::cout << "================ REQUEST END ================" << std::endl;
+	ircDisplay::endRequest();
 }
 

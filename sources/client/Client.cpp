@@ -168,7 +168,7 @@ bool 	Client::processClient()
 		rawCommands = _cbuffer.substr(0, found);
 		afterLastClrf = _cbuffer.substr(found + clrf.length());
 
-		std::cout << "[PARSE] Client fd: " << _fd << " | Buffer: " << rawCommands.length() << " bytes" << std::endl;
+		ircDisplay::startRequest(_fd, rawCommands.size());
 
 		if (afterLastClrf.empty())
 			return true;

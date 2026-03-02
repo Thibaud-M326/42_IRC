@@ -24,52 +24,14 @@ typedef	std::map<std::string, Channel*>	mapChannels;
 
 namespace ircMacro
 {
-	const char			BOLD_GREEN[] = "\e[1;32m";
-	const char			BOLD_RED[] = "\e[1;31m";
-	const char			BOLD_BLUE[] = "\e[1;34m";
-	const char			BOLD_YELLOW[] = "\e[1;33m";
-	const char			BOLD_PURPLE[] = "\e[1;35m";
-	const char			BOLD_CYAN[] = "\e[1;36m";
-	const char			STOP_COLOR[] = "\e[0m";
 
 	extern std::string	DATE;
 	extern std::string	PASSWORD;
 	extern int			PORT;
 
-	inline void	displayAsciiServ()
-	{
-		std::cout << ircMacro::BOLD_GREEN << " ______ _______   _____ _____   _____ \n"
-			<< "|  ____|__   __| |_   _|  __ \\ / ____|\n"
-			<< "| |__     | |      | | | |__) | |\n"
-			<< "|  __|    | |      | | |  _  /| |\n"
-			<< "| |       | |     _| |_| | \\ \\| |____\n"
-			<< "|_|       |_|    |_____|_|  \\_\\\\_____|\n\n" << ircMacro::BOLD_BLUE
-			<< "======================================\n" << ircMacro::BOLD_YELLOW
-			<< "	FT_IRC - 42 Network\n" << ircMacro::BOLD_BLUE
-			<< "======================================\n"
-			<< "Listening on : " << ircMacro::BOLD_YELLOW << ircMacro::PORT
-			<< ircMacro::BOLD_BLUE << "\nStatus       : " << ircMacro::BOLD_YELLOW << "ONLINE\n"
-			<< ircMacro::BOLD_BLUE << "\nProtocol     : " << ircMacro::BOLD_YELLOW << "IRC" << std::endl;
-	}
-
-	const char			USAGE[] = "Usage: ircserv [PORT] [PASSWORD]\nTry 'ircserv --help' for more information.";
-
-	inline const std::string help()
-	{
-		std::ostringstream	oss;
-
-		oss << ircMacro::BOLD_BLUE << "Usage: ./ircserv [PORT] [PASSWORD]\n"
-			<< "[PORT] = The port number on which the server will be"
-			<< "listening for incoming IRC connections\n"
-			<< "[PASSWORD] = The connection password. It will be needed"
-			<< "by any IRC client that tries\nto connect to the server."
-			<< "Only alpha numeric and '-', '_' characters are allowed (31 max)"
-			<< ircMacro::STOP_COLOR;
-		return oss.str();
-	};
-
 	const char			CRLF[] = "\r\n";
 	const int			MAX_EVENT = 10;
+	const int			MAX_BYTES_REPLY = 512;
 	const char			NAME_SERVER[] = ":ircserv";
 	const int			NB_CHAR_PASS_MAX = 32;
 	const int			NB_CHAR_PASS_MIN = 4;
@@ -78,11 +40,11 @@ namespace ircMacro
 	const int			READ_BUFFER_SIZE = 1024;
 	const char			VERSION[] = "1.0";
 
-	const char chanCharArray[] =
-		{ '&', '#', '!', '+', '\0'};
+	const char			chanCharArray[] =
+							{ '&', '#', '!', '+', '\0'};
 
-	const char	modeCharArray[] =
-	{ 'l', 'o', 'k', 't', 'i', '\0' };
+	const char			modeCharArray[] =
+							{ 'l', 'o', 'k', 't', 'i', '\0' };
 
 	typedef enum e_modeChar
 	{
@@ -94,9 +56,117 @@ namespace ircMacro
 		modeFailure = '\0'
 	} t_modeChar;
 
-	const char	specialCharArray[] =
-	{ '[', '\\', ']', '^', '_',
-		'`', '{', '|', '}', '\0' };
+	const char			specialCharArray[] =
+							{ '[', '\\', ']', '^', '_',
+								'`', '{', '|', '}', '\0' };
+}
+
+namespace ircDisplay
+{
+	const char			BOLD_GREEN[] = "\e[1;32m";
+	const char			BOLD_RED[] = "\e[1;31m";
+	const char			BOLD_BLUE[] = "\e[1;34m";
+	const char			BOLD_YELLOW[] = "\e[1;33m";
+	const char			BOLD_PURPLE[] = "\e[1;35m";
+	const char			BOLD_CYAN[] = "\e[1;36m";
+	const char			STOP_COLOR[] = "\e[0m";
+
+	inline void	usage()
+	{
+		std::cerr << ircDisplay::BOLD_RED
+			<< "Usage: ircserv [PORT] [PASSWORD]\nTry 'ircserv --help' for more information."
+			<< ircDisplay::STOP_COLOR << std::endl;
+	}
+
+	inline void	displayAsciiServ()
+	{
+		std::cout << ircDisplay::BOLD_GREEN << " ______ _______   _____ _____   _____ \n"
+			<< "|  ____|__   __| |_   _|  __ \\ / ____|\n"
+			<< "| |__     | |      | | | |__) | |\n"
+			<< "|  __|    | |      | | |  _  /| |\n"
+			<< "| |       | |     _| |_| | \\ \\| |____\n"
+			<< "|_|       |_|    |_____|_|  \\_\\\\_____|\n\n" << ircDisplay::BOLD_BLUE
+			<< "======================================\n" << ircDisplay::BOLD_YELLOW
+			<< "	FT_IRC - 42 Network\n" << ircDisplay::BOLD_BLUE
+			<< "======================================\n"
+			<< "Listening on : " << ircDisplay::BOLD_YELLOW << ircMacro::PORT
+			<< ircDisplay::BOLD_BLUE << "\nStatus       : " << ircDisplay::BOLD_YELLOW << "ONLINE\n"
+			<< ircDisplay::BOLD_BLUE << "\nProtocol     : " << ircDisplay::BOLD_YELLOW << "IRC"
+			<< ircDisplay::STOP_COLOR << std::endl;
+	}
+
+	inline void	help()
+	{
+		std::cout << ircDisplay::BOLD_BLUE << "Usage: ./ircserv [PORT] [PASSWORD]\n"
+			<< "[PORT] = The port number on which the server will be"
+			<< "listening for incoming IRC connections\n"
+			<< "[PASSWORD] = The connection password. It will be needed"
+			<< "by any IRC client that tries\nto connect to the server."
+			<< "Only alpha numeric and '-', '_' characters are allowed (31 max)"
+			<< ircDisplay::STOP_COLOR << std::endl;
+	};
+
+	inline void	send(int fd, size_t replyLength, std::string reply)
+	{
+		std::cout << ircDisplay::BOLD_BLUE << "[" << ircDisplay::BOLD_CYAN
+			<< "SEND" << ircDisplay::BOLD_BLUE << "] fd: " << ircDisplay::BOLD_YELLOW
+			<< fd << ircDisplay::BOLD_BLUE << " | " << ircDisplay::BOLD_YELLOW
+			<< replyLength << ircDisplay::BOLD_BLUE << " bytes\n"
+			 << ircDisplay::BOLD_YELLOW << reply << ircDisplay::STOP_COLOR << std::endl;
+	}
+
+	inline void	readClientDisco(int fd)
+	{
+		std::cout << ircDisplay::BOLD_RED << "[" << ircDisplay::BOLD_CYAN
+			<< "READ" << ircDisplay::BOLD_RED << "] Client Disconnected (fd: "
+			<< ircDisplay::BOLD_YELLOW << fd << ircDisplay::BOLD_RED << ")"
+			<< ircDisplay::STOP_COLOR << std::endl;
+	}
+
+	inline void	accept(int fd)
+	{
+		std::cout << ircDisplay::BOLD_BLUE << "[" << ircDisplay::BOLD_CYAN
+			<< "ACCEPT" << ircDisplay::BOLD_BLUE << "] Client Connected (fd: "
+			<< ircDisplay::BOLD_YELLOW << fd << ircDisplay::BOLD_BLUE << ")"
+			<< ircDisplay::STOP_COLOR << std::endl;
+	}
+
+	inline void	epollInit(int fd)
+	{
+		std::cout << ircDisplay::BOLD_BLUE << "[" << ircDisplay::BOLD_CYAN
+			<< "EPOLL" << ircDisplay::BOLD_BLUE << "] Epoll initialized (fd: "
+			<< ircDisplay::BOLD_YELLOW << fd << ircDisplay::BOLD_BLUE << ")"
+			<< ircDisplay::STOP_COLOR << std::endl;
+	}
+
+	inline void	initServ()
+	{
+		std::cout << ircDisplay::BOLD_BLUE << "[" << ircDisplay::BOLD_CYAN
+			<< "INIT" << ircDisplay::BOLD_BLUE
+			<< "] Server socket created and listening on port "
+			<< ircDisplay::BOLD_YELLOW << ircMacro::PORT
+			<< ircDisplay::STOP_COLOR << std::endl;
+	}
+
+	inline void	startRequest(int fd, size_t commandLentgh)
+	{
+		std::cout << ircDisplay::BOLD_GREEN
+			<< "\n================ REQUEST Start ================\n"
+			<< ircDisplay::BOLD_BLUE << "[" << ircDisplay::BOLD_CYAN
+			<< "PARSE" << ircDisplay::BOLD_BLUE
+			<< "] Client fd: "
+			<< ircDisplay::BOLD_YELLOW << fd << ircDisplay::BOLD_BLUE
+			<< " | Buffer: " << ircDisplay::BOLD_YELLOW << commandLentgh
+			<< ircDisplay::BOLD_BLUE << "bytes"
+			<< ircDisplay::STOP_COLOR << std::endl;
+	}
+
+	inline void endRequest()
+	{
+		std::cout << ircDisplay::BOLD_RED
+			<< "================ REQUEST END ================"
+			<< ircDisplay::STOP_COLOR << std::endl;
+	}
 }
 
 #endif
