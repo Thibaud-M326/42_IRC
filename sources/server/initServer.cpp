@@ -1,11 +1,12 @@
-#include <iostream>
 #include "Server.hpp"
 #include "Exception.hpp"
+#include "Irc.hpp"
+#include <cstdlib>
 
 void Server::init_server_socket()
 {
 	_serv_sock_addr.sin_family = AF_INET;
-	_serv_sock_addr.sin_port = htons(PORT);
+	_serv_sock_addr.sin_port = htons(std::atoi(ircMacro::PORT));
 	_serv_sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	_serv_socket_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -25,7 +26,7 @@ void Server::init_server_socket()
 	if (-1 == listen(_serv_socket_fd, 1))
 		endSafe(ERR_MSG);
 
-	std::cout << "[INIT] Server socket created and listening on port " << PORT << std::endl;
+	std::cout << "[INIT] Server socket created and listening on port " << ircMacro::PORT << std::endl;
 }
 
 void Server::init_epoll()

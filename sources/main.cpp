@@ -7,7 +7,7 @@ int main()
 {
 	try 
 	{
-		Server serv("6667", ircMacro::PASSWORD);
+		Server serv(ircMacro::PORT, ircMacro::PASSWORD);
 
 		serv.init_server_socket();
 		serv.init_epoll();
