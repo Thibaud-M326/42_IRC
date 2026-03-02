@@ -151,20 +151,20 @@ namespace ircDisplay
 	inline void	startRequest(int fd, size_t commandLentgh)
 	{
 		std::cout << ircDisplay::BOLD_GREEN
-			<< "\n================ REQUEST Start ================\n"
+			<< "\n================ START REQUEST ================\n"
 			<< ircDisplay::BOLD_BLUE << "[" << ircDisplay::BOLD_CYAN
 			<< "PARSE" << ircDisplay::BOLD_BLUE
 			<< "] Client fd: "
 			<< ircDisplay::BOLD_YELLOW << fd << ircDisplay::BOLD_BLUE
 			<< " | Buffer: " << ircDisplay::BOLD_YELLOW << commandLentgh
-			<< ircDisplay::BOLD_BLUE << "bytes"
+			<< ircDisplay::BOLD_BLUE << " bytes"
 			<< ircDisplay::STOP_COLOR << std::endl;
 	}
 
 	inline void endRequest()
 	{
 		std::cout << ircDisplay::BOLD_RED
-			<< "================ REQUEST END ================"
+			<< "================ END REQUEST ================"
 			<< ircDisplay::STOP_COLOR << std::endl;
 	}
 }
