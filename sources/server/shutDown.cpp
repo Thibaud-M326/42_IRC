@@ -22,9 +22,8 @@ void	Server::shutDown()
 	{
 		delete it->second;
 	}
-	_channelArray.end();
+	_channelArray.clear();
 	close(_epoll_fd);
 	close(_serv_socket_fd);
-	close(_client_socket_fd);
 }
 

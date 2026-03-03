@@ -46,6 +46,7 @@ class Server {
 		void	addClient();
 		void	printClients();
 		void	readClient(int event_index);
+		void	disconnectClient();
 		void	executeClient(std::string rawCommands);
 		void	findClient();
 		void	endSafe(const char* err, const char* file, const char* func, int line);
