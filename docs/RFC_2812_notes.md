@@ -215,8 +215,69 @@ Pour la traduction complète des caractères hexadécimaux, voir : [ASCII table]
 ---
 
 ## Commande
+Certaines reponses necessitent detre broadcast:
 
-### Obligatoire
+- **`PASS`**
+- **`USER`**
+- **`NICK`**
+- **`JOIN`**
+- **`PART`**
+- **`QUIT`**
+- **`INVITE`**
+- **`MODE`**
+- **`KICK`**
+- **`TOPIC`**
+- **`PRIVMSG`**
+
+- PASS - used to set a 'connection password'.
+	The optional password can and MUST be set before any attempt to register
+	the connection is made.  Currently this requires that user send a
+	PASS command before sending the NICK/USER combination.
+
+
+```ruby
+Parameters: <password>
+```
+
+   Numeric Replies:
+
+           ERR_NEEDMOREPARAMS              ERR_ALREADYREGISTRED
+
+---
+
+-USER - is used at the beginning of connection to specify the username, hostname and realname of a new user.
+   The `<mode>` parameter should be a numeric, and can be used to
+   automatically set user modes when registering with the server.  This
+   parameter is a bitmask, with only 2 bits having any signification: if
+   the bit 2 is set, the user mode 'w' will be set and if the bit 3 is
+   set, the user mode 'i' will be set.  (See Section 3.1.5 "User
+   Modes").
+
+   The `<realname>` may contain space characters.
+
+```ruby
+   Parameters: <user> <mode> <unused> <realname>
+```
+
+   Numeric Replies:
+
+           ERR_NEEDMOREPARAMS              ERR_ALREADYREGISTRED
+
+---
+
+- NICK - Give user a nickname or change the existing one.
+
+```ruby
+Parameters: <nickname>
+```
+
+- Numeric Replies:
+
+          ERR_NONICKNAMEGIVEN             ERR_ERRONEUSNICKNAME
+          ERR_NICKNAMEINUSE               ERR_NICKCOLLISION
+          ERR_UNAVAILRESOURCE             ERR_RESTRICTED
+
+---
 
 - PRIVMSG - Send private messages between users
    The \<msgtarget> parameter may also be a host mask (#\<mask>) or server
@@ -230,15 +291,31 @@ Pour la traduction complète des caractères hexadécimaux, voir : [ASCII table]
 
 ```ruby
 Parameters: <msgtarget> <text to be sent>
+```
+
+---
+
+### Channelside:
+
+- PART - Causes the user sending the message to be removed
+	from the list of active members for all given channels listed in the
+	parameter string.  If a "Part Message" is given, this will be sent
+	instead of the default message, the nickname.  This request is always
+	granted by the server.
+
+	Servers MUST be able to parse arguments in the form of a list of
+	target, but SHOULD NOT use lists when sending PART messages to
+	clients.
+
+```ruby
+Parameters: <channel> *( "," <channel> ) [ <Part Message> ]
+```
+
 
    Numeric Replies:
 
-           ERR_NORECIPIENT                 ERR_NOTEXTTOSEND
-           ERR_CANNOTSENDTOCHAN            ERR_NOTOPLEVEL
-           ERR_WILDTOPLEVEL                ERR_TOOMANYTARGETS
-           ERR_NOSUCHNICK
-           RPL_AWAY
-```
+           ERR_NEEDMOREPARAMS              ERR_NOSUCHCHANNEL
+           ERR_NOTONCHANNEL
 
 ---
 
@@ -286,7 +363,7 @@ Numeric Replies:
            ERR_NEEDMOREPARAMS              ERR_NOSUCHNICK
            ERR_NOTONCHANNEL                ERR_USERONCHANNEL
            ERR_CHANOPRIVSNEEDED
-		   RPL_INVITING                    RPL_AWAY
+           RPL_INVITING                    RPL_AWAY
 
 ---
 
@@ -310,35 +387,6 @@ Parameters: <channel> [ <topic> ]
 
 ---
 
-#### Userside:
-   
-##### Mode a implementer:
-
-- i: Set/remove Invite-only channel
-- t: Set/remove the restrictions of the TOPIC command to channel operators
-- k: Set/remove the channel key (password)
-- o: Give/take channel operator privilege
-- l: Set/remove the user limit to channel
-
----
-
-- MODE - Change the user's mode:
-	A user MODE command MUST only be accepted if both the sender of the
-	message and the nickname given as a parameter are both the same.  If
-	no other parameter is given, then the server will return the current
-	settings for the nick.
-
-```ruby
-Parameters: <nickname> *( ( "+" / "-" ) *( "i" / "w" / "o" / "O" / "r" ) )
-```
-
-- Numeric Replies:
-
-           ERR_NEEDMOREPARAMS              ERR_USERSDONTMATCH
-           ERR_UMODEUNKNOWNFLAG            RPL_UMODEIS
-
-#### Channelside:
-
 - MODE - Change the channel's mode:
 	Users may query and change the characteristics of a channel.
 
@@ -359,22 +407,10 @@ Parameters: <channel> *( ( "-" / "+" ) *<modes> *<modeparams> )
 
 ---
 
-- NICK - Give user a nickname or change the existing one.
-
-```ruby
-Parameters: <nickname>
-```
-
-- Numeric Replies:
-
-          ERR_NONICKNAMEGIVEN             ERR_ERRONEUSNICKNAME
-          ERR_NICKNAMEINUSE               ERR_NICKCOLLISION
-          ERR_UNAVAILRESOURCE             ERR_RESTRICTED
----
 - JOIN - Used by a user to request to start listening to the specific channel. Note that this message accepts a special argument ("0"), which is a special request to leave all channels the user is currently a member of.
 
 ```ruby
-Parameters: ( <channel> *( "," <channel> ) [ <key> *( "," <key> ) ] )
+Parameters: ( \<channel> *( "," \<channel> ) [ \<key> *( "," \<key> ) ] )
                / "0"
 ```
 
@@ -386,145 +422,6 @@ Parameters: ( <channel> *( "," <channel> ) [ <key> *( "," <key> ) ] )
            ERR_NOSUCHCHANNEL               ERR_TOOMANYCHANNELS
            ERR_TOOMANYTARGETS              ERR_UNAVAILRESOURCE
 		   RPL_TOPIC
-
-### Optionnel:
-- OPER - Obtain operator privileges.
-   The combination of \<name> and \<password> are REQUIRED to gain
-   Operator privileges.  Upon success, the user will receive a MODE
-   message (see section 3.1.5) indicating the new user modes.
-
-```ruby
-Parameters: <name> <password>
-```
-
-- Numeric Replies:
-
-           ERR_NEEDMOREPARAMS              RPL_YOUREOPER
-           ERR_NOOPERHOST                  ERR_PASSWDMISMATCH
-
----
-
-- LIST - list channels and their topics. If the \<channel> parameter is used, only the status of that channel is displayed.
-
-```ruby
-Paramters: [ <channel> *( "," <channel> ) [ <target> ] ]
-```
-
-- Numeric Replies:
-
-           ERR_TOOMANYMATCHES              ERR_NOSUCHSERVER
-           RPL_LIST                        RPL_LISTEND
-
-
-## Codes de réponses IRC (RFC 2812)
-
-Cette section liste les principaux codes de réponses retournés par un serveur IRC, avec leur signification et leur contexte d’utilisation.
-
----
-
-### 001 — RPL_WELCOME
-`"Bienvenue sur le relais de causette Internet <pseudonyme>!<utilisateur>@<hôte>"`
-
----
-
-### 301 — RPL_AWAY
-`"<pseudonyme> :<message away>"`
-
----
-
-### 341 — RPL_INVITING
-`"<pseudonyme> <canal>"`
-
-- Retourné par le serveur pour indiquer que le message `INVITE` tenté a réussi et est passé vers le client final.
-
----
-
-### 331 — RPL_NOTOPIC
-`"<canal> :Aucun sujet n’est établi"`
-
-### 332 — RPL_TOPIC
-`"<canal> :<sujet>"`
-
-- Lors de l’envoi d’un message `TOPIC` pour déterminer le sujet d’un canal, une des deux réponses est envoyée.  
-  - Si le sujet est établi → `RPL_TOPIC` est renvoyé.  
-  - Sinon → `RPL_NOTOPIC`.
-
----
-
-### 221 — RPL_UMODEIS
-`"<chaîne de mode d’utilisateur>"`
-
-- Pour répondre à une interrogation sur le mode du client, `RPL_UMODEIS` est renvoyé.
-
----
-
-### 324 — RPL_CHANNELMODEIS
-`"<canal> <mode> <mode params>"`
-
----
-
-### 367 — RPL_BANLIST
-`"<canal> <gabarit d’interdiction>"`
-
----
-
-### 348 — RPL_EXCEPTLIST
-`"<canal> <gabarit d’exception>"`
-
-### 349 — RPL_ENDOFEXCEPTLIST
-`"<canal> :Fin de liste d’exception de canal"`
-
-- Lorsque le serveur liste les **gabarits d’exception** pour un canal :  
-  - Il DOIT envoyer des messages `RPL_EXCEPTLIST` (un par gabarit actif).  
-  - Puis un message `RPL_ENDOFEXCEPTLIST` DOIT être envoyé pour marquer la fin.
-
----
-
-### 346 — RPL_INVITELIST
-`"<canal> <gabarit d’invite>"`
-
-### 347 — RPL_ENDOFINVITELIST
-`"<canal> :Fin de liste d’invite de canal"`
-
-- Lorsque le serveur liste les **gabarits d’invitation** pour un canal :  
-  - Il DOIT envoyer des messages `RPL_INVITELIST` (un par gabarit actif).  
-  - Après établissement de la liste (ou s’il n’y en a aucun),  
-    `RPL_ENDOFINVITELIST` DOIT être envoyé.
-
----
-
-### 325 — RPL_UNIQOPIS
-`"<canal> <pseudonyme>"`
-
----
-
-### 332 — RPL_TOPIC
-`"<canal> :<sujet>"`
-
-- Lors de l’envoi d’un message `TOPIC` pour déterminer le sujet d’un canal, une des deux réponses est envoyée :  
-  - Si le sujet est établi → `RPL_TOPIC`.  
-  - Sinon → `RPL_NOTOPIC`.
-
----
-
-### 381 — RPL_YOUREOPER
-`":Vous êtes maintenant un opérateur IRC"`
-
-- Renvoyé à un client ayant réussi une commande `OPER` et obtenu le statut d’opérateur.
-
----
-
-### 322 — RPL_LIST
-`"<canal> <# visible> :<sujet>"`
-
-### 323 — RPL_LISTEND
-`":Fin de LIST"`
-
-- Les réponses `RPL_LIST` et `RPL_LISTEND` constituent la réponse du serveur à une commande `LIST`.  
-- S’il n’y a aucun canal à retourner, seule la fin de réponse DOIT être envoyée.
-
-
----
 
 ## Codes d’erreurs IRC (RFC 2812)
 

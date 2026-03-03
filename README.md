@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by asinsard, thmaitre.*
+This project has been created as part of the 42 curriculum by *asinsard, thmaitre.*
 
 ## Description
 
@@ -50,10 +50,6 @@ To rebuild from scratch:
 make re
 ```
 
-### Installation
-
-No additional installation required. The compilation produces a single executable: `ircserv`
-
 ### Execution
 
 Run the server with the following syntax:
@@ -95,24 +91,24 @@ Then authenticate and use standard IRC commands.
 
 ### RFC and Standards
 - **[RFC 2812 - Internet Relay Chat: Client Protocol](https://tools.ietf.org/html/rfc2812)**: The official IRC protocol specification detailing message formats and command definitions
-- **[RFC 1459 - Internet Relay Chat Protocol](https://tools.ietf.org/html/rfc1459)**: The original IRC protocol standard (superseded by RFC 2812)
+- **[RFC 2811 - Internet Relay Chat Protocol](https://tools.ietf.org/html/rfc1459)**: The official IRC protocol specification detailing channel management
 
 ### Socket Programming and Networking
 - **Linux man pages**: `man socket`, `man bind`, `man listen`, `man epoll`, `man send`, `man recv`
-- **POSIX.1-2008 Standard**: System calls and socket API reference
+- **The Linux Programming Interface**: pages **`1149`** to **`1285`**.
 
 ### C++ and System Programming
 - **Cppreference.com**: C++ standard library reference
-- **Linux Socket Programming**: Core concepts and best practices for network programming
+
+### Personal Notes
+- [Sockets](./docs/Sockets.md): File detailing how sockets work.
+- [RFC 2812 notes](./docs/RFC_2812_notes.md): File that deals with **`RFC 2812`** and compiles important information.
+- [Function](./docs/funct.md): File detailing allowed function for the project.
 
 ### AI Assistance
 
 AI was used in this project for the following purposes:
-- **Code review and refactoring**: Improving code organization and maintainability
-- **Documentation**: Generating RFC notes and function documentation
-- **Command implementation**: Structuring command handling patterns and factory design
-- **Error handling**: Designing exception hierarchy and error response formatting
-- **Testing insights**: Identifying edge cases and protocol compliance issues
+- **Documentation**: Helping for understanding RFC
 
 ## Project Structure
 
@@ -138,18 +134,17 @@ ft_irc/
 
 ## Technical Choices
 
-- **C++98**: Chosen for compatibility and simplicity while maintaining object-oriented design
 - **epoll**: Used for efficient monitoring of multiple client connections
-- **Signal Handling**: Implements clean shutdown on SIGINT/SIGTERM
 - **Factory Pattern**: Command factory for extensible command handling
+- **Reply Handler**: Structure for handle replies and broadcast them
 - **Exception Hierarchy**: Custom exceptions for different error types
 
 ## Testing
 
 To test the server:
 
-1. Start the server with a chosen port and password
-2. Connect multiple clients using telnet or nc
+1. Start the server, with a chosen port and password
+2. Connect multiple clients using the chosen interface.
 3. Perform various IRC operations (JOIN, PRIVMSG, etc.)
 4. Verify proper message routing and protocol compliance
 
@@ -173,3 +168,4 @@ Then type IRC commands in each client window to test functionality.
 - All IRC messages are parsed and validated against the protocol
 - The server gracefully handles client disconnections
 - Signal handlers ensure clean shutdown and resource cleanup
+
