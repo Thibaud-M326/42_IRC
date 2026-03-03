@@ -7,8 +7,32 @@
 #include "Server.hpp"
 #include "QuitCommand.hpp"
 
+void	Server::sendToClients(t_replyHandler& replyHandler, ACommand* cmd)
+{
+	for (std::vector<t_outGoingMessages>::iterator it = replyHandler.messages.begin(); it != replyHandler.messages.end(); it++)
+	{
+		for (std::vector<int>::iterator fdIndex = it->targets.begin(); fdIndex != it->targets.end(); fdIndex++)
+		{
+			if (it->reply.size() <= ircMacro::MAX_BYTES)
+			{
+				if (send(*fdIndex, it->reply.c_str(), it->reply.size(), 0) == -1)
+				{
+					delete cmd;
+					endSafe(ERR_MSG);
+				}
+				ircDisplay::send(*fdIndex, it->reply.size(), it->reply);
+			}
+		}
+	}
+}
+
 void	Server::executeClient(std::string rawCommands)
 {
+	if (rawCommands.size() > ircMacro::MAX_BYTES)
+	{
+		_client->clearBuffer();
+		return ;
+	}
 	Parse parse(rawCommands);
 	rawCommands.clear();
 	std::vector<std::vector<std::string> > commands;
@@ -24,22 +48,7 @@ void	Server::executeClient(std::string rawCommands)
 		if (cmd && _client)
 		{
 		 	t_replyHandler	replyHandler = cmd->ExecuteCommand(*_client, _clients, _channelArray);
-
-			for (std::vector<t_outGoingMessages>::iterator it = replyHandler.messages.begin(); it != replyHandler.messages.end(); it++)
-			{
-				for (std::vector<int>::iterator fdIndex = it->targets.begin(); fdIndex != it->targets.end(); fdIndex++)
-				{
-					if (it->reply.size() <= ircMacro::MAX_BYTES_REPLY)
-					{
-						if (send(*fdIndex, it->reply.c_str(), it->reply.size(), 0) == -1)
-						{
-							delete cmd;
-							endSafe(ERR_MSG);
-						}
-						ircDisplay::send(*fdIndex, it->reply.size(), it->reply);
-					}
-				}
-			}
+			sendToClients(replyHandler, cmd);
 			if (dynamic_cast<QuitCommand*>(cmd))
 			{
 				_clients.erase(_client->getFd());

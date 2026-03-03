@@ -4,9 +4,11 @@
 # include <sys/epoll.h>
 # include <netinet/in.h>
 # include "Irc.hpp"
+# include "Reply.hpp"
 
 class Client;
 class Channel;
+class ACommand;
 
 class Server {
 
@@ -44,6 +46,7 @@ class Server {
 		void	executeClient(std::string rawCommands);
 		void	findClient();
 		void	endSafe(const char* err, const char* file, const char* func, int line);
+		void	sendToClients(t_replyHandler& replyHandler, ACommand* command);
 
 	public:
 		Server(int port, std::string password);

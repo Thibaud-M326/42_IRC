@@ -31,7 +31,7 @@ namespace ircMacro
 
 	const char			CRLF[] = "\r\n";
 	const int			MAX_EVENT = 10;
-	const int			MAX_BYTES_REPLY = 512;
+	const int			MAX_BYTES = 512;
 	const char			NAME_SERVER[] = ":ircserv";
 	const int			NB_CHAR_PASS_MAX = 32;
 	const int			NB_CHAR_PASS_MIN = 4;
@@ -166,6 +166,13 @@ namespace ircDisplay
 		std::cout << ircDisplay::BOLD_RED
 			<< "================ END REQUEST ================"
 			<< ircDisplay::STOP_COLOR << std::endl;
+	}
+
+	inline void	msgTarget(std::string target)
+	{
+		std::cout << ircDisplay::BOLD_BLUE << "Message Target : "
+			<< ircDisplay::BOLD_YELLOW << target << ircDisplay::STOP_COLOR
+			<< std::endl;
 	}
 }
 

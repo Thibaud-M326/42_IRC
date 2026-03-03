@@ -86,7 +86,7 @@ t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& clientSource, mapClients& 
 
 	while (std::getline(ss, msgTarget, del))
 	{
-		std::cout << "msgTarget : " << msgTarget << std::endl;
+		ircDisplay::msgTarget(msgTarget);
 
 		if ((chan = getChannelByName(msgTarget, ChannelArray))
 				&& (findClientByNickName(clientSource.getNickname(), chan->getClientList())))
@@ -97,3 +97,4 @@ t_replyHandler	PrivMsgCommand::ExecuteCommand(Client& clientSource, mapClients& 
 
 	return replyHandler;
 }
+
