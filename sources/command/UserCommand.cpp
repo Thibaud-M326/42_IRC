@@ -39,8 +39,6 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		return replyHandler;
 	}
 
-	std::string	username(_commandArray[1]), realname(_commandArray[4]);
-
 	for (std::map<int, Client*>::iterator it = ClientArray.begin(); it != ClientArray.end(); it++)
 	{
 		if (it->second == &target)
