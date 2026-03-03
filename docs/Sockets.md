@@ -1,8 +1,3 @@
----
-id: Sockets
-aliases: []
-tags: []
----
 # Les Sockets
 
 > Les sockets sont utilisées pour la communication inter-processus (IPC).

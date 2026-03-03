@@ -1,8 +1,3 @@
----
-id: RFC 2812 notes
-aliases: []
-tags: []
----
 # Serveur IRC (RFC 2812)
 
 ## Membres
