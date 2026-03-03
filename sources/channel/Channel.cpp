@@ -150,11 +150,12 @@ void	Channel::removeOperator(Client* ope)
 	while (it != _operators.end())
 	{
 		if (*it == ope)
+		{
+			_operators.erase(it);
 			break ;
+		}
 		it++;
 	}
-	if (*it == ope)
-		_operators.erase(it);
 }
 
 void	Channel::addClient(Client* client)

@@ -19,9 +19,11 @@ void Server::readClient(int event_index)
 
 	if (readSize == 0)
 	{
+		if (_client)
+			executeClient("QUIT :Leaving\r\n");
 		ircDisplay::readClientDisco(_client_socket_fd);
-		_clients.erase(_client_socket_fd);
-		close(_client_socket_fd);
+		// _clients.erase(_client_socket_fd);
+		// close(_client_socket_fd);
 	}
 
 	if (readSize == -1)
