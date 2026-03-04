@@ -80,7 +80,7 @@ void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
 
 		if (chanToJoin != ChannelArray.end())
 		{
-			if (chanToJoin->second->getMode()[inviteOnly])
+			if (chanToJoin->second->getMode()[inviteOnly] && !chanToJoin->second->isWhiteListed(target))
 			{
 				replyHandler.add(target.getFd(), ERR::INVITEONLYCHAN(target, *chanToJoin->second));
 			}
@@ -96,6 +96,7 @@ void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
 			{
 				target.joinChannel(chanToJoin->first, chanToJoin->second);
 				chanToJoin->second->addClient(&target);
+				chanToJoin->second->delFromWhiteList(target);
 				replyHandler.add(chanToJoin->second->getClientsFd(), RPL::JOIN(target, chanToJoin->first, chanToJoin->second->getKey()));
 
 				if (chanToJoin->second->getTopic().empty())

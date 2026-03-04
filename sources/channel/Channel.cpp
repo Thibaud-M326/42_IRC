@@ -184,3 +184,28 @@ void	Channel::setLimitNbUser(ssize_t limit)
 	_limitNbUser = limit;
 }
 
+void	Channel::addWhiteList(Client &client)
+{
+	_whiteList.push_back(&client);
+}
+
+void	Channel::delFromWhiteList(Client &client)
+{
+	for (std::vector<Client*>::iterator it = _whiteList.begin(); it != _whiteList.end(); )
+	{
+		if (*it == &client)
+			it = _whiteList.erase(it);
+		else
+			it++;
+	}
+}
+
+int	Channel::isWhiteListed(Client &client)
+{
+	for (std::vector<Client*>::iterator it = _whiteList.begin(); it != _whiteList.end(); )
+	{
+		if (*it == &client)
+			return 1;
+	}
+	return 0;
+}

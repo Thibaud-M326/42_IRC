@@ -18,6 +18,7 @@ class Channel
 		std::vector<Client*>			_operators;
 		std::vector<std::string>		_modeParams;
 		std::vector<Client*>			_clientList;
+		std::vector<Client*>			_whiteList;
 		ssize_t							_limitNbUser;
 
 	public:
@@ -51,6 +52,9 @@ class Channel
 		void							removeOperator(Client* ope);
 		void							addClient(Client* client);
 		void							removeClient(Client* client);
+		void							addWhiteList(Client &client);
+		void							delFromWhiteList(Client &client);
+		int								isWhiteListed(Client &client);
 };
 
 #endif

@@ -102,8 +102,18 @@ namespace RPL
 
 		oss << ircMacro::NAME_SERVER << " 341 "
 			<< target.getNickname() << " "
-			<< chan.getName() << " "
-			<< invitedNick << ircMacro::CRLF;
+			<< invitedNick << " "
+			<< chan.getName() << ircMacro::CRLF;
+		return oss.str();
+	}
+
+	inline std::string	INVITING_NOTICE(Client& target, Channel& chan, std::string invitedNick)
+	{
+		std::ostringstream	oss;
+
+		oss <<  target.getPrefix() << "INVITE "
+			<< invitedNick << " "
+			<< chan.getName() << ircMacro::CRLF;
 		return oss.str();
 	}
 
@@ -124,7 +134,7 @@ namespace RPL
 
 		oss << ircMacro::NAME_SERVER << " 332 "
 			<< target.getNickname() << " "
-			<< chan.getName() << " :"
+			<< chan.getName() << " "
 			<< chan.getTopic() << ircMacro::CRLF;
 		return oss.str();
 	}
@@ -264,7 +274,7 @@ namespace RPL
 		oss << target.getPrefix() << "KICK "
 			<< chan << " " << user;
 		if (!reason.empty())
-			oss << " :" << reason;
+			oss << " " << reason;
 		oss << ircMacro::CRLF;
 		return oss.str();
 	}

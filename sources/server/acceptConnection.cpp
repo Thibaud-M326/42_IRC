@@ -8,19 +8,6 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-int	Server::set_nonblocking(int sockfd)
-{
-	int flags = fcntl(sockfd, F_GETFL, 0);
-	
-    if (flags == -1)
-		endSafe(ERR_MSG);
-
-    if (fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) == -1)
-		endSafe(ERR_MSG);
-
-    return 0;
-}
-
 void	Server::addClientToEpoll()
 {
 	_ev.events = EPOLLIN;
