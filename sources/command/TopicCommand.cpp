@@ -43,8 +43,8 @@ t_replyHandler	TopicCommand::ExecuteCommand(Client& target, mapClients& ClientAr
 		}
 		else
 		{
-			if (_commandArray[2][1] == ':')
-				channel->setTopic(&_commandArray[2][2]);
+			if (_commandArray[2][0] == ':')
+				channel->setTopic(&_commandArray[2][1]);
 			else
 				channel->setTopic(_commandArray[2]);
 			if (channel->getTopic().empty())
