@@ -38,7 +38,8 @@ void	Server::executeClient(std::string rawCommands)
 	std::vector<std::vector<std::string> > commands;
 	CommandFactory factory;
 
-	_client->clearBuffer();
+	if (_client)
+		_client->clearBuffer();
 	commands = parse.parseCommand();
 
 	parse.display_vec(commands);

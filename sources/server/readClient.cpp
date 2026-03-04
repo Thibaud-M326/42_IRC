@@ -15,6 +15,7 @@ void Server::readClient(int event_index)
 	//Client disconected from server
 	if (readSize == 0)
 	{
+		findClient();
 		if (_client)
 			executeClient("QUIT :Leaving\r\n");
 		ircDisplay::readClientDisco(_client_socket_fd);

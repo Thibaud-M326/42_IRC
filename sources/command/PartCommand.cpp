@@ -11,6 +11,7 @@ void	PartCommand::eraseChannel(Channel* chan, mapChannels& ChannelArray)
 		{
 			mapChannels::iterator	tmp = it++;
 			ChannelArray.erase(tmp);
+			delete chan;
 		}
 		else
 			it++;
@@ -80,7 +81,6 @@ t_replyHandler	PartCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 			eraseChannel(chanToPart, ChannelArray);
 		}
 	}
-
 	return replyHandler;
 }
 
