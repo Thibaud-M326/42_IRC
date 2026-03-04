@@ -214,7 +214,7 @@ t_replyHandler	ModeCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	if (!tmp)
 	{
-		replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(target, *_channel));
+		replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(target.getNickname(), *_channel));
 		return replyHandler;
 	}
 

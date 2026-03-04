@@ -44,7 +44,7 @@ t_replyHandler	InviteCommand::ExecuteCommand(Client& target, mapClients& ClientA
 	tmp = findClientByNickName(target.getNickname(), channel->getClientList());
 	if (!tmp)
 	{
-		replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(target, *channel));
+		replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(target.getNickname(), *channel));
 		return replyHandler;
 	}
 

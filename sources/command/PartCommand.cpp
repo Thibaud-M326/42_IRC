@@ -69,7 +69,7 @@ t_replyHandler	PartCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 		Client	*tmp = findClientByNickName(target.getNickname(), chanToPart->getClientList());
 		if (!tmp)
 		{
-			replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(target, *chanToPart));
+			replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(target.getNickname(), *chanToPart));
 			continue ;
 		}
 		replyHandler.add(chanToPart->getClientsFd(), RPL::PART(target, *chanToPart, reason));

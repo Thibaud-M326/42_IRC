@@ -24,7 +24,7 @@ t_replyHandler	TopicCommand::ExecuteCommand(Client& target, mapClients& ClientAr
 
 	if (!tmp)
 	{
-		replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(target, *channel));
+		replyHandler.add(target.getFd(), ERR::NOTONCHANNEL(target.getNickname(), *channel));
 		return replyHandler;
 	}
 

@@ -83,7 +83,7 @@ void	KickCommand::kickUsersFromChannel(Client& clientSource, mapChannels& channe
 
 	if (!isOperatorOnCanal(clientSource, *chan))
 	{
-		replyHandler.add(clientSource.getFd(), ERR::NOTONCHANNEL(clientSource, *chan));
+		replyHandler.add(clientSource.getFd(), ERR::NOTONCHANNEL(clientSource.getNickname(), *chan));
 		return;
 	}
 
@@ -95,7 +95,7 @@ void	KickCommand::kickUsersFromChannel(Client& clientSource, mapChannels& channe
 		clientToKick = getUserOnChannel(*user, *chan);
 		if (!clientToKick)
 		{
-			replyHandler.add(clientSource.getFd(), ERR::NOTONCHANNEL(clientSource, *chan));
+			replyHandler.add(clientSource.getFd(), ERR::NOTONCHANNEL(_commandArray[2], *chan));
 			continue;
 		}
 		clientToKick->leaveChannel(chan);

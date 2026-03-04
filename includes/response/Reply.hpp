@@ -472,14 +472,15 @@ namespace ERR
 	}
 
 	// 442: Client is not on the specified channel
-	inline std::string	NOTONCHANNEL(Client& target, Channel& chan)
+	inline std::string	NOTONCHANNEL(std::string target, Channel& chan)
 	{
 		std::ostringstream	oss;
 
 		oss << ircMacro::NAME_SERVER << " 442 "
-			<< target.getNickname() << " "
+			<< target << " "
 			<< chan.getName()
-			<< " :You're not on that channel"
+			<< " :"
+			<< target << " is not on that channel"
 			<< ircMacro::CRLF;
 		return oss.str();
 	}
