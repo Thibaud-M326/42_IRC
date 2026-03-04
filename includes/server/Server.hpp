@@ -31,7 +31,7 @@ class Server {
 		int								_nfds;
 		char							_buffer[ircMacro::READ_BUFFER_SIZE];
 
-		Client							*_client;
+		Client*							_client;
 		std::map<int, Client*>			_clients;
 		std::map<std::string, Channel*>	_channelArray;
 

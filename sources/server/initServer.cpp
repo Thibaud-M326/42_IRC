@@ -13,9 +13,6 @@ void Server::init_server_socket()
 	if (_serv_socket_fd == -1)
 		endSafe(ERR_MSG);
 
-	if (-1 == set_nonblocking(_serv_socket_fd))
-		endSafe(ERR_MSG);
-
 	int opt = 1;
 	if (-1 == setsockopt(_serv_socket_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)))
 		endSafe(ERR_MSG);

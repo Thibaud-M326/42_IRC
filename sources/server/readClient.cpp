@@ -10,13 +10,9 @@ void Server::readClient(int event_index)
 
 	_client_socket_fd = _events[event_index].data.fd;
 
-	while(0 < (readSize = recv(_client_socket_fd, _buffer, sizeof(_buffer), 0)))
-	{
-		findClient();
-		_client->appendRawData(_buffer);
-		std::memset(_buffer, 0, sizeof(_buffer));
-	}
+	readSize = recv(_client_socket_fd, _buffer, sizeof(_buffer), 0);
 
+	//Client disconected from server
 	if (readSize == 0)
 	{
 		if (_client)
@@ -25,15 +21,15 @@ void Server::readClient(int event_index)
 	}
 
 	if (readSize == -1)
+		endSafe(ERR_MSG);
+
+	if (readSize > 0)
 	{
-		if (errno == EAGAIN)
-		{
-			findClient();
-			if (_client->processClient())
-				executeClient(_client->getBuffer());
-		}
-		if (errno != EAGAIN)
-			endSafe(ERR_MSG);
+		findClient();
+		_client->appendRawData(_buffer);
+		std::memset(_buffer, 0, sizeof(_buffer));
+		if (_client->processClient())
+			executeClient(_client->getBuffer());
 	}
 }
 

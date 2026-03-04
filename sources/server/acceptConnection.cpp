@@ -23,7 +23,7 @@ int	Server::set_nonblocking(int sockfd)
 
 void	Server::addClientToEpoll()
 {
-	_ev.events = EPOLLIN | EPOLLET;
+	_ev.events = EPOLLIN;
 	_ev.data.fd = _client_socket_fd;
 
 	if (-1 == epoll_ctl(_epoll_fd, EPOLL_CTL_ADD, _client_socket_fd, &_ev))
@@ -41,22 +41,13 @@ void	Server::addClient()
 
 void	Server::acceptConnection()
 {
-	while (1) 
-	{
-		_client_socket_fd = accept(_serv_socket_fd, (struct sockaddr *)&_client_sock_addr, &_client_sock_addr_len);
+	_client_socket_fd = accept(_serv_socket_fd, (struct sockaddr *)&_client_sock_addr, &_client_sock_addr_len);
 
-		if (_client_socket_fd == -1)	
-		{
-			if (errno == EAGAIN)
-				break;
-			else
-				endSafe(ERR_MSG);
-		}
+	if (_client_socket_fd == -1)	
+		endSafe(ERR_MSG);
 
-		set_nonblocking(_client_socket_fd);
-		addClientToEpoll();
-		addClient();
+	addClientToEpoll();
+	addClient();
 
-		ircDisplay::accept(_client_socket_fd);
-	}
+	ircDisplay::accept(_client_socket_fd);
 }
