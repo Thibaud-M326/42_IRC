@@ -37,6 +37,7 @@ class Server {
 
 		std::string						_message;
 
+		int		set_nonblocking(int fd);
 		void	acceptConnection();
 		void	addClientToEpoll();
 		void	addClient();
