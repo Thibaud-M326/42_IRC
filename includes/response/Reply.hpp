@@ -107,6 +107,16 @@ namespace RPL
 		return oss.str();
 	}
 
+	inline std::string	INVITING_NOTICE(Client& target, Channel& chan, std::string invitedNick)
+	{
+		std::ostringstream	oss;
+
+		oss <<  target.getPrefix() << "INVITE "
+			<< invitedNick << " "
+			<< chan.getName() << ircMacro::CRLF;
+		return oss.str();
+	}
+
 	inline std::string	NOTOPIC(Client& target, Channel& chan)
 	{
 		std::ostringstream	oss;

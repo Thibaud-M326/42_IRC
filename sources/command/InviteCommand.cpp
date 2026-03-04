@@ -2,10 +2,13 @@
 
 InviteCommand::InviteCommand(std::vector<std::string>& params): ACommand(params) {}
 
-void	InviteCommand::addToChannel(Client& target, Channel& channel, t_replyHandler& replyHandler)
+void	InviteCommand::addToChannel(Client& source, Client& target, Channel& channel, t_replyHandler& replyHandler)
 {
 	channel.addWhiteList(target);
-	replyHandler.add(channel.getClientsFd(), RPL::INVITING(target, channel, _commandArray[1]));
+
+	replyHandler.add(source.getFd(), RPL::INVITING(target, channel, _commandArray[1]));
+	replyHandler.add(target.getFd(), RPL::INVITING_NOTICE(source, channel, _commandArray[1]));
+	replyHandler.add(channel.getClientsFd(), RPL::INVITING_NOTICE(source, channel, _commandArray[1]));
 }
 
 t_replyHandler	InviteCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)
@@ -56,12 +59,12 @@ t_replyHandler	InviteCommand::ExecuteCommand(Client& target, mapClients& ClientA
 	if (channel->getMode()[inviteOnly])
 	{
 		if (isOper(target, *channel))
-			addToChannel(*tmp, *channel, replyHandler);
+			addToChannel(target, *tmp, *channel, replyHandler);
 		else
 			replyHandler.add(target.getFd(), ERR::CHANOPRIVSNEEDED(target, *channel));
 	}
 	else
-		addToChannel(*tmp, *channel, replyHandler);
+		addToChannel(target, *tmp, *channel, replyHandler);
 
 	return replyHandler;
 }

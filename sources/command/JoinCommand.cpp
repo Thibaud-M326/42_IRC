@@ -80,7 +80,7 @@ void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
 
 		if (chanToJoin != ChannelArray.end())
 		{
-			if (chanToJoin->second->getMode()[inviteOnly])
+			if (chanToJoin->second->getMode()[inviteOnly] && !chanToJoin->second->isWhiteListed(target))
 			{
 				replyHandler.add(target.getFd(), ERR::INVITEONLYCHAN(target, *chanToJoin->second));
 			}
@@ -92,11 +92,7 @@ void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
 			{
 				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(target, *chanToJoin->second));
 			}
-			else if (it->second != chanToJoin->second->getKey())
-			{
-				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(target, *chanToJoin->second));
-			}
-			else if (chanToJoin->second->isWhiteListed(target))
+			else if (it->second == chanToJoin->second->getKey())
 			{
 				target.joinChannel(chanToJoin->first, chanToJoin->second);
 				chanToJoin->second->addClient(&target);
@@ -112,9 +108,7 @@ void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
 				replyHandler.add(target.getFd(), RPL::ENDOFNAMES(target, *chanToJoin->second));
 			}
 			else
-			{
-				std::cout << "pas dans la whitelist" << std::endl;
-			}
+				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(target, *chanToJoin->second));
 		}
 		index++;
 		for (size_t i = 0; i < chanToJoin->second->getOperators().size(); i++)
