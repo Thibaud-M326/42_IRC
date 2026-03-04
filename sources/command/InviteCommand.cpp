@@ -4,16 +4,8 @@ InviteCommand::InviteCommand(std::vector<std::string>& params): ACommand(params)
 
 void	InviteCommand::addToChannel(Client& target, Channel& channel, t_replyHandler& replyHandler)
 {
-	channel.addClient(&target);
-	target.joinChannel(channel.getName(), &channel);
+	channel.addWhiteList(target);
 	replyHandler.add(channel.getClientsFd(), RPL::INVITING(target, channel, _commandArray[1]));
-	replyHandler.add(channel.getClientsFd(), RPL::JOIN(target, channel.getName(), channel.getKey()));
-	if (channel.getTopic().empty())
-		replyHandler.add(target.getFd(), RPL::NOTOPIC(target, channel));
-	else
-		replyHandler.add(target.getFd(), RPL::TOPIC(target, channel));
-	replyHandler.add(     target.getFd(), RPL::NAMREPLY(target, channel));
-	replyHandler.add(     target.getFd(), RPL::ENDOFNAMES(target, channel));
 }
 
 t_replyHandler	InviteCommand::ExecuteCommand(Client& target, mapClients& ClientArray, mapChannels& ChannelArray)

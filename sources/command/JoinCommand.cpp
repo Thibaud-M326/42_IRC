@@ -92,10 +92,15 @@ void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
 			{
 				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(target, *chanToJoin->second));
 			}
-			else if (it->second == chanToJoin->second->getKey())
+			else if (it->second != chanToJoin->second->getKey())
+			{
+				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(target, *chanToJoin->second));
+			}
+			else if (chanToJoin->second->isWhiteListed(target))
 			{
 				target.joinChannel(chanToJoin->first, chanToJoin->second);
 				chanToJoin->second->addClient(&target);
+				chanToJoin->second->delFromWhiteList(target);
 				replyHandler.add(chanToJoin->second->getClientsFd(), RPL::JOIN(target, chanToJoin->first, chanToJoin->second->getKey()));
 
 				if (chanToJoin->second->getTopic().empty())
@@ -107,7 +112,9 @@ void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
 				replyHandler.add(target.getFd(), RPL::ENDOFNAMES(target, *chanToJoin->second));
 			}
 			else
-				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(target, *chanToJoin->second));
+			{
+				std::cout << "pas dans la whitelist" << std::endl;
+			}
 		}
 		index++;
 		for (size_t i = 0; i < chanToJoin->second->getOperators().size(); i++)
