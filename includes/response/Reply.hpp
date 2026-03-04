@@ -264,7 +264,7 @@ namespace RPL
 		oss << target.getPrefix() << "KICK "
 			<< chan << " " << user;
 		if (!reason.empty())
-			oss << " :" << reason;
+			oss << " " << reason;
 		oss << ircMacro::CRLF;
 		return oss.str();
 	}
