@@ -102,8 +102,8 @@ namespace RPL
 
 		oss << ircMacro::NAME_SERVER << " 341 "
 			<< target.getNickname() << " "
-			<< chan.getName() << " "
-			<< invitedNick << ircMacro::CRLF;
+			<< invitedNick << " "
+			<< chan.getName() << ircMacro::CRLF;
 		return oss.str();
 	}
 
@@ -124,7 +124,7 @@ namespace RPL
 
 		oss << ircMacro::NAME_SERVER << " 332 "
 			<< target.getNickname() << " "
-			<< chan.getName() << " :"
+			<< chan.getName() << " "
 			<< chan.getTopic() << ircMacro::CRLF;
 		return oss.str();
 	}
