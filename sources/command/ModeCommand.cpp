@@ -32,12 +32,13 @@ void	ModeCommand::modeUserLimit(Client& target, char& signMode, size_t& count, t
 	{
 		if (count + 3 < _commandArray.size())
 		{
-			std::istringstream iss(_commandArray[count + 3]);
-			long	limit;
-			char	end;
+			std::istringstream	iss(_commandArray[count + 3]);
+			int					limit;
+			std::string			end;
 
-			iss >> limit >> end;
-			if (limit >= 0 && end == '\0')
+			if (!(iss >> limit))
+				return ;
+			if (limit >= 1 && end.size() == 0)
 			{
 				_channel->setLimitNbUser(limit);
 				_channel->setMode(userLimit, true);
@@ -114,7 +115,7 @@ void	ModeCommand::modeChannelKey(Client& target, char& signMode, size_t& count, 
 	{
 		if (count + 3 < _commandArray.size())
 		{
-			if (!_channel->getKey().empty())
+			if (_channel->getKey().empty())
 			{
 				_channel->setKey(_commandArray[count + 3]);
 				_channel->setMode(restrictPassword, true);

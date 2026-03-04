@@ -111,8 +111,6 @@ void	JoinCommand::joinChannel(mapChannels& ChannelArray, chanParams params,
 				replyHandler.add(target.getFd(), ERR::BADCHANNELKEY(target, *chanToJoin->second));
 		}
 		index++;
-		for (size_t i = 0; i < chanToJoin->second->getOperators().size(); i++)
-			std::cout << chanToJoin->second->getOperators()[i]->getNickname() << std::endl;
 	}
 }
 

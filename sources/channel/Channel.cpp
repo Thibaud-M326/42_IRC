@@ -33,7 +33,7 @@ std::string	Channel::getStrMode() const
 	std::ostringstream	oss;
 
 	oss << '+';
-	for (size_t i = _mode.size() -1; i > 0; i--)
+	for (ssize_t i = _mode.size(); i >= 0; i--)
 	{
 		if (_mode[i] && i != operatorPrivileges)
 			oss << ircMacro::modeCharArray[i];
