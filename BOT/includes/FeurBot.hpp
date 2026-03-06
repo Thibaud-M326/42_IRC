@@ -16,18 +16,16 @@ class FeurBot {
 		FeurBot& operator=(const FeurBot&);
 
 		void	sendReply(const std::vector<std::vector<std::string> >&  parsedResponse);
-		void	processRequests(std::string& accumulator);
-		void	processListResponse(std::string& accumulator, int& listEnd);
 		void	processReceivedMsg(std::string& accumulator);
 
 		void	sendMsgFromList();
 		int		processResponse(const std::vector<std::vector<std::string> >& parsedResponse);
+		void	connectToChannels();
 
 		int							_socket_fd;
 		sockaddr_in					_sock_addr;
 		std::vector<std::string>	_channelList;
 		std::string					_password;
-
 		int							_connected;
 
 		std::map<std::string, std::string>	_sendMsgList;
@@ -36,11 +34,6 @@ class FeurBot {
 
 		FeurBot(std::string host, std::string port, std::string password);
 		~FeurBot();
-
-		int 	connectToServer();
-		void	getChannelList();
-		void	connectToChannels();
-		void	sayFeur();
 
 		void	runFeurBot();
 };

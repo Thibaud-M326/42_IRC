@@ -159,3 +159,17 @@ void	FeurBot::sendReply(const std::vector<std::vector<std::string> >&  parsedRes
 		}
 	}
 }
+
+void	FeurBot::connectToChannels()
+{
+	std::string	msg;
+
+	for (size_t i = 0; i < _channelList.size(); i++)
+	{
+	    std::cout << "chanlist :" << _channelList[i] << std::endl;
+
+		msg = "JOIN " + _channelList[i] + "\r\n";
+		if (send(_socket_fd, msg.c_str(), msg.length(), 0) < 0)
+			throw std::runtime_error("send() failed: JOIN " + _channelList[i]);
+	}
+}
