@@ -62,30 +62,6 @@ void	FeurBot::sendMsgFromList()
 	}
 }
 
-void	FeurBot::runFeurBot()
-{
-	SignalHandler::initSignal();
-
-	char		buffer[512];
-	int			bytes_recv;
-	std::string	accumulator;
-
-	while (SignalHandler::isRunning() && _connected != -1)
-	{
-		if (!_sendMsgList.empty())
-			sendMsgFromList();
-
-		bytes_recv = recv(_socket_fd, buffer, sizeof(buffer) - 1, 0);
-        if (bytes_recv <= 0)
-            break;
-
-		buffer[bytes_recv] = '\0';
-		accumulator += buffer;
-
-		processReceivedMsg(accumulator);
-	}
-}
-
 void	FeurBot::processReceivedMsg(std::string& accumulator)
 {
 	std::vector<std::vector<std::string> >  parsedResponse;
@@ -171,5 +147,29 @@ void	FeurBot::connectToChannels()
 		msg = "JOIN " + _channelList[i] + "\r\n";
 		if (send(_socket_fd, msg.c_str(), msg.length(), 0) < 0)
 			throw std::runtime_error("send() failed: JOIN " + _channelList[i]);
+	}
+}
+
+void	FeurBot::runFeurBot()
+{
+	SignalHandler::initSignal();
+
+	char		buffer[512];
+	int			bytes_recv;
+	std::string	accumulator;
+
+	while (SignalHandler::isRunning() && _connected != -1)
+	{
+		if (!_sendMsgList.empty())
+			sendMsgFromList();
+
+		bytes_recv = recv(_socket_fd, buffer, sizeof(buffer) - 1, 0);
+        if (bytes_recv <= 0)
+            break;
+
+		buffer[bytes_recv] = '\0';
+		accumulator += buffer;
+
+		processReceivedMsg(accumulator);
 	}
 }

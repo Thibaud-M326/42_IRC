@@ -7,35 +7,34 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <iostream>
 
 class FeurBot {
 
-	private:
+public:
+	FeurBot(std::string host, std::string port, std::string password);
+	~FeurBot();
 
-		FeurBot(const FeurBot&);
-		FeurBot& operator=(const FeurBot&);
+	void	runFeurBot();
 
-		void	sendReply(const std::vector<std::vector<std::string> >&  parsedResponse);
-		void	processReceivedMsg(std::string& accumulator);
+private:
+	void	processReceivedMsg(std::string& accumulator);
+	int		processResponse(const std::vector<std::vector<std::string> >& parsedResponse);
 
-		void	sendMsgFromList();
-		int		processResponse(const std::vector<std::vector<std::string> >& parsedResponse);
-		void	connectToChannels();
+	void	sendMsgFromList();
+	void	sendReply(const std::vector<std::vector<std::string> >&  parsedResponse);
+	void	connectToChannels();
 
-		int							_socket_fd;
-		sockaddr_in					_sock_addr;
-		std::vector<std::string>	_channelList;
-		std::string					_password;
-		int							_connected;
+	int							_socket_fd;
+	sockaddr_in					_sock_addr;
+	int							_connected;
 
-		std::map<std::string, std::string>	_sendMsgList;
+	std::vector<std::string>	_channelList;
+	std::string					_password;
+	std::map<std::string, std::string>	_sendMsgList;
 
-	public:
-
-		FeurBot(std::string host, std::string port, std::string password);
-		~FeurBot();
-
-		void	runFeurBot();
+	FeurBot(const FeurBot&);
+	FeurBot& operator=(const FeurBot&);
 };
 
 #endif
