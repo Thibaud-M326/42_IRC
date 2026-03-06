@@ -13,9 +13,9 @@ t_replyHandler	QuitCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	for (mapChannels::iterator it = channelList.begin(); it != channelList.end(); ++it)
 	{
 		if (_commandArray.size() == 2)
-			replyHandler.add(it->second->getClientsFd(), RPL::QUIT(target, _commandArray[1]));
+			replyHandler.add(it->second->getClientsFdButSource(target.getFd()), RPL::QUIT(target, _commandArray[1]));
 		else
-			replyHandler.add(it->second->getClientsFd(), RPL::QUIT(target, ""));
+			replyHandler.add(it->second->getClientsFdButSource(target.getFd()), RPL::QUIT(target, ""));
 	}
 	for (mapChannels::iterator it = channelList.begin(); it != channelList.end(); ++it)
 	{
@@ -26,4 +26,3 @@ t_replyHandler	QuitCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 
 	return replyHandler;
 }
-
