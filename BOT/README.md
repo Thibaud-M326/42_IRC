@@ -65,7 +65,7 @@ The bot gracefully handles termination signals (SIGINT, SIGTERM) through a custo
 ## Resources
 
 ### IRC Documentation
-- [RFC 1459 - Internet Relay Chat Protocol](https://tools.ietf.org/html/rfc1459)
+- [RFC 2812 - Internet Relay Chat Protocol](www.rfc-editor.org/rfc/rfc2812)
 - [IRC Commands Reference](https://www.irchelp.org/protocol/rfc.html)
 
 ### C++ and Socket Programming

@@ -5,30 +5,30 @@
 #include "Parse.hpp"
 #include "SignalHandler.hpp"
 
-void	FeurBot::sendReply(const std::vector<std::vector<std::string> >&  parsedResponse)
-{
-	std::string chanName;
-	std::string	privMsg;
-	std::string quoiList[] = {"quoi?", "quoi ?", "Quoi?", "Quoi ?", "QUOI?", "QUOI ?", "quoi"};
-	size_t 		quoiCount = sizeof(quoiList) / sizeof(quoiList[0]);
-	std::string msg;
-	size_t 		pos;
+// void	FeurBot::sendReply(const std::vector<std::vector<std::string> >&  parsedResponse)
+// {
+// 	std::string chanName;
+// 	std::string	privMsg;
+// 	std::string quoiList[] = {"quoi?", "quoi ?", "Quoi?", "Quoi ?", "QUOI?", "QUOI ?", "quoi"};
+// 	size_t 		quoiCount = sizeof(quoiList) / sizeof(quoiList[0]);
+// 	std::string msg;
+// 	size_t 		pos;
 
-	chanName = parsedResponse[0][2];
-	privMsg = parsedResponse[0][3];
+// 	chanName = parsedResponse[0][2];
+// 	privMsg = parsedResponse[0][3];
 
-	for (size_t i = 0; i < quoiCount; i++)
-	{
-		pos = privMsg.rfind(quoiList[i]);
-		if (pos != std::string::npos && (pos + quoiList[i].length() == privMsg.size()))
-		{
-			msg = "PRIVMSG " + chanName + " :feur!\r\n";
-			if (send(_socket_fd, msg.c_str(), msg.length(), 0) < 0)
-				throw std::runtime_error("send() failed: PRIVMSG");
-			break;
-		}
-	}
-}
+// 	for (size_t i = 0; i < quoiCount; i++)
+// 	{
+// 		pos = privMsg.rfind(quoiList[i]);
+// 		if (pos != std::string::npos && (pos + quoiList[i].length() == privMsg.size()))
+// 		{
+// 			msg = "PRIVMSG " + chanName + " :feur!\r\n";
+// 			if (send(_socket_fd, msg.c_str(), msg.length(), 0) < 0)
+// 				throw std::runtime_error("send() failed: PRIVMSG");
+// 			break;
+// 		}
+// 	}
+// }
 
 void	FeurBot::processRequests(std::string& accumulator)
 {
@@ -58,7 +58,6 @@ void	FeurBot::sayFeur()
 	char									buffer[512];
 	int										bytes_recv;
 	std::string 							accumulator;
-
 
 	while (SignalHandler::isRunning())
 	{

@@ -11,7 +11,6 @@ SIGNAL_DIR = $(SRC_DIR)/signal
 SRC =										\
 	$(SRC_DIR)/main.cpp						\
 	$(FEURBOT_DIR)/connectToChannels.cpp	\
-	$(FEURBOT_DIR)/connectToServer.cpp		\
 	$(FEURBOT_DIR)/FeurBot.cpp				\
 	$(FEURBOT_DIR)/sayFeur.cpp				\
 	$(SIGNAL_DIR)/SignalHandler.cpp			\

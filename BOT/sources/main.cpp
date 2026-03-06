@@ -12,14 +12,7 @@ int main(int ac, char *av[])
 	{
 		FeurBot feurbot(av[1], av[2], av[3]);
 
-		std::cout << "connectToServer" << std::endl;
-		feurbot.connectToServer();
-		std::cout << "getChannelList" << std::endl;
-		feurbot.getChannelList();
-		std::cout << "connectToChannels" << std::endl;
-		feurbot.connectToChannels();
-		std::cout << "SayFeur" << std::endl;
-		feurbot.sayFeur();
+		feurbot.runFeurBot();
 	}
 	catch (const std::exception& e)
 	{

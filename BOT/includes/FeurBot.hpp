@@ -6,6 +6,7 @@
 #include <arpa/inet.h>
 #include <string>
 #include <vector>
+#include <map>
 
 class FeurBot {
 
@@ -17,12 +18,19 @@ class FeurBot {
 		void	sendReply(const std::vector<std::vector<std::string> >&  parsedResponse);
 		void	processRequests(std::string& accumulator);
 		void	processListResponse(std::string& accumulator, int& listEnd);
-		void	checkServerConnection(std::string& accumulator, int& read, int& connected);
+		void	processReceivedMsg(std::string& accumulator);
+
+		void	sendMsgFromList();
+		int		processResponse(const std::vector<std::vector<std::string> >& parsedResponse);
 
 		int							_socket_fd;
 		sockaddr_in					_sock_addr;
 		std::vector<std::string>	_channelList;
 		std::string					_password;
+
+		int							_connected;
+
+		std::map<std::string, std::string>	_sendMsgList;
 
 	public:
 
@@ -33,6 +41,8 @@ class FeurBot {
 		void	getChannelList();
 		void	connectToChannels();
 		void	sayFeur();
+
+		void	runFeurBot();
 };
 
 #endif
