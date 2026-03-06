@@ -21,9 +21,11 @@ void Server::readClient(int event_index)
 		ircDisplay::readClientDisco(_client_socket_fd);
 	}
 
+	//recv error occured
 	if (readSize == -1)
 		endSafe(ERR_MSG);
 
+	//msg received
 	if (readSize > 0)
 	{
 		findClient();
@@ -33,4 +35,3 @@ void Server::readClient(int event_index)
 			executeClient(_client->getBuffer());
 	}
 }
-
