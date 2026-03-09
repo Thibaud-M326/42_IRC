@@ -13,10 +13,6 @@ void Server::init_server_socket()
 	if (_serv_socket_fd == -1)
 		endSafe(ERR_MSG);
 
-	_serv_socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (_serv_socket_fd == -1)
-		endSafe(ERR_MSG);
-
 	int opt = 1;
 	if (-1 == setsockopt(_serv_socket_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)))
 		endSafe(ERR_MSG);
@@ -44,3 +40,4 @@ void Server::init_epoll()
 	
 	ircDisplay::epollInit(_epoll_fd);
 }
+

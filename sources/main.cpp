@@ -5,19 +5,6 @@
 #include "Parse.hpp"
 #include "Server.hpp"
 
-
-std::string	getDate()
-{
-	std::ostringstream	oss;
-	std::time_t now = std::time(NULL);
-	std::tm* local = std::localtime(&now);
-
-	oss << (local->tm_year + 1900) << "-"
-		<< (local->tm_mon + 1) << "-"
-		<< local->tm_mday;
-	return oss.str().c_str();
-}
-
 namespace ircMacro
 {
 	std::string	DATE = getDate();
@@ -28,8 +15,7 @@ namespace ircMacro
 int main(int ac, char *av[])
 {
 	if (ac == 2 && (!std::strcmp(av[1], "--help")
-				|| !std::strcmp(av[1], "-h")))
-	{
+				|| !std::strcmp(av[1], "-h"))) {
 		ircDisplay::help();
 		return 0;
 	}
@@ -54,7 +40,6 @@ int main(int ac, char *av[])
 	return 0;
 }
 
-//
 // #include "Parse.hpp"
 // #include "ModeCommand.hpp"
 // #include "JoinCommand.hpp"

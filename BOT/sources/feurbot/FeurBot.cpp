@@ -128,7 +128,10 @@ void	FeurBot::sendReply(const std::vector<std::vector<std::string> >&  parsedRes
 		pos = privMsg.rfind(quoiList[i]);
 		if (pos != std::string::npos && (pos + quoiList[i].length() == privMsg.size()))
 		{
-			msg = "PRIVMSG " + chanName + " :feur!\r\n";
+			if (REPLY == 0)
+				msg = "PRIVMSG " + chanName + " :feur!\r\n";
+			else
+				msg = "PRIVMSG " + chanName + " :quoicoubeh!\r\n";
 			if (send(_socket_fd, msg.c_str(), msg.length(), 0) < 0)
 				throw std::runtime_error("send() failed: PRIVMSG");
 			break;

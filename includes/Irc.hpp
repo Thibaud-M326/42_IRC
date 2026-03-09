@@ -46,6 +46,18 @@ namespace ircMacro
 	const char			modeCharArray[] =
 							{ 'l', 'o', 'k', 't', 'i', '\0' };
 
+	inline std::string	getDate()
+	{
+		std::ostringstream	oss;
+		std::time_t now = std::time(NULL);
+		std::tm* local = std::localtime(&now);
+
+		oss << (local->tm_year + 1900) << "-"
+			<< (local->tm_mon + 1) << "-"
+			<< local->tm_mday;
+		return oss.str().c_str();
+	}
+
 	typedef enum e_modeChar
 	{
 		modeUserLimit = 'l',
@@ -97,10 +109,10 @@ namespace ircDisplay
 
 	inline void	help()
 	{
-		std::cout << ircDisplay::BOLD_BLUE << "Usage: ./ircserv [PORT] [PASSWORD]\n"
-			<< "[PORT] = The port number on which the server will be"
-			<< "listening for incoming IRC connections\n"
-			<< "[PASSWORD] = The connection password. It will be needed"
+		std::cout << ircDisplay::BOLD_BLUE << "Usage: ./ircserv PORT PASSWORD\n"
+			<< "PORT: The port number on which the server will be"
+			<< "listening for incoming IRC connections. It must be between 1024 and 65345\n"
+			<< "PASSWORD: The connection password. It will be needed"
 			<< "by any IRC client that tries\nto connect to the server."
 			<< "Only alpha numeric and '-', '_' characters are allowed (31 max)"
 			<< ircDisplay::STOP_COLOR << std::endl;

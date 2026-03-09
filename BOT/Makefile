@@ -6,10 +6,11 @@ BOLD_PURPLE			=	\e[1;35m
 BOLD_CYAN			=	\e[1;36m
 STOP_COLOR			=	\e[0m
 
-CPP = c++
-CPPFLAGS = -g3 -Wall -Wextra -Werror -MMD -MP -std=c++98
+CXX = c++
+CXXFLAGS = -g3 -Wall -Wextra -Werror -MMD -MP -std=c++98 $(REPLY)
 NAME = feurbot
 
+REPLY = -DREPLY=0
 OBJ_DIR = ./.obj
 SRC_DIR = ./sources
 INC_DIR = ./includes
@@ -29,18 +30,21 @@ INC_DIRS =			\
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 DEP = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.d)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp Makefile
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(dir $@)
 	@echo "$(BOLD_YELLOW)Compilling $@ $(BOLD_PURPLE)"
-	@$(CPP) $(INC_DIRS) $(CPPFLAGS) -c $< -o $@
+	@$(CXX) $(INC_DIRS) $(CXXFLAGS) -c $< -o $@
 	@echo -n "$(STOP_COLOR)"
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "$(BOLD_BLUE)Creating executable $(NAME)...$(BOLD_PURPLE)"
-	@$(CPP) $(OBJ) -o $(NAME)
+	@$(CXX) $(OBJ) -o $(NAME)
 	@echo "$(STOP_COLOR)$(BOLD_GREEN)SUCCESS !!!$(STOP_COLOR)"
+
+quoi: fclean
+	@$(MAKE) --no-print-directory REPLY=-DREPLY=1
 
 clean:
 	@echo "$(BOLD_BLUE)Delete obj...$(STOP_COLOR)"

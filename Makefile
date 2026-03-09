@@ -7,7 +7,7 @@ BOLD_CYAN			=	\e[1;36m
 STOP_COLOR			=	\e[0m
 
 CXX = c++
-CXXFLAGS = -g3 -Wall -Wextra -Werror -MD -MP -std=c++98
+CXXFLAGS = -Wall -Wextra -Werror -MD -MP -std=c++98
 NAME = ircserv 
 
 OBJ_DIR = .obj

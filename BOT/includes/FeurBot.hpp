@@ -1,13 +1,18 @@
 #ifndef FEURBOT_HPP
-#define FEURBOT_HPP
+# define FEURBOT_HPP
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <string>
-#include <vector>
-#include <map>
-#include <iostream>
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <arpa/inet.h>
+# include <string>
+# include <vector>
+# include <map>
+# include <iostream>
+
+#ifndef REPLY
+# define REPLY 0 
+#endif
+
 
 class FeurBot {
 

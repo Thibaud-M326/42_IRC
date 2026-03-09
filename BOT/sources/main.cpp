@@ -3,6 +3,7 @@
 
 int main(int ac, char *av[])
 {
+	std::cout << REPLY;
 	if (ac != 4)
 	{
 		std::cerr << "Usage: ./feurbot [HOST] [PORT] [PASSWORD]\n";

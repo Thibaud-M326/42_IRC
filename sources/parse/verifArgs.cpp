@@ -13,7 +13,7 @@ bool	verifArgs(std::string port, std::string password)
 		return false;
 
 	if (tmpPort > ircMacro::NB_PORT_MAX
-			|| tmpPort < 0
+			|| tmpPort < 1024
 			|| password.size() > ircMacro::NB_CHAR_PASS_MAX
 			|| password.size() < ircMacro::NB_CHAR_PASS_MIN)
 		return false;
