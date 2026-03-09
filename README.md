@@ -102,6 +102,7 @@ Then authenticate and use standard IRC commands.
 
 ### Personal Notes
 - [Sockets](./docs/Sockets.md): File detailing how sockets work.
+- [IRC protocol](./docs/Protocole_IRC.md): Irc protocol introduction.
 - [RFC 2812 notes](./docs/RFC_2812_notes.md): File that deals with **`RFC 2812`** and compiles important information.
 - [Function](./docs/funct.md): File detailing allowed function for the project.
 
