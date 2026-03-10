@@ -86,6 +86,20 @@ namespace RPL
 		return oss.str();
 	}
 
+	inline std::string	BOUNCE(Client& target)
+	{
+		std::ostringstream	oss;
+
+		oss << ircMacro::NAME_SERVER << " 005 "
+			<< target.getNickname()
+			<< " NETWORK=" << &ircMacro::NAME_SERVER[1]
+			<< " CHANTYPES=" << ircMacro::chanCharArray
+			<< " :are supported"
+			<< ircMacro::CRLF;
+		return oss.str();
+
+	}
+
 	inline std::string	AWAY(Client& source, std::string& away_msg)
 	{
 		std::ostringstream	oss;

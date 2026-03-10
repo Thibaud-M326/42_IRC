@@ -51,6 +51,7 @@ t_replyHandler	UserCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	replyHandler.add(target.getFd(), RPL::YOURHOST(target));
 	replyHandler.add(target.getFd(), RPL::CREATED(target));
 	replyHandler.add(target.getFd(), RPL::MYINFO(target));
+	replyHandler.add(target.getFd(), RPL::BOUNCE(target));
 
 	return replyHandler;
 }
