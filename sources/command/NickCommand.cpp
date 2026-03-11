@@ -56,6 +56,12 @@ t_replyHandler	NickCommand::ExecuteCommand(Client& target, mapClients& ClientArr
 	if (!isValidNickname(target, ClientArray, replyHandler))
 		return replyHandler;
 
+	if (target.getNickname() != "*")
+	{
+		for (mapChannels::iterator it = target.getChannelList().begin(); it != target.getChannelList().end(); it++)
+			replyHandler.add(it->second->getClientsFd(), RPL::NICK(target, _commandArray[1]));
+	}
+
 	target.setNickname(_commandArray[1]);
 
 	return replyHandler;

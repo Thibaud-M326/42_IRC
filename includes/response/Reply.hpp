@@ -97,7 +97,6 @@ namespace RPL
 			<< " :are supported"
 			<< ircMacro::CRLF;
 		return oss.str();
-
 	}
 
 	inline std::string	AWAY(Client& source, std::string& away_msg)
@@ -107,6 +106,15 @@ namespace RPL
 		oss << ircMacro::NAME_SERVER << " 301 "
 			<< source.getNickname() << " :"
 			<< away_msg << ircMacro::CRLF;
+		return oss.str();
+	}
+
+	inline std::string	NICK(Client& target, std::string& newNickname)
+	{
+		std::ostringstream	oss;
+
+		oss << target.getPrefix() << " NICK "
+			<< newNickname << ircMacro::CRLF;
 		return oss.str();
 	}
 
