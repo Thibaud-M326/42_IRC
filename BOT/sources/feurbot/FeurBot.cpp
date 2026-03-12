@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <unistd.h>
 #include <cstdlib>
+#include <stdio.h>
 
 FeurBot::FeurBot(std::string host, std::string port, std::string password)
 {
@@ -60,6 +61,15 @@ void	FeurBot::sendMsgFromList()
 		_sendMsgList.erase("list");
 		return;	
 	}
+
+	it = _sendMsgList.find("feur");
+
+	if (it != _sendMsgList.end()) {
+		if (send(_socket_fd, it->second.c_str(), it->second.length(), 0) < 0)
+			throw std::runtime_error("send() failed: feur!");
+		_sendMsgList.erase("feur");
+		return;	
+	}
 }
 
 void	FeurBot::processReceivedMsg(std::string& accumulator)
@@ -107,11 +117,32 @@ int	FeurBot::processResponse(const std::vector<std::vector<std::string> >& parse
 
 	if (parsedResponse.size() > 0 && parsedResponse[0].size() > 3
 		&& parsedResponse[0][1] == "PRIVMSG")
-		sendReply(parsedResponse);
+  {
+		sendFeurReply(parsedResponse);
+    sendTalkReply(parsedResponse);
+  }
+
 	return 0;
 }
 
-void	FeurBot::sendReply(const std::vector<std::vector<std::string> >&  parsedResponse)
+void	FeurBot::sendTalkReply(const std::vector<std::vector<std::string> >&  parsedResponse)
+{
+  Parse parse("empty");
+  std::cout << "sendTalkReply:" << std::endl;
+  parse.display_vec(parsedResponse);
+
+	std::string chanName = parsedResponse[0][2];
+	std::string	privMsg = parsedResponse[0][3];
+
+  int fd;
+
+  fd = popen();
+  close(fd);
+
+  std::cout << "sendTalkReply:end" << std::endl;
+}
+
+void	FeurBot::sendFeurReply(const std::vector<std::vector<std::string> >&  parsedResponse)
 {
 	std::string chanName;
 	std::string	privMsg;
@@ -132,8 +163,7 @@ void	FeurBot::sendReply(const std::vector<std::vector<std::string> >&  parsedRes
 				msg = "PRIVMSG " + chanName + " :feur!\r\n";
 			else
 				msg = "PRIVMSG " + chanName + " :quoicoubeh!\r\n";
-			if (send(_socket_fd, msg.c_str(), msg.length(), 0) < 0)
-				throw std::runtime_error("send() failed: PRIVMSG");
+      _sendMsgList["feur"] = msg;
 			break;
 		}
 	}

@@ -10,7 +10,7 @@
 # include <iostream>
 
 #ifndef REPLY
-# define REPLY 0 
+# define REPLY 0
 #endif
 
 
@@ -27,7 +27,8 @@ private:
 	int		processResponse(const std::vector<std::vector<std::string> >& parsedResponse);
 
 	void	sendMsgFromList();
-	void	sendReply(const std::vector<std::vector<std::string> >&  parsedResponse);
+	void	sendFeurReply(const std::vector<std::vector<std::string> >&  parsedResponse);
+  void	sendTalkReply(const std::vector<std::vector<std::string> >&  parsedResponse);
 	void	connectToChannels();
 
 	int							_socket_fd;
