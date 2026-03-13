@@ -17,7 +17,7 @@
 class FeurBot {
 
 public:
-	FeurBot(std::string host, std::string port, std::string password, std::string nick);
+	FeurBot(std::string host, std::string port, std::string password, std::string nick, std::string behaviour);
 	~FeurBot();
 
 	void	runFeurBot();
@@ -38,6 +38,7 @@ private:
 	std::vector<std::string>	_channelList;
 	std::string					_password;
   std::string         _nick;
+  std::string         _behaviour;
 	std::map<std::string, std::string>	_sendMsgList;
 
 	FeurBot(const FeurBot&);

@@ -4,14 +4,14 @@
 int main(int ac, char *av[])
 {
 	std::cout << REPLY;
-	if (ac != 5)
+	if (ac != 6)
 	{
-		std::cerr << "Usage: ./feurbot [HOST] [PORT] [PASSWORD] [NICK]\n";
+		std::cerr << "Usage: ./feurbot [HOST] [PORT] [PASSWORD] [NICK] [BEHAVIOUR]\n";
 		return 1;
 	}
 	try
 	{
-		FeurBot feurbot(av[1], av[2], av[3], av[4]);
+		FeurBot feurbot(av[1], av[2], av[3], av[4], av[5]);
 
 		feurbot.runFeurBot();
 	}
